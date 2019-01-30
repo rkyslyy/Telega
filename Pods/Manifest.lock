@@ -1,0 +1,30 @@
+PODS:
+  - Alamofire (4.8.0)
+  - BCryptSwift (1.1)
+  - Gifu (3.2.0)
+  - SwiftyRSA (1.5.0):
+    - SwiftyRSA/ObjC (= 1.5.0)
+  - SwiftyRSA/ObjC (1.5.0)
+
+DEPENDENCIES:
+  - Alamofire
+  - BCryptSwift
+  - Gifu
+  - SwiftyRSA
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - BCryptSwift
+    - Gifu
+    - SwiftyRSA
+
+SPEC CHECKSUMS:
+  Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
+  BCryptSwift: f69992ea5685f6714260842c2770688043b89ab2
+  Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
+  SwiftyRSA: 6e528fb1b1a87d5111c48081083b141d6d65f1cf
+
+PODFILE CHECKSUM: 00e0123cc268476b1d22f68a41d8862f897272a9
+
+COCOAPODS: 1.5.3

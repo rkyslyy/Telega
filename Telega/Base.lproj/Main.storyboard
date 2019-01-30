@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9Eg-W2-X4g">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--First-->
+        <scene sceneID="hNz-n2-bh7">
+            <objects>
+                <viewController id="9pv-A4-QxB" customClass="FirstViewController" customModule="Telega" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="tsR-hK-woN">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="First View" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="KQZ-1w-vlD">
+                                <rect key="frame" x="112.5" y="312" width="150.5" height="43"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loaded by FirstViewController" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A5M-7J-77L">
+                                <rect key="frame" x="90.5" y="363" width="194.5" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="KQZ-1w-vlD" secondAttribute="centerX" id="6BV-lF-sBN"/>
+                            <constraint firstItem="A5M-7J-77L" firstAttribute="top" secondItem="KQZ-1w-vlD" secondAttribute="bottom" constant="8" symbolic="YES" id="cfb-er-3JN"/>
+                            <constraint firstItem="A5M-7J-77L" firstAttribute="centerX" secondItem="KQZ-1w-vlD" secondAttribute="centerX" id="e1l-AV-tCB"/>
+                            <constraint firstAttribute="centerY" secondItem="KQZ-1w-vlD" secondAttribute="centerY" id="exm-UA-ej4"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="First" image="first" id="acW-dT-cKf"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="750" y="-320"/>
+        </scene>
+        <!--Second-->
+        <scene sceneID="wg7-f3-ORb">
+            <objects>
+                <viewController id="8rJ-Kc-sve" customClass="SecondViewController" customModule="Telega" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QS5-Rx-YEW">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Second View" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="zEq-FU-wV5">
+                                <rect key="frame" x="87" y="312" width="201.5" height="43"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loaded by SecondViewController" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NDk-cv-Gan">
+                                <rect key="frame" x="80" y="363" width="215" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="NDk-cv-Gan" firstAttribute="top" secondItem="zEq-FU-wV5" secondAttribute="bottom" constant="8" symbolic="YES" id="Day-4N-Vmt"/>
+                            <constraint firstItem="NDk-cv-Gan" firstAttribute="centerX" secondItem="zEq-FU-wV5" secondAttribute="centerX" id="JgO-Fn-dHn"/>
+                            <constraint firstAttribute="centerX" secondItem="zEq-FU-wV5" secondAttribute="centerX" id="qqM-NS-xev"/>
+                            <constraint firstAttribute="centerY" secondItem="zEq-FU-wV5" secondAttribute="centerY" id="qzY-Ky-pLD"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Second" image="second" id="cPa-gy-q4n"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="750" y="360"/>
+        </scene>
+        <!--AuthVC-->
+        <scene sceneID="5XI-OG-ce7">
+            <objects>
+                <viewController id="9Eg-W2-X4g" customClass="AuthVC" customModule="Telega" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dA4-dr-GDe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LiH-ey-bGl" customClass="GIFImageView" customModule="Gifu">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="281.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="LiH-ey-bGl" secondAttribute="height" multiplier="800:600" id="TSm-ea-nrV"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ogQ-dr-1QH" customClass="GIFImageView" customModule="Gifu">
+                                <rect key="frame" x="-69.5" y="281.5" width="514" height="385.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="ogQ-dr-1QH" secondAttribute="height" multiplier="800:600" id="tsT-2N-s7g"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LTW-kz-8E0" customClass="RoundedView" customModule="Telega" customModuleProvider="target">
+                                <rect key="frame" x="60" y="223.5" width="255" height="220"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm password" textAlignment="natural" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Clr-rw-8jc" customClass="CustomPlaceholderTF" customModule="Telega" customModuleProvider="target">
+                                        <rect key="frame" x="25" y="92" width="205" height="30"/>
+                                        <color key="backgroundColor" red="0.13725490200000001" green="0.1176470588" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardAppearance="alert" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="XRr-k1-x1Q" customClass="CustomPlaceholderTF" customModule="Telega" customModuleProvider="target">
+                                        <rect key="frame" x="25" y="92" width="205" height="30"/>
+                                        <color key="backgroundColor" red="0.13725490200000001" green="0.1176470588" blue="0.1215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardAppearance="alert" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                    </textField>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="17" translatesAutoresizingMaskIntoConstraints="NO" id="t2g-k8-XKM">
+                                        <rect key="frame" x="25" y="45" width="205" height="77"/>
+                                        <subviews>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="vPd-5x-Of0" customClass="CustomPlaceholderTF" customModule="Telega" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="205" height="30"/>
+                                                <color key="backgroundColor" red="0.13725490196078433" green="0.11764705882352941" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardAppearance="alert" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                            </textField>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="ic7-ki-IgK" customClass="CustomPlaceholderTF" customModule="Telega" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="47" width="205" height="30"/>
+                                                <color key="backgroundColor" red="0.13725490196078433" green="0.11764705882352941" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardAppearance="alert" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="ic7-ki-IgK" firstAttribute="leading" secondItem="t2g-k8-XKM" secondAttribute="leading" id="ReN-jL-kOw"/>
+                                            <constraint firstAttribute="trailing" secondItem="vPd-5x-Of0" secondAttribute="trailing" id="S7N-w5-Nad"/>
+                                            <constraint firstItem="vPd-5x-Of0" firstAttribute="leading" secondItem="t2g-k8-XKM" secondAttribute="leading" id="wOm-ZU-uPf"/>
+                                            <constraint firstAttribute="trailing" secondItem="ic7-ki-IgK" secondAttribute="trailing" id="xef-a6-4sf"/>
+                                        </constraints>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gH0-qM-et7">
+                                        <rect key="frame" x="68.5" y="182" width="118" height="28"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="11"/>
+                                        <state key="normal" title="Don't have an account?">
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="createAccntTogglePressed:" destination="9Eg-W2-X4g" eventType="touchUpInside" id="ywz-sU-F37"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UVW-U6-DsO">
+                                        <rect key="frame" x="105.5" y="136" width="44" height="36"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
+                                        <state key="normal" title="Login">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="doneBtnPressed:" destination="9Eg-W2-X4g" eventType="touchUpInside" id="vkA-fz-5QA"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.18226868869999999" green="0.16862745100000001" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="gH0-qM-et7" firstAttribute="centerX" secondItem="LTW-kz-8E0" secondAttribute="centerX" id="6PO-i9-5Aj"/>
+                                    <constraint firstItem="Clr-rw-8jc" firstAttribute="width" secondItem="ic7-ki-IgK" secondAttribute="width" id="A2j-PZ-UW7"/>
+                                    <constraint firstItem="XRr-k1-x1Q" firstAttribute="height" secondItem="ic7-ki-IgK" secondAttribute="height" id="ABN-Zh-NUc"/>
+                                    <constraint firstItem="t2g-k8-XKM" firstAttribute="centerX" secondItem="LTW-kz-8E0" secondAttribute="centerX" id="Hhh-c3-jDt"/>
+                                    <constraint firstItem="t2g-k8-XKM" firstAttribute="top" secondItem="LTW-kz-8E0" secondAttribute="top" constant="45" id="UOk-Up-pYa"/>
+                                    <constraint firstAttribute="height" constant="220" id="WZM-jR-c2V"/>
+                                    <constraint firstItem="t2g-k8-XKM" firstAttribute="leading" secondItem="LTW-kz-8E0" secondAttribute="leading" constant="25" id="Wv9-Ww-rue"/>
+                                    <constraint firstItem="Clr-rw-8jc" firstAttribute="centerX" secondItem="ic7-ki-IgK" secondAttribute="centerX" id="YVx-gR-xX4"/>
+                                    <constraint firstItem="Clr-rw-8jc" firstAttribute="centerY" secondItem="ic7-ki-IgK" secondAttribute="centerY" id="b60-sa-3jq"/>
+                                    <constraint firstItem="XRr-k1-x1Q" firstAttribute="centerX" secondItem="ic7-ki-IgK" secondAttribute="centerX" id="eOT-QH-JjW"/>
+                                    <constraint firstAttribute="bottom" secondItem="gH0-qM-et7" secondAttribute="bottom" constant="10" id="eiJ-Qg-Jfm"/>
+                                    <constraint firstItem="XRr-k1-x1Q" firstAttribute="width" secondItem="ic7-ki-IgK" secondAttribute="width" id="mCY-vd-TAL"/>
+                                    <constraint firstItem="XRr-k1-x1Q" firstAttribute="centerY" secondItem="ic7-ki-IgK" secondAttribute="centerY" id="mHa-Z9-VCm"/>
+                                    <constraint firstItem="UVW-U6-DsO" firstAttribute="centerX" secondItem="LTW-kz-8E0" secondAttribute="centerX" id="o5q-FH-P8O"/>
+                                    <constraint firstItem="Clr-rw-8jc" firstAttribute="height" secondItem="ic7-ki-IgK" secondAttribute="height" id="owp-Zy-A7R"/>
+                                    <constraint firstAttribute="trailing" secondItem="t2g-k8-XKM" secondAttribute="trailing" constant="25" id="w8P-u4-RJf"/>
+                                    <constraint firstItem="gH0-qM-et7" firstAttribute="top" secondItem="UVW-U6-DsO" secondAttribute="bottom" constant="10" id="wR9-Ry-XWq"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="45"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.10196078431372549" green="0.090196078431372548" blue="0.094117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="UfU-Eg-jho" firstAttribute="trailing" secondItem="LTW-kz-8E0" secondAttribute="trailing" constant="60" id="1Sf-ce-JUl"/>
+                            <constraint firstItem="LTW-kz-8E0" firstAttribute="centerX" secondItem="dA4-dr-GDe" secondAttribute="centerX" id="2FU-SP-Edc"/>
+                            <constraint firstItem="UfU-Eg-jho" firstAttribute="bottom" secondItem="ogQ-dr-1QH" secondAttribute="bottom" id="2sQ-ZJ-oeK"/>
+                            <constraint firstItem="ogQ-dr-1QH" firstAttribute="centerX" secondItem="dA4-dr-GDe" secondAttribute="centerX" id="2ua-7R-mBo"/>
+                            <constraint firstItem="LTW-kz-8E0" firstAttribute="leading" secondItem="UfU-Eg-jho" secondAttribute="leading" constant="60" id="8NM-KR-cfg"/>
+                            <constraint firstItem="LTW-kz-8E0" firstAttribute="centerY" secondItem="dA4-dr-GDe" secondAttribute="centerY" id="F0K-nI-nHB"/>
+                            <constraint firstItem="LiH-ey-bGl" firstAttribute="width" secondItem="dA4-dr-GDe" secondAttribute="width" id="GIm-aH-yRy"/>
+                            <constraint firstItem="LiH-ey-bGl" firstAttribute="centerX" secondItem="dA4-dr-GDe" secondAttribute="centerX" id="fj5-5j-sHB"/>
+                            <constraint firstItem="ogQ-dr-1QH" firstAttribute="top" secondItem="LiH-ey-bGl" secondAttribute="bottom" id="l7h-iw-gnj"/>
+                            <constraint firstItem="LiH-ey-bGl" firstAttribute="top" secondItem="dA4-dr-GDe" secondAttribute="top" id="vGc-JG-DXu"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="UfU-Eg-jho"/>
+                    </view>
+                    <connections>
+                        <outlet property="accntCreateToggleBtn" destination="gH0-qM-et7" id="8Y2-zQ-5kt"/>
+                        <outlet property="backgroundBot" destination="ogQ-dr-1QH" id="Bez-sU-Prb"/>
+                        <outlet property="backgroundTop" destination="LiH-ey-bGl" id="KAH-Vi-IdT"/>
+                        <outlet property="confirmPassYConstraint" destination="b60-sa-3jq" id="JY4-Fo-QCT"/>
+                        <outlet property="confirmPasswordTxtFld" destination="Clr-rw-8jc" id="LJx-DS-IcQ"/>
+                        <outlet property="doneBtn" destination="UVW-U6-DsO" id="noQ-Ws-bTr"/>
+                        <outlet property="emailTxtFld" destination="vPd-5x-Of0" id="htg-hp-e1n"/>
+                        <outlet property="passwordTxtFld" destination="ic7-ki-IgK" id="dLj-cD-SM8"/>
+                        <outlet property="stackView" destination="t2g-k8-XKM" id="sOJ-gG-HA1"/>
+                        <outlet property="usernameTxtFld" destination="XRr-k1-x1Q" id="JVV-nU-s7d"/>
+                        <outlet property="usernameTxtFldYConstraint" destination="mHa-Z9-VCm" id="1i9-a2-F8V"/>
+                        <outlet property="window" destination="LTW-kz-8E0" id="cuR-5Q-n7m"/>
+                        <outlet property="windowHeightConstraint" destination="WZM-jR-c2V" id="wm7-cE-BVl"/>
+                        <outlet property="windowYConstraint" destination="F0K-nI-nHB" id="iId-PE-mye"/>
+                        <segue destination="49e-Tb-3d3" kind="show" identifier="loginSuccseeded" id="wth-iz-xG3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="elH-DO-lKI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1180" y="0.0"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="yl2-sM-qoP">
+            <objects>
+                <tabBarController id="49e-Tb-3d3" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
+                        <rect key="frame" x="0.0" y="975" width="768" height="49"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
+                        <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="0.0" y="0.0"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="first" width="30" height="30"/>
+        <image name="second" width="30" height="30"/>
+    </resources>
+</document>

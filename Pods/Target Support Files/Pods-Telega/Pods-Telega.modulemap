@@ -1,0 +1,6 @@
+framework module Pods_Telega {
+  umbrella header "Pods-Telega-umbrella.h"
+
+  export *
+  module * { export * }
+}
