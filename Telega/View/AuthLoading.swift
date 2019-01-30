@@ -9,19 +9,19 @@
 import UIKit
 import Gifu
 
-class Registering: UIView {
+class AuthLoading: UIView {
     
     @IBOutlet var contentView: UIView!
     @IBOutlet weak var icon: GIFImageView!
+    @IBOutlet weak var label: UILabel!
     
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         customInit()
     }
     
     private func customInit() {
-        Bundle.main.loadNibNamed("RegisteringXIB", owner: self, options: nil)
+        Bundle.main.loadNibNamed("AuthLoadingXIB", owner: self, options: nil)
         frame = contentView.frame
         addSubview(contentView)
     }
@@ -29,5 +29,4 @@ class Registering: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }

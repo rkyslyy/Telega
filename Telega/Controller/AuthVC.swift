@@ -13,7 +13,6 @@ class AuthVC: UIViewController {
 
     // Outlets
     @IBOutlet weak var backgroundTop: GIFImageView!
-    @IBOutlet weak var backgroundBot: GIFImageView!
     @IBOutlet weak var window: RoundedView!
     @IBOutlet weak var emailTxtFld: CustomPlaceholderTF!
     @IBOutlet weak var passwordTxtFld: CustomPlaceholderTF!
@@ -30,6 +29,7 @@ class AuthVC: UIViewController {
     // Variables
     var editingText = false
     var creatingAccnt = false
+    var loadingMask : AuthLoading!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +44,6 @@ class AuthVC: UIViewController {
     
     private func initBackground() {
         backgroundTop.animate(withGIFNamed: "black")
-//        backgroundBot.animate(withGIFNamed: "black")
     }
     
     private func createTap() {
@@ -93,41 +92,63 @@ class AuthVC: UIViewController {
     @IBAction func doneBtnPressed(_ sender: Any) {
         if creatingAccnt {
             view.endEditing(true)
-            guard let email =       emailTxtFld.text,
-                                    emailTxtFld.text != ""
-                                    else { return }
-            guard let password =    passwordTxtFld.text,
-                                    passwordTxtFld.text != "",
-                                    passwordTxtFld.text == confirmPasswordTxtFld.text
-                                    else { return }
-            guard let username =    usernameTxtFld.text,
-                                    usernameTxtFld.text != ""
-                                    else { return }
+            guard let credentials = getCredentials() else { return }
+            let email = credentials.email
+            let password = credentials.password
+            let username = credentials.username
             if creatingAccnt {
                 accntCreateToggleBtn.sendActions(for: .touchUpInside)
             }
-            let mask = Registering(frame: window.frame)
-            mask.icon.animate(withGIFNamed: "loading")
-            mask.alpha = 0
-            window.addSubview(mask)
-            UIView.animate(withDuration: 0.2) {
-                self.toggleWindowContents(hide: true)
-                mask.alpha = 1
-            }
-            AuthService.instanse.registerUserWith(email: email, password: password, username: username) { (success) in
+            createLoadingMask()
+            AuthService.instanse.registerUserWith(email: email,
+                                                  password: password,
+                                                  username: username) { (success) in
                 UIView.animate(withDuration: 0.2, animations: {
-                    self.toggleWindowContents(hide: false)
-                    mask.alpha = 0
+                    self.loadingMask.icon.alpha = 0
                 }, completion: { (_) in
-                    mask.removeFromSuperview()
+                    self.loadingMask.icon.stopAnimating()
+                    let image = success ? UIImage(named: "tick") : UIImage(named: "close")
+                    let imageView = UIImageView(image: image)
+                    let label = success ? "Done!" : "Something went wrong"
+                    imageView.frame = self.loadingMask.icon.frame
+                    imageView.alpha = 0
+                    self.loadingMask.addSubview(imageView)
+                    UIView.animate(withDuration: 0.2, animations: {
+                        imageView.alpha = 1
+                        self.loadingMask.label.text = label
+                    }, completion: { (_) in
+                        if success {
+                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {
+                                UIView.animate(withDuration: 0.2, animations: {
+                                    self.loadingMask.alpha = 0
+                                    self.toggleWindowContents(hide: false)
+                                }, completion: { (_) in
+                                    self.loadingMask.removeFromSuperview()
+                                })
+                            })
+                        } else {
+                            
+                        }
+                    })
                 })
-                if success {
-                    self.presentAlertWith(title: "Hurrah!", message: "You are successfully registered", andButtonTitle: "Great")
-                } else {
-                    self.presentAlertWith(title: ":(", message: "Something went wrong and we failed to register you", andButtonTitle: "Ok")
-                }
             }
         }
+    }
+    
+    private func getCredentials() -> (email: String, password: String, username: String)? {
+        guard let email =       emailTxtFld.text,
+                                emailTxtFld.text != ""
+                                else { return nil }
+        guard let password =    passwordTxtFld.text,
+                                passwordTxtFld.text != "",
+                                passwordTxtFld.text == confirmPasswordTxtFld.text
+                                else { return nil }
+        guard let username =    usernameTxtFld.text,
+                                usernameTxtFld.text != ""
+                                else { return nil }
+        return (email: email,
+                password: password,
+                username: username)
     }
     
     private func presentAlertWith(title: String, message: String, andButtonTitle btnTitle: String) {
@@ -172,6 +193,21 @@ extension AuthVC: UITextFieldDelegate {
             }
         }
         editingText = false
+    }
+}
+
+extension AuthVC {
+    
+    private func createLoadingMask() {
+        self.loadingMask = AuthLoading(frame: window.frame)
+        self.loadingMask.frame.size.width = window.frame.width
+        self.loadingMask.icon.animate(withGIFNamed: "ripple")
+        self.loadingMask.alpha = 0
+        window.addSubview(self.loadingMask)
+        UIView.animate(withDuration: 0.2) {
+            self.toggleWindowContents(hide: true)
+            self.loadingMask.alpha = 1
+        }
     }
     
 }
