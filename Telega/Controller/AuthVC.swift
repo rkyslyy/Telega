@@ -8,6 +8,7 @@
 
 import UIKit
 import Gifu
+import MessageUI
 
 class AuthVC: UIViewController {
 
@@ -102,22 +103,20 @@ class AuthVC: UIViewController {
             createLoadingMask()
             AuthService.instanse.registerUserWith(email: email,
                                                   password: password,
-                                                  username: username) { (success) in
-                self.loadingMask.dismissSelfWith(success: success, completion: {
-                    if success {
-                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {
-                            UIView.animate(withDuration: 0.2, animations: {
-                                self.loadingMask.alpha = 0
-                                self.toggleWindowContents(hide: false)
-                            }, completion: { (_) in
-                                self.loadingMask.removeFromSuperview()
-                            })
+                                                  username: username) { (success, message) in
+                self.loadingMask.dismissSelfWith(success: success, message: message, completion: {
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {
+                        UIView.animate(withDuration: 0.2, animations: {
+                            self.loadingMask.alpha = 0
+                            self.toggleWindowContents(hide: false)
+                        }, completion: { (_) in
+                            self.loadingMask.removeFromSuperview()
                         })
-                    } else {
-                        
-                    }
+                    })
                 })
             }
+        } else {
+            
         }
     }
     

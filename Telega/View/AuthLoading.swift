@@ -15,21 +15,21 @@ class AuthLoading: UIView {
     @IBOutlet weak var icon: GIFImageView!
     @IBOutlet weak var label: UILabel!
     
-    func dismissSelfWith(success: Bool, completion: @escaping () -> ()) {
+    func dismissSelfWith(success: Bool, message: String, completion: @escaping () -> ()) {
         UIView.animate(withDuration: 0.2, animations: {
             self.icon.alpha = 0
         }, completion: { (_) in
             self.icon.stopAnimating()
-            let image = success ? UIImage(named: "tick") : UIImage(named: "close")
+            let image = success ? UIImage(named: "envelope") : UIImage(named: "close")
             let imageView = UIImageView(image: image)
-            let label = success ? "Done!" : "Something went wrong"
-            imageView.frame = self.icon.frame
+            imageView.frame = CGRect(x: self.center.x - 25, y: self.icon.frame.origin.y, width: 50, height: 50)
             imageView.alpha = 0
             self.addSubview(imageView)
             UIView.animate(withDuration: 0.2, animations: {
                 imageView.alpha = 1
-                self.label.text = label
+                self.label.text = message
             }, completion: { (_) in
+                imageView.shake()
                 completion()
             })
         })
@@ -50,4 +50,14 @@ class AuthLoading: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+}
+
+extension UIView {
+    func shake() {
+        let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
+        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
+        animation.duration = 0.6
+        animation.values = [-10.0, 10.0, -10.0, 10.0, -7.0, 7.0, -5.0, 5.0, 0.0 ]
+        layer.add(animation, forKey: "shake")
+    }
 }
