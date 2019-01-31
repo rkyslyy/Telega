@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		34DEEA28832004684226AE06 /* Pods_Telega.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2ECE0B488FE94400A9D64D0A /* Pods_Telega.framework */; };
 		BF087FCB21FF453400CFA8BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FCA21FF453400CFA8BB /* AppDelegate.swift */; };
-		BF087FCD21FF453400CFA8BB /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FCC21FF453400CFA8BB /* FirstViewController.swift */; };
+		BF087FCD21FF453400CFA8BB /* ContactsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FCC21FF453400CFA8BB /* ContactsVC.swift */; };
 		BF087FCF21FF453400CFA8BB /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FCE21FF453400CFA8BB /* SecondViewController.swift */; };
 		BF087FD221FF453400CFA8BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF087FD021FF453400CFA8BB /* Main.storyboard */; };
 		BF087FD421FF453500CFA8BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF087FD321FF453500CFA8BB /* Assets.xcassets */; };
@@ -17,6 +17,7 @@
 		BF087FE321FF47F500CFA8BB /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FE221FF47F500CFA8BB /* RoundedView.swift */; };
 		BF087FE521FF49D400CFA8BB /* CustomPlaceholderTF.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FE421FF49D400CFA8BB /* CustomPlaceholderTF.swift */; };
 		BF087FE721FF50A100CFA8BB /* AuthVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FE621FF50A100CFA8BB /* AuthVC.swift */; };
+		BF7FE4912203846900455A60 /* CircleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7FE4902203846900455A60 /* CircleImageView.swift */; };
 		BF9E31EA2201EEA400187310 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9E31E92201EEA400187310 /* Constants.swift */; };
 		BF9E31F322020BA500187310 /* AuthLoadingXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9E31F222020BA500187310 /* AuthLoadingXIB.xib */; };
 		BF9E31F522020C4500187310 /* AuthLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9E31F422020C4500187310 /* AuthLoading.swift */; };
@@ -25,6 +26,8 @@
 		BFB5811321FF6BA50051C0D5 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB5811221FF6BA50051C0D5 /* AuthService.swift */; };
 		BFF46F2A22035DD300469496 /* PasswordRulesXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF46F2922035DD300469496 /* PasswordRulesXIB.xib */; };
 		BFF46F2C2203603100469496 /* PasswordRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF46F2B2203603100469496 /* PasswordRules.swift */; };
+		BFF46F2E2203796700469496 /* DarkNavigationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF46F2D2203796700469496 /* DarkNavigationVC.swift */; };
+		BFF46F30220381A300469496 /* AddNewContactVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF46F2F220381A300469496 /* AddNewContactVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +36,7 @@
 		92A44316DEFCA66D302E6552 /* Pods-Telega.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telega.release.xcconfig"; path = "Pods/Target Support Files/Pods-Telega/Pods-Telega.release.xcconfig"; sourceTree = "<group>"; };
 		BF087FC721FF453400CFA8BB /* Telega.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Telega.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF087FCA21FF453400CFA8BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		BF087FCC21FF453400CFA8BB /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
+		BF087FCC21FF453400CFA8BB /* ContactsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsVC.swift; sourceTree = "<group>"; };
 		BF087FCE21FF453400CFA8BB /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		BF087FD121FF453400CFA8BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BF087FD321FF453500CFA8BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -42,6 +45,7 @@
 		BF087FE221FF47F500CFA8BB /* RoundedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
 		BF087FE421FF49D400CFA8BB /* CustomPlaceholderTF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPlaceholderTF.swift; sourceTree = "<group>"; };
 		BF087FE621FF50A100CFA8BB /* AuthVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVC.swift; sourceTree = "<group>"; };
+		BF7FE4902203846900455A60 /* CircleImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleImageView.swift; sourceTree = "<group>"; };
 		BF9E31E92201EEA400187310 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BF9E31F222020BA500187310 /* AuthLoadingXIB.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthLoadingXIB.xib; sourceTree = "<group>"; };
 		BF9E31F422020C4500187310 /* AuthLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthLoading.swift; sourceTree = "<group>"; };
@@ -50,6 +54,8 @@
 		BFB5811221FF6BA50051C0D5 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		BFF46F2922035DD300469496 /* PasswordRulesXIB.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PasswordRulesXIB.xib; sourceTree = "<group>"; };
 		BFF46F2B2203603100469496 /* PasswordRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordRules.swift; sourceTree = "<group>"; };
+		BFF46F2D2203796700469496 /* DarkNavigationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkNavigationVC.swift; sourceTree = "<group>"; };
+		BFF46F2F220381A300469496 /* AddNewContactVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewContactVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,9 +127,11 @@
 		BF087FDE21FF47D000CFA8BB /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				BF087FCC21FF453400CFA8BB /* FirstViewController.swift */,
+				BF087FCC21FF453400CFA8BB /* ContactsVC.swift */,
 				BF087FCE21FF453400CFA8BB /* SecondViewController.swift */,
 				BF087FE621FF50A100CFA8BB /* AuthVC.swift */,
+				BFF46F2D2203796700469496 /* DarkNavigationVC.swift */,
+				BFF46F2F220381A300469496 /* AddNewContactVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -135,6 +143,7 @@
 				BF087FE421FF49D400CFA8BB /* CustomPlaceholderTF.swift */,
 				BF9E31F422020C4500187310 /* AuthLoading.swift */,
 				BFF46F2B2203603100469496 /* PasswordRules.swift */,
+				BF7FE4902203846900455A60 /* CircleImageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -294,14 +303,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFF46F30220381A300469496 /* AddNewContactVC.swift in Sources */,
 				BF087FE321FF47F500CFA8BB /* RoundedView.swift in Sources */,
 				BF087FCF21FF453400CFA8BB /* SecondViewController.swift in Sources */,
+				BFF46F2E2203796700469496 /* DarkNavigationVC.swift in Sources */,
 				BFB5811321FF6BA50051C0D5 /* AuthService.swift in Sources */,
 				BF087FE721FF50A100CFA8BB /* AuthVC.swift in Sources */,
+				BF7FE4912203846900455A60 /* CircleImageView.swift in Sources */,
 				BF9E31F522020C4500187310 /* AuthLoading.swift in Sources */,
 				BF087FE521FF49D400CFA8BB /* CustomPlaceholderTF.swift in Sources */,
 				BF087FCB21FF453400CFA8BB /* AppDelegate.swift in Sources */,
-				BF087FCD21FF453400CFA8BB /* FirstViewController.swift in Sources */,
+				BF087FCD21FF453400CFA8BB /* ContactsVC.swift in Sources */,
 				BFF46F2C2203603100469496 /* PasswordRules.swift in Sources */,
 				BF9E31EA2201EEA400187310 /* Constants.swift in Sources */,
 			);

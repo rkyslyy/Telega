@@ -15,12 +15,15 @@ class AuthLoading: UIView {
     @IBOutlet weak var icon: GIFImageView!
     @IBOutlet weak var label: UILabel!
     
-    func dismissSelfWith(success: Bool, message: String, completion: @escaping () -> ()) {
+    func showResultWith(success: Bool, andMessage message: String, completion: @escaping () -> ()) {
         UIView.animate(withDuration: 0.2, animations: {
             self.icon.alpha = 0
         }, completion: { (_) in
             self.icon.stopAnimating()
-            let image = success ? UIImage(named: "envelope") : UIImage(named: "close")
+            var image = success ? UIImage(named: "tick") : UIImage(named: "close")
+            if message.components(separatedBy: " ")[0] == "Confirm" {
+                image = UIImage(named: "envelope")
+            }
             let imageView = UIImageView(image: image)
             imageView.frame = CGRect(x: self.center.x - 25, y: self.icon.frame.origin.y, width: 50, height: 50)
             imageView.alpha = 0

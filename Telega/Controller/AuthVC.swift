@@ -91,20 +91,22 @@ class AuthVC: UIViewController {
     }
     
     @IBAction func doneBtnPressed(_ sender: Any) {
+        print(creatingAccnt)
+        view.endEditing(true)
+        guard let credentials = getCredentials() else { return }
+        let email = credentials.email
+        let password = credentials.password
+        let username = credentials.username
+        let creating = creatingAccnt
         if creatingAccnt {
-            view.endEditing(true)
-            guard let credentials = getCredentials() else { return }
-            let email = credentials.email
-            let password = credentials.password
-            let username = credentials.username
-            if creatingAccnt {
-                accntCreateToggleBtn.sendActions(for: .touchUpInside)
-            }
-            createLoadingMask()
+            accntCreateToggleBtn.sendActions(for: .touchUpInside)
+        }
+        createLoadingMask()
+        if creating {
             AuthService.instanse.registerUserWith(email: email,
                                                   password: password,
                                                   username: username) { (success, message) in
-                self.loadingMask.dismissSelfWith(success: success, message: message, completion: {
+                self.loadingMask.showResultWith(success: success, andMessage: message, completion: {
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {
                         UIView.animate(withDuration: 0.2, animations: {
                             self.loadingMask.alpha = 0
@@ -116,7 +118,24 @@ class AuthVC: UIViewController {
                 })
             }
         } else {
-            
+            loadingMask.label.text = "Logging in..."
+            AuthService.instanse.authorizeUserWith(email: email,
+                                                   password: password) { (success, message) in
+                self.loadingMask.showResultWith(success: success, andMessage: message, completion: {
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {
+                        if success {
+                            self.performSegue(withIdentifier: "loginSuccseeded", sender: nil)
+                        } else {
+                            UIView.animate(withDuration: 0.2, animations: {
+                                self.loadingMask.alpha = 0
+                                self.toggleWindowContents(hide: false)
+                            }, completion: { (_) in
+                                self.loadingMask.removeFromSuperview()
+                            })
+                        }
+                    })
+                })
+            }
         }
     }
     
@@ -131,21 +150,31 @@ class AuthVC: UIViewController {
         guard let password =    passwordTxtFld.text,
                                 passwordTxtFld.text != ""
                                 else { return nil }
-        if passwordTxtFld.text != confirmPasswordTxtFld.text {
+        if passwordTxtFld.text != confirmPasswordTxtFld.text && creatingAccnt {
             if confirmPasswordTxtFld.text != "" {
                 passwordTxtFld.shake()
             }
+            print("HERE")
             confirmPasswordTxtFld.shake()
             return nil
         }
-        let regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"
-        if password.range(of: regex, options: .regularExpression, range: nil, locale: nil) == nil {
-            showPasswordRules()
-            return nil
+        if creatingAccnt {
+            let regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"
+            if password.range(of: regex, options: .regularExpression, range: nil, locale: nil) == nil {
+                showPasswordRules()
+                return nil
+            }
         }
-        guard let username =    usernameTxtFld.text,
-                                usernameTxtFld.text != ""
-                                else { usernameTxtFld.shake(); return nil }
+        
+        var username = ""
+        if creatingAccnt {
+            if usernameTxtFld!.text != nil && usernameTxtFld!.text! != "" {
+                username = usernameTxtFld.text!
+            } else {
+                usernameTxtFld.shake(); return nil
+            }
+        }
+        
         return (email: email,
                 password: password,
                 username: username)
