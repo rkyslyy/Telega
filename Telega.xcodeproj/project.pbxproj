@@ -23,6 +23,8 @@
 		BF9E31F72202135A00187310 /* black.gif in Resources */ = {isa = PBXBuildFile; fileRef = BF9E31F62202135A00187310 /* black.gif */; };
 		BF9E32012202213500187310 /* ripple.gif in Resources */ = {isa = PBXBuildFile; fileRef = BF9E32002202213500187310 /* ripple.gif */; };
 		BFB5811321FF6BA50051C0D5 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB5811221FF6BA50051C0D5 /* AuthService.swift */; };
+		BFF46F2A22035DD300469496 /* PasswordRulesXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF46F2922035DD300469496 /* PasswordRulesXIB.xib */; };
+		BFF46F2C2203603100469496 /* PasswordRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF46F2B2203603100469496 /* PasswordRules.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		BF9E31F62202135A00187310 /* black.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = black.gif; sourceTree = "<group>"; };
 		BF9E32002202213500187310 /* ripple.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ripple.gif; sourceTree = "<group>"; };
 		BFB5811221FF6BA50051C0D5 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		BFF46F2922035DD300469496 /* PasswordRulesXIB.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PasswordRulesXIB.xib; sourceTree = "<group>"; };
+		BFF46F2B2203603100469496 /* PasswordRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordRules.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +134,7 @@
 				BF087FE221FF47F500CFA8BB /* RoundedView.swift */,
 				BF087FE421FF49D400CFA8BB /* CustomPlaceholderTF.swift */,
 				BF9E31F422020C4500187310 /* AuthLoading.swift */,
+				BFF46F2B2203603100469496 /* PasswordRules.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -154,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				BF9E31F222020BA500187310 /* AuthLoadingXIB.xib */,
+				BFF46F2922035DD300469496 /* PasswordRulesXIB.xib */,
 			);
 			path = XIBs;
 			sourceTree = "<group>";
@@ -224,6 +230,7 @@
 				BF9E31F72202135A00187310 /* black.gif in Resources */,
 				BF9E32012202213500187310 /* ripple.gif in Resources */,
 				BF087FD221FF453400CFA8BB /* Main.storyboard in Resources */,
+				BFF46F2A22035DD300469496 /* PasswordRulesXIB.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +302,7 @@
 				BF087FE521FF49D400CFA8BB /* CustomPlaceholderTF.swift in Sources */,
 				BF087FCB21FF453400CFA8BB /* AppDelegate.swift in Sources */,
 				BF087FCD21FF453400CFA8BB /* FirstViewController.swift in Sources */,
+				BFF46F2C2203603100469496 /* PasswordRules.swift in Sources */,
 				BF9E31EA2201EEA400187310 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

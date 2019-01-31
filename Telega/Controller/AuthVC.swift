@@ -124,23 +124,52 @@ class AuthVC: UIViewController {
         guard let email =       emailTxtFld.text,
                                 emailTxtFld.text != ""
                                 else { return nil }
+        if !isValidEmail(testStr: email) {
+            emailTxtFld.shake()
+            return nil
+        }
         guard let password =    passwordTxtFld.text,
-                                passwordTxtFld.text != "",
-                                passwordTxtFld.text == confirmPasswordTxtFld.text
+                                passwordTxtFld.text != ""
                                 else { return nil }
+        if passwordTxtFld.text != confirmPasswordTxtFld.text {
+            if confirmPasswordTxtFld.text != "" {
+                passwordTxtFld.shake()
+            }
+            confirmPasswordTxtFld.shake()
+            return nil
+        }
+        let regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"
+        if password.range(of: regex, options: .regularExpression, range: nil, locale: nil) == nil {
+            showPasswordRules()
+            return nil
+        }
         guard let username =    usernameTxtFld.text,
                                 usernameTxtFld.text != ""
-                                else { return nil }
+                                else { usernameTxtFld.shake(); return nil }
         return (email: email,
                 password: password,
                 username: username)
     }
     
-    private func presentAlertWith(title: String, message: String, andButtonTitle btnTitle: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: btnTitle, style: .default, handler: nil)
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
+    func isValidEmail(testStr:String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: testStr)
+    }
+    
+    private func showPasswordRules() {
+        let rules = PasswordRules(frame: window.bounds)
+        rules.contentView.alpha = 0
+        rules.clipsToBounds = true
+        rules.layer.cornerRadius = window.layer.cornerRadius
+        window.addSubview(rules)
+        UIView.animate(withDuration: 0.2, animations: {
+            rules.contentView.alpha = 1
+        }) { (_) in
+            self.passwordTxtFld.text = ""
+            self.confirmPasswordTxtFld.text = ""
+        }
     }
     
     private func toggleWindowContents(hide: Bool) {
@@ -166,7 +195,7 @@ extension AuthVC: UITextFieldDelegate {
         }
         editingText = true
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         if !emailTxtFld.isFirstResponder &&
             !passwordTxtFld.isFirstResponder &&
