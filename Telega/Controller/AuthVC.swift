@@ -103,33 +103,19 @@ class AuthVC: UIViewController {
             AuthService.instanse.registerUserWith(email: email,
                                                   password: password,
                                                   username: username) { (success) in
-                UIView.animate(withDuration: 0.2, animations: {
-                    self.loadingMask.icon.alpha = 0
-                }, completion: { (_) in
-                    self.loadingMask.icon.stopAnimating()
-                    let image = success ? UIImage(named: "tick") : UIImage(named: "close")
-                    let imageView = UIImageView(image: image)
-                    let label = success ? "Done!" : "Something went wrong"
-                    imageView.frame = self.loadingMask.icon.frame
-                    imageView.alpha = 0
-                    self.loadingMask.addSubview(imageView)
-                    UIView.animate(withDuration: 0.2, animations: {
-                        imageView.alpha = 1
-                        self.loadingMask.label.text = label
-                    }, completion: { (_) in
-                        if success {
-                            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {
-                                UIView.animate(withDuration: 0.2, animations: {
-                                    self.loadingMask.alpha = 0
-                                    self.toggleWindowContents(hide: false)
-                                }, completion: { (_) in
-                                    self.loadingMask.removeFromSuperview()
-                                })
+                self.loadingMask.dismissSelfWith(success: success, completion: {
+                    if success {
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {
+                            UIView.animate(withDuration: 0.2, animations: {
+                                self.loadingMask.alpha = 0
+                                self.toggleWindowContents(hide: false)
+                            }, completion: { (_) in
+                                self.loadingMask.removeFromSuperview()
                             })
-                        } else {
-                            
-                        }
-                    })
+                        })
+                    } else {
+                        
+                    }
                 })
             }
         }

@@ -22,6 +22,7 @@
 		BF9E31F522020C4500187310 /* AuthLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9E31F422020C4500187310 /* AuthLoading.swift */; };
 		BF9E31F72202135A00187310 /* black.gif in Resources */ = {isa = PBXBuildFile; fileRef = BF9E31F62202135A00187310 /* black.gif */; };
 		BF9E32012202213500187310 /* ripple.gif in Resources */ = {isa = PBXBuildFile; fileRef = BF9E32002202213500187310 /* ripple.gif */; };
+		BF9E32052203179200187310 /* G4HG.gif in Resources */ = {isa = PBXBuildFile; fileRef = BF9E32042203179100187310 /* G4HG.gif */; };
 		BFB5811321FF6BA50051C0D5 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB5811221FF6BA50051C0D5 /* AuthService.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,7 @@
 		BF9E31F422020C4500187310 /* AuthLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthLoading.swift; sourceTree = "<group>"; };
 		BF9E31F62202135A00187310 /* black.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = black.gif; sourceTree = "<group>"; };
 		BF9E32002202213500187310 /* ripple.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ripple.gif; sourceTree = "<group>"; };
+		BF9E32042203179100187310 /* G4HG.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = G4HG.gif; sourceTree = "<group>"; };
 		BFB5811221FF6BA50051C0D5 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,6 +103,7 @@
 				BF9E31EF22020B1100187310 /* XIBs */,
 				BF9E31F62202135A00187310 /* black.gif */,
 				BF9E32002202213500187310 /* ripple.gif */,
+				BF9E32042203179100187310 /* G4HG.gif */,
 				BF087FE121FF47E300CFA8BB /* Services */,
 				BF087FE021FF47DF00CFA8BB /* Model */,
 				BF087FDF21FF47D700CFA8BB /* View */,
@@ -221,6 +224,7 @@
 				BF087FD721FF453500CFA8BB /* LaunchScreen.storyboard in Resources */,
 				BF087FD421FF453500CFA8BB /* Assets.xcassets in Resources */,
 				BF9E31F322020BA500187310 /* AuthLoadingXIB.xib in Resources */,
+				BF9E32052203179200187310 /* G4HG.gif in Resources */,
 				BF9E31F72202135A00187310 /* black.gif in Resources */,
 				BF9E32012202213500187310 /* ripple.gif in Resources */,
 				BF087FD221FF453400CFA8BB /* Main.storyboard in Resources */,
