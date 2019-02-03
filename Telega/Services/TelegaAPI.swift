@@ -11,22 +11,51 @@ import BCryptSwift
 import Alamofire
 import SwiftyRSA
 
-class AuthService {
-    static let instanse = AuthService()
+class TelegaAPI {
+    static let instanse = TelegaAPI()
     
-    var token : String? {
-        get {
-            return UserDefaults.standard.string(forKey: "userToken")
-        } set {
-            UserDefaults.standard.set(newValue, forKey: "userToken")
+    func editProfileWith(username: String, andAvatar avatar: String) {
+        if DataService.instance.token != nil {
+            DispatchQueue.global().async {
+                let header = [
+                    "x-auth-token": DataService.instance.token!
+                ]
+                let body = [
+                    "username": username,
+                    "avatar": avatar
+                ]
+                print("username", username)
+                print("avatar", avatar)
+                Alamofire.request(USERS_URL, method: .put, parameters: body, encoding: JSONEncoding.default, headers: header).responseJSON(completionHandler: { (response) in
+                    guard let data = response.value as? [String : Any] else { print("bad data"); return }
+                    if data["error"] == nil {
+                        DataService.instance.username = username
+                        DataService.instance.userAvatar = avatar
+                    }
+                })
+            }
         }
     }
     
-    var username : String? {
-        get {
-            return UserDefaults.standard.string(forKey: "username")
-        } set {
-            UserDefaults.standard.set(newValue, forKey: "username")
+    func updateInfoAboutSelf() {
+        if DataService.instance.token != nil {
+            DispatchQueue.global().async {
+                let header = [
+                    "x-auth-token": DataService.instance.token!
+                ]
+                Alamofire.request(ME_URL, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).responseJSON(completionHandler: { (response) in
+                    guard let data = response.value as? [String : Any] else { print("bad data"); return }
+                    if let error = data["error"] {
+                        return print(error)
+                    }
+                    let user = data["user"] as! [String : Any]
+                    DataService.instance.email = (user["email"] as! String)
+                    DataService.instance.username = (user["username"] as! String)
+                    DataService.instance.userAvatar = (user["avatar"] as! String)
+                    DataService.instance.privatePem = (user["privatePem"] as! String)
+                    DataService.instance.publicPem = (user["publicPem"] as! String)
+                })
+            }
         }
     }
     
@@ -52,11 +81,13 @@ class AuthService {
             do {
                 let keyPair = try SwiftyRSA.generateRSAKeyPair(sizeInBits: 2048)
                 guard let url = URL(string: USERS_URL) else { return }
+                let defaultImageData = UIImage(named: "boy")?.pngData()
+                let base64 = defaultImageData?.base64EncodedString()
                 let body = [
                     "email": email,
                     "password": password,
                     "username": username,
-                    "avatar": "base64",
+                    "avatar": base64!,
                     "privatePem": try keyPair.privateKey.pemString(),
                     "publicPem": try keyPair.publicKey.pemString()
                 ]
@@ -84,8 +115,8 @@ class AuthService {
         if let error = data["error"] {
             return completion(false, error as! String)
         }
-        token = (data["token"] as! String)
-        username = (data["username"] as! String)
+        DataService.instance.token = (data["token"] as! String)
+        updateInfoAboutSelf()
         completion(true, "Logged in as \(data["username"] as! String)")
     }
 }

@@ -25,14 +25,16 @@ class AuthLoading: UIView {
                 image = UIImage(named: "envelope")
             }
             let imageView = UIImageView(image: image)
-            imageView.frame = CGRect(x: self.center.x - 25, y: self.icon.frame.origin.y, width: 50, height: 50)
+            imageView.frame = CGRect(x: self.center.x - 25, y: self.icon.frame.origin.y + 30, width: 50, height: 50)
             imageView.alpha = 0
             self.addSubview(imageView)
             UIView.animate(withDuration: 0.2, animations: {
                 imageView.alpha = 1
                 self.label.text = message
             }, completion: { (_) in
-                imageView.shake()
+                if message.components(separatedBy: " ")[0] != "Logged" {
+                    imageView.shake()
+                }
                 completion()
             })
         })

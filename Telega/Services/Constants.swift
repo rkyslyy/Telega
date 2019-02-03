@@ -11,6 +11,7 @@ import Foundation
 // URLs
 let BASE_URL = "https://telega-rkyslyy.herokuapp.com/"
 let USERS_URL = BASE_URL + "users/"
+let ME_URL = USERS_URL + "me/"
 let AUTH_URL = BASE_URL + "auth/"
 
 // Headers

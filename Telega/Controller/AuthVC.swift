@@ -88,10 +88,11 @@ class AuthVC: UIViewController {
             confirmPasswordTxtFld.text = ""
             usernameTxtFld.text = ""
         }
+        confirmPasswordTxtFld.isEnabled = creatingAccnt
+        usernameTxtFld.isEnabled = creatingAccnt
     }
     
     @IBAction func doneBtnPressed(_ sender: Any) {
-        print(creatingAccnt)
         view.endEditing(true)
         guard let credentials = getCredentials() else { return }
         let email = credentials.email
@@ -103,7 +104,7 @@ class AuthVC: UIViewController {
         }
         createLoadingMask()
         if creating {
-            AuthService.instanse.registerUserWith(email: email,
+            TelegaAPI.instanse.registerUserWith(email: email,
                                                   password: password,
                                                   username: username) { (success, message) in
                 self.loadingMask.showResultWith(success: success, andMessage: message, completion: {
@@ -119,7 +120,7 @@ class AuthVC: UIViewController {
             }
         } else {
             loadingMask.label.text = "Logging in..."
-            AuthService.instanse.authorizeUserWith(email: email,
+            TelegaAPI.instanse.authorizeUserWith(email: email,
                                                    password: password) { (success, message) in
                 self.loadingMask.showResultWith(success: success, andMessage: message, completion: {
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {
@@ -154,7 +155,6 @@ class AuthVC: UIViewController {
             if confirmPasswordTxtFld.text != "" {
                 passwordTxtFld.shake()
             }
-            print("HERE")
             confirmPasswordTxtFld.shake()
             return nil
         }

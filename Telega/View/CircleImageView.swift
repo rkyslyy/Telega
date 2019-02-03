@@ -10,10 +10,14 @@ import UIKit
 
 @IBDesignable
 class CircleImageView: UIImageView {
-
-    override func draw(_ rect: CGRect) {
-        clipsToBounds = true
-        layer.cornerRadius = frame.size.height / 2
-        super.draw(rect)
+    
+    @IBInspectable var circle: Bool = false {
+        didSet {
+            if circle {
+                layer.cornerRadius = frame.height / 2
+            } else {
+                layer.cornerRadius = 0
+            }
+        }
     }
 }
