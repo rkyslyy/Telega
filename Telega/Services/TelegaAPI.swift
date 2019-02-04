@@ -14,7 +14,7 @@ import SwiftyRSA
 class TelegaAPI {
     static let instanse = TelegaAPI()
     
-    func editProfileWith(username: String, andAvatar avatar: String) {
+    func editProfileWith(username: String, andAvatar avatar: String, completion: @escaping () -> ()) {
         if DataService.instance.token != nil {
             DispatchQueue.global().async {
                 let header = [
@@ -24,13 +24,16 @@ class TelegaAPI {
                     "username": username,
                     "avatar": avatar
                 ]
-                print("username", username)
-                print("avatar", avatar)
                 Alamofire.request(USERS_URL, method: .put, parameters: body, encoding: JSONEncoding.default, headers: header).responseJSON(completionHandler: { (response) in
-                    guard let data = response.value as? [String : Any] else { print("bad data"); return }
+                    guard let data = response.value as? [String : Any] else { print("response:", response); return }
                     if data["error"] == nil {
                         DataService.instance.username = username
                         DataService.instance.userAvatar = avatar
+                        print("DATA CHANGED")
+                        completion()
+                    } else {
+                        print("ERROR")
+                        completion()
                     }
                 })
             }
@@ -90,7 +93,7 @@ class TelegaAPI {
                     "avatar": base64!,
                     "privatePem": try keyPair.privateKey.pemString(),
                     "publicPem": try keyPair.publicKey.pemString()
-                ]
+                    ] as [String : Any]
                 Alamofire.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: HEADER).responseJSON { (response) in
                     self.dealWithRegResponse(response: response, completion: completion)
                 }
