@@ -29,14 +29,55 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="contactCell" rowHeight="122" id="cQN-L3-9vQ">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="122"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="contactCell" rowHeight="84" id="cQN-L3-9vQ" customClass="ContactCell" customModule="Telega" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="84"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cQN-L3-9vQ" id="ema-Zd-U7H">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="122"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cQN-L3-9vQ" id="ema-Zd-U7H">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="boy" translatesAutoresizingMaskIntoConstraints="NO" id="XXm-0m-5ye" customClass="CircleImageView" customModule="Telega" customModuleProvider="target">
+                                                    <rect key="frame" x="15" y="15" width="50" height="50"/>
+                                                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="50" id="WMs-d9-nsA"/>
+                                                        <constraint firstAttribute="height" constant="50" id="YN0-bb-x0j"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="circle" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="txN-az-B2W">
+                                                    <rect key="frame" x="85" y="15" width="290" height="24"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5KC-LJ-U9Q">
+                                                    <rect key="frame" x="85" y="44" width="290" height="18"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="13"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="5KC-LJ-U9Q" firstAttribute="leading" secondItem="XXm-0m-5ye" secondAttribute="trailing" constant="20" id="36w-Tk-VZ6"/>
+                                                <constraint firstItem="txN-az-B2W" firstAttribute="top" secondItem="ema-Zd-U7H" secondAttribute="top" constant="15" id="QBW-iU-rzp"/>
+                                                <constraint firstAttribute="bottom" secondItem="XXm-0m-5ye" secondAttribute="bottom" constant="15" id="QPU-YN-dQq"/>
+                                                <constraint firstItem="5KC-LJ-U9Q" firstAttribute="top" secondItem="txN-az-B2W" secondAttribute="bottom" constant="5" id="WuX-jw-RZC"/>
+                                                <constraint firstItem="XXm-0m-5ye" firstAttribute="top" secondItem="ema-Zd-U7H" secondAttribute="top" constant="15" id="dCF-RQ-frM"/>
+                                                <constraint firstAttribute="trailing" secondItem="5KC-LJ-U9Q" secondAttribute="trailing" id="hUq-EM-ub0"/>
+                                                <constraint firstItem="txN-az-B2W" firstAttribute="leading" secondItem="XXm-0m-5ye" secondAttribute="trailing" constant="20" id="jEK-L7-etV"/>
+                                                <constraint firstItem="XXm-0m-5ye" firstAttribute="leading" secondItem="ema-Zd-U7H" secondAttribute="leading" constant="15" id="nht-nB-hVF"/>
+                                                <constraint firstAttribute="trailing" secondItem="txN-az-B2W" secondAttribute="trailing" id="zmE-ru-KNB"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="avatarView" destination="XXm-0m-5ye" id="HRX-QF-hmd"/>
+                                            <outlet property="emailLbl" destination="5KC-LJ-U9Q" id="InC-SR-6ly"/>
+                                            <outlet property="usernameLbl" destination="txN-az-B2W" id="ROr-nX-NlC"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -61,6 +102,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="contactsTable" destination="OZ0-00-DPn" id="Sdj-4F-DfI"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
@@ -80,7 +124,7 @@
                                 <color key="barTintColor" red="0.14115631579999999" green="0.1411880553" blue="0.1411542892" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="search"/>
                             </searchBar>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="boy" translatesAutoresizingMaskIntoConstraints="NO" id="uGS-Dz-MEr" customClass="CircleImageView" customModule="Telega" customModuleProvider="target">
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="boy" translatesAutoresizingMaskIntoConstraints="NO" id="uGS-Dz-MEr" customClass="CircleImageView" customModule="Telega" customModuleProvider="target">
                                 <rect key="frame" x="70" y="216" width="235" height="235"/>
                                 <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -90,10 +134,16 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="circle" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfV-65-2vP">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfV-65-2vP">
                                 <rect key="frame" x="150" y="481" width="75" height="22"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No user with such email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h73-qA-Zho">
+                                <rect key="frame" x="95" y="321.5" width="185" height="24"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -103,9 +153,11 @@
                             <constraint firstItem="Emu-6T-Net" firstAttribute="top" secondItem="4Fr-WE-qjk" secondAttribute="top" id="DXG-vJ-ha1"/>
                             <constraint firstItem="qfV-65-2vP" firstAttribute="top" secondItem="uGS-Dz-MEr" secondAttribute="bottom" constant="30" id="HJI-Xf-Was"/>
                             <constraint firstItem="Emu-6T-Net" firstAttribute="trailing" secondItem="4Fr-WE-qjk" secondAttribute="trailing" id="RKG-R7-69d"/>
+                            <constraint firstItem="h73-qA-Zho" firstAttribute="centerY" secondItem="VXW-kS-2UA" secondAttribute="centerY" id="T0W-qE-Eta"/>
                             <constraint firstItem="uGS-Dz-MEr" firstAttribute="centerY" secondItem="VXW-kS-2UA" secondAttribute="centerY" id="Utg-Jg-ntk"/>
                             <constraint firstItem="4Fr-WE-qjk" firstAttribute="trailing" secondItem="uGS-Dz-MEr" secondAttribute="trailing" constant="70" id="Wvg-sQ-8in"/>
                             <constraint firstItem="uGS-Dz-MEr" firstAttribute="leading" secondItem="4Fr-WE-qjk" secondAttribute="leading" constant="70" id="nx7-BG-ghe"/>
+                            <constraint firstItem="h73-qA-Zho" firstAttribute="centerX" secondItem="VXW-kS-2UA" secondAttribute="centerX" id="ucG-5l-vnE"/>
                             <constraint firstItem="Emu-6T-Net" firstAttribute="leading" secondItem="4Fr-WE-qjk" secondAttribute="leading" id="yIS-6R-c7e"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4Fr-WE-qjk"/>
@@ -119,6 +171,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="avatarView" destination="uGS-Dz-MEr" id="d78-6A-Lgx"/>
+                        <outlet property="noResultsLbl" destination="h73-qA-Zho" id="HTJ-O7-ZZt"/>
                         <outlet property="saveBtn" destination="0Ff-WP-hO8" id="kQ1-IB-2oV"/>
                         <outlet property="searchBar" destination="Emu-6T-Net" id="epv-kv-C6W"/>
                         <outlet property="usernameLbl" destination="qfV-65-2vP" id="dz4-eI-9TV"/>
@@ -126,7 +179,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n0B-yE-0ND" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2526" y="-321"/>
+            <point key="canvasLocation" x="2525.5999999999999" y="-321.58920539730138"/>
         </scene>
         <!--Settings-->
         <scene sceneID="wg7-f3-ORb">

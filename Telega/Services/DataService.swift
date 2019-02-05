@@ -28,6 +28,8 @@ class DataService {
         }
     }
     
+    var contacts : [User]?
+    
     var privatePem : String? {
         get {
             return UserDefaults.standard.string(forKey: "privatePem")
@@ -67,5 +69,6 @@ class DataService {
         publicPem = nil
         username = nil
         userAvatar = nil
+        contacts = nil
     }
 }

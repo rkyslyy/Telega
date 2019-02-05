@@ -11,7 +11,9 @@ import Foundation
 // URLs
 let BASE_URL = "https://telega-rkyslyy.herokuapp.com/"
 let USERS_URL = BASE_URL + "users/"
+let USERS_SEARCH_URL = USERS_URL + "search?"
 let ME_URL = USERS_URL + "me/"
+let ADD_CONTACT_URL = USERS_URL + "add_contact/"
 let AUTH_URL = BASE_URL + "auth/"
 let IMAGES_URL = BASE_URL + "images/"
 
@@ -19,3 +21,6 @@ let IMAGES_URL = BASE_URL + "images/"
 let HEADER = [
     "Content-Type": "application/json"
 ]
+
+// Notifications
+let CONTACTS_LOADED = Notification.Name("contacts_loaded")

@@ -14,6 +14,33 @@ import SwiftyRSA
 class TelegaAPI {
     static let instanse = TelegaAPI()
     
+    func addContactWith(id: String, completion: @escaping () -> ()) {
+        DispatchQueue.global().async {
+            let header = [
+                "x-auth-token": DataService.instance.token!
+            ]
+            let body = [
+                "contact": id
+            ]
+            Alamofire.request(ADD_CONTACT_URL, method: .post, parameters: body, encoding: JSONEncoding.default, headers: header).responseJSON(completionHandler: { (response) in
+                print(response)
+            })
+        }
+    }
+    
+    func getUserFor(email: String, completion: @escaping (User?) -> ()) {
+        DispatchQueue.global().async {
+            Alamofire.request(USERS_SEARCH_URL + "email=" + email, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: HEADER).responseJSON(completionHandler: { (response) in
+                guard let data = response.value as? [String : Any] else { print(response); return }
+                if data["error"] == nil {
+                    completion(User(id: data["_id"] as! String, email: data["email"] as! String, username: data["username"] as! String, avatar: data["avatar"] as! String))
+                } else {
+                    completion(nil)
+                }
+            })
+        }
+    }
+    
     func editProfileWith(username: String, andAvatar avatar: String, completion: @escaping () -> ()) {
         if DataService.instance.token != nil {
             DispatchQueue.global().async {
@@ -40,14 +67,14 @@ class TelegaAPI {
         }
     }
     
-    func updateInfoAboutSelf() {
+    func updateInfoAboutSelf(completion: @escaping () -> ()) {
         if DataService.instance.token != nil {
             DispatchQueue.global().async {
                 let header = [
                     "x-auth-token": DataService.instance.token!
                 ]
                 Alamofire.request(ME_URL, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).responseJSON(completionHandler: { (response) in
-                    guard let data = response.value as? [String : Any] else { print("bad data"); return }
+                    guard let data = response.value as? [String : Any] else { print("bad value"); return }
                     if let error = data["error"] {
                         return print(error)
                     }
@@ -57,6 +84,17 @@ class TelegaAPI {
                     DataService.instance.userAvatar = (user["avatar"] as! String)
                     DataService.instance.privatePem = (user["privatePem"] as! String)
                     DataService.instance.publicPem = (user["publicPem"] as! String)
+                    let contactsData = user["contacts"] as! [[String : Any]]
+                    let contacts = contactsData.map({ (contact) -> User in
+                        let _id = contact["_id"] as! String
+                        let email = contact["email"] as! String
+                        let username = contact["username"] as! String
+                        let avatar = contact["avatar"] as! String
+                        return User(id: _id, email: email, username: username, avatar: avatar)
+                    })
+                    DataService.instance.contacts = contacts
+                    NotificationCenter.default.post(name: CONTACTS_LOADED, object: nil)
+                    completion()
                 })
             }
         }
@@ -119,7 +157,9 @@ class TelegaAPI {
             return completion(false, error as! String)
         }
         DataService.instance.token = (data["token"] as! String)
-        updateInfoAboutSelf()
-        completion(true, "Logged in as \(data["username"] as! String)")
+        print(DataService.instance.token!)
+        updateInfoAboutSelf {
+            completion(true, "Logged in as \(data["username"] as! String)")
+        }
     }
 }

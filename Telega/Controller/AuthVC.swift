@@ -237,6 +237,11 @@ extension AuthVC: UITextFieldDelegate {
         }
         editingText = false
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        doneBtnPressed(self)
+        return true
+    }
 }
 
 extension AuthVC {

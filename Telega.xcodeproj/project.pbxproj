@@ -17,8 +17,9 @@
 		BF087FE321FF47F500CFA8BB /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FE221FF47F500CFA8BB /* RoundedView.swift */; };
 		BF087FE521FF49D400CFA8BB /* CustomPlaceholderTF.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FE421FF49D400CFA8BB /* CustomPlaceholderTF.swift */; };
 		BF087FE721FF50A100CFA8BB /* AuthVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FE621FF50A100CFA8BB /* AuthVC.swift */; };
+		BF73C0EE2209A10E00353FF1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73C0ED2209A10E00353FF1 /* User.swift */; };
+		BF73C0F02209DA0F00353FF1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73C0EF2209DA0F00353FF1 /* ContactCell.swift */; };
 		BF7571B32207101B008768D1 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7571B22207101B008768D1 /* DataService.swift */; };
-		BF7571B522088534008768D1 /* large.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BF7571B422088534008768D1 /* large.jpg */; };
 		BF7FE4912203846900455A60 /* CircleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7FE4902203846900455A60 /* CircleImageView.swift */; };
 		BF9E31EA2201EEA400187310 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9E31E92201EEA400187310 /* Constants.swift */; };
 		BF9E31F322020BA500187310 /* AuthLoadingXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9E31F222020BA500187310 /* AuthLoadingXIB.xib */; };
@@ -47,8 +48,9 @@
 		BF087FE221FF47F500CFA8BB /* RoundedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
 		BF087FE421FF49D400CFA8BB /* CustomPlaceholderTF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPlaceholderTF.swift; sourceTree = "<group>"; };
 		BF087FE621FF50A100CFA8BB /* AuthVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVC.swift; sourceTree = "<group>"; };
+		BF73C0ED2209A10E00353FF1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		BF73C0EF2209DA0F00353FF1 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		BF7571B22207101B008768D1 /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
-		BF7571B422088534008768D1 /* large.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = large.jpg; sourceTree = "<group>"; };
 		BF7FE4902203846900455A60 /* CircleImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleImageView.swift; sourceTree = "<group>"; };
 		BF9E31E92201EEA400187310 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BF9E31F222020BA500187310 /* AuthLoadingXIB.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthLoadingXIB.xib; sourceTree = "<group>"; };
@@ -115,7 +117,6 @@
 				BF9E31EF22020B1100187310 /* XIBs */,
 				BF9E31F62202135A00187310 /* black.gif */,
 				BF9E32002202213500187310 /* ripple.gif */,
-				BF7571B422088534008768D1 /* large.jpg */,
 				BF087FE121FF47E300CFA8BB /* Services */,
 				BF087FE021FF47DF00CFA8BB /* Model */,
 				BF087FDF21FF47D700CFA8BB /* View */,
@@ -149,6 +150,7 @@
 				BF9E31F422020C4500187310 /* AuthLoading.swift */,
 				BFF46F2B2203603100469496 /* PasswordRules.swift */,
 				BF7FE4902203846900455A60 /* CircleImageView.swift */,
+				BF73C0EF2209DA0F00353FF1 /* ContactCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -156,6 +158,7 @@
 		BF087FE021FF47DF00CFA8BB /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				BF73C0ED2209A10E00353FF1 /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -242,7 +245,6 @@
 				BF087FD721FF453500CFA8BB /* LaunchScreen.storyboard in Resources */,
 				BF087FD421FF453500CFA8BB /* Assets.xcassets in Resources */,
 				BF9E31F322020BA500187310 /* AuthLoadingXIB.xib in Resources */,
-				BF7571B522088534008768D1 /* large.jpg in Resources */,
 				BF9E31F72202135A00187310 /* black.gif in Resources */,
 				BF9E32012202213500187310 /* ripple.gif in Resources */,
 				BF087FD221FF453400CFA8BB /* Main.storyboard in Resources */,
@@ -318,6 +320,8 @@
 				BFB5811321FF6BA50051C0D5 /* TelegaAPI.swift in Sources */,
 				BF087FE721FF50A100CFA8BB /* AuthVC.swift in Sources */,
 				BF7FE4912203846900455A60 /* CircleImageView.swift in Sources */,
+				BF73C0F02209DA0F00353FF1 /* ContactCell.swift in Sources */,
+				BF73C0EE2209A10E00353FF1 /* User.swift in Sources */,
 				BF9E31F522020C4500187310 /* AuthLoading.swift in Sources */,
 				BF087FE521FF49D400CFA8BB /* CustomPlaceholderTF.swift in Sources */,
 				BF087FCB21FF453400CFA8BB /* AppDelegate.swift in Sources */,

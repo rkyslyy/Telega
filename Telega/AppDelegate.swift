@@ -16,7 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         if DataService.instance.token != nil {
-            TelegaAPI.instanse.updateInfoAboutSelf()
+            print(DataService.instance.token!)
+            TelegaAPI.instanse.updateInfoAboutSelf {}
             let mainStoryboardIpad : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let initialViewControlleripad : UIViewController = mainStoryboardIpad.instantiateViewController(withIdentifier: "tabBar")
             self.window = UIWindow(frame: UIScreen.main.bounds)
