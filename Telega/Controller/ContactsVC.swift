@@ -61,4 +61,18 @@ extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
         cell.emailLbl.text = contact.email
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
+            TelegaAPI.instanse.deleteContactWith(id: DataService.instance.contacts![indexPath.row].id, completion: {
+                TelegaAPI.instanse.updateInfoAboutSelf(completion: {
+                })
+            })
+            DataService.instance.contacts!.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.right)
+        }
+        delete.backgroundColor = .red
+        
+        return [delete]
+    }
 }
