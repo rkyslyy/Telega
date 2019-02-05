@@ -16,6 +16,7 @@ class AddNewContactVC: UIViewController {
     @IBOutlet weak var avatarView: CircleImageView!
     @IBOutlet weak var usernameLbl: UILabel!
     @IBOutlet weak var noResultsLbl: UILabel!
+    @IBOutlet weak var alreadyInListLbl: UILabel!
     
     // Variables
     var emails = [String]()
@@ -25,6 +26,7 @@ class AddNewContactVC: UIViewController {
         super.viewDidLoad()
 
         searchBar.delegate = self
+        searchBar.autocapitalizationType = .none
         saveBtn.isEnabled = false
         let tap =  UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tap)
@@ -35,8 +37,10 @@ class AddNewContactVC: UIViewController {
     }
     
     @IBAction func savePressed(_ sender: Any) {
+        print(fetchedUser!.id)
         TelegaAPI.instanse.addContactWith(id: fetchedUser!.id) {
-            
+            DataService.instance.contacts!.append(self.fetchedUser!)
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -75,6 +79,17 @@ extension AddNewContactVC: UISearchBarDelegate {
         avatarView.isHidden = false
         usernameLbl.isHidden = false
         noResultsLbl.isHidden = true
+        alreadyInListLbl.isHidden = !userAlreadyInList()
+    }
+    
+    private func userAlreadyInList() -> Bool {
+        for contact in DataService.instance.contacts! {
+            if contact.email == fetchedUser!.email {
+                saveBtn.isEnabled = false
+                return true
+            }
+        }
+        return false
     }
     
     private func showNoResults() {

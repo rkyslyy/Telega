@@ -22,8 +22,8 @@ class TelegaAPI {
             let body = [
                 "contact": id
             ]
-            Alamofire.request(ADD_CONTACT_URL, method: .post, parameters: body, encoding: JSONEncoding.default, headers: header).responseJSON(completionHandler: { (response) in
-                print(response)
+            Alamofire.request(ADD_CONTACT_URL, method: .put, parameters: body, encoding: JSONEncoding.default, headers: header).responseJSON(completionHandler: { (response) in
+                completion()
             })
         }
     }

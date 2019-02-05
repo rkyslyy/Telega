@@ -18,13 +18,31 @@ class ContactsVC: UIViewController {
         
         contactsTable.delegate = self
         contactsTable.dataSource = self
+        contactsTable.refreshControl = UIRefreshControl()
+        contactsTable.refreshControl?.addTarget(self, action: #selector(reloadContactsFromAPI), for: .valueChanged)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        view.addGestureRecognizer(tap)
         
         NotificationCenter.default.addObserver(self, selector: #selector(contactsUpdated), name: CONTACTS_LOADED, object: nil)
     }
     
+    @objc private func hideKeyboard() {
+        view.endEditing(true)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
+    }
+    
+    @objc private func reloadContactsFromAPI() {
+        TelegaAPI.instanse.updateInfoAboutSelf {
+            self.contactsTable.refreshControl?.endRefreshing()
+        }
+    }
+    
     @objc private func contactsUpdated() {
-        print("RELOADING TABLE")
-        self.contactsTable.reloadData()
+        contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
     }
 }
 
