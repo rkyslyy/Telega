@@ -8,17 +8,12 @@
 
 import Foundation
 
-class User {
-    
-    init(id: String, email: String, username: String, avatar: String) {
-        self.id = id
-        self.email = email
-        self.username = username
-        self.avatar = avatar
-    }
+struct User {
     
     let id: String
     let email: String
     let username: String
     let avatar: String
+    let confirmed: Bool
+    let requestIsMine: Bool
 }

@@ -14,6 +14,22 @@ import SwiftyRSA
 class TelegaAPI {
     static let instanse = TelegaAPI()
     
+    func acceptFriendRequestFrom(id: String, completion: @escaping () -> ()) {
+        DispatchQueue.global().async {
+            let header = [
+                "x-auth-token": DataService.instance.token!
+            ]
+            let body = [
+                "friendID": id
+            ]
+            Alamofire.request(ACCEPT_FRIEND_REQUEST_URL, method: .post, parameters: body, encoding: JSONEncoding.default, headers: header).responseJSON(completionHandler: { (response) in
+                self.updateInfoAboutSelf {
+                    completion()
+                }
+            })
+        }
+    }
+    
     func addContactWith(id: String, completion: @escaping () -> ()) {
         DispatchQueue.global().async {
             let header = [
@@ -47,7 +63,7 @@ class TelegaAPI {
             Alamofire.request(USERS_SEARCH_URL + "email=" + email, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: HEADER).responseJSON(completionHandler: { (response) in
                 guard let data = response.value as? [String : Any] else { print(response); return }
                 if data["error"] == nil {
-                    completion(User(id: data["_id"] as! String, email: data["email"] as! String, username: data["username"] as! String, avatar: data["avatar"] as! String))
+                    completion(User(id: data["_id"] as! String, email: data["email"] as! String, username: data["username"] as! String, avatar: data["avatar"] as! String, confirmed: false, requestIsMine: true))
                 } else {
                     completion(nil)
                 }
@@ -104,7 +120,9 @@ class TelegaAPI {
                         let email = contact["email"] as! String
                         let username = contact["username"] as! String
                         let avatar = contact["avatar"] as! String
-                        return User(id: _id, email: email, username: username, avatar: avatar)
+                        let confirmed = contact["confirmed"] as! Bool
+                        let requestIsMine = contact["requestIsMine"] as! Bool
+                        return User(id: _id, email: email, username: username, avatar: avatar, confirmed: confirmed, requestIsMine: requestIsMine)
                     })
                     DataService.instance.contacts = contacts
                     NotificationCenter.default.post(name: CONTACTS_LOADED, object: nil)

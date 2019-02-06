@@ -22,6 +22,7 @@ class ContactsVC: UIViewController {
         contactsTable.refreshControl?.addTarget(self, action: #selector(reloadContactsFromAPI), for: .valueChanged)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         
         NotificationCenter.default.addObserver(self, selector: #selector(contactsUpdated), name: CONTACTS_LOADED, object: nil)
@@ -56,17 +57,19 @@ extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
         let contact = DataService.instance.contacts![indexPath.row]
         let imageData = Data(base64Encoded: contact.avatar)
         let image = UIImage(data: imageData!)
+        cell.table = tableView
+        cell.indexPath = indexPath
         cell.avatarView.image = image
         cell.usernameLbl.text = contact.username
         cell.emailLbl.text = contact.email
+        cell.contactID = DataService.instance.contacts![indexPath.row].id
+        cell.setupStatus(confirmed: contact.confirmed, requestIsMine: contact.requestIsMine)
         return cell
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
             TelegaAPI.instanse.deleteContactWith(id: DataService.instance.contacts![indexPath.row].id, completion: {
-                TelegaAPI.instanse.updateInfoAboutSelf(completion: {
-                })
             })
             DataService.instance.contacts!.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.right)
@@ -74,5 +77,10 @@ extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
         delete.backgroundColor = .red
         
         return [delete]
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell") as! ContactCell
+        cell.statusBtn.layer.removeAllAnimations()
     }
 }

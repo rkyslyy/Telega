@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+//        DataService.instance.logout()
         if DataService.instance.token != nil {
             print(DataService.instance.token!)
             TelegaAPI.instanse.updateInfoAboutSelf {}
