@@ -31,19 +31,24 @@ class ContactCell: UITableViewCell {
         let image = requestIsMine ? UIImage(named: "hourglass") : UIImage(named: "green_tick")
         statusBtn.setImage(image, for: .normal)
         if !confirmed {
-            if requestIsMine {
-                statusBtn.isUserInteractionEnabled = false
-                UIView.animate(withDuration: 1.0, delay: 0, options: [.repeat, .autoreverse, .allowUserInteraction], animations: {
-                    self.statusBtn.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
-                }, completion: nil)
-            } else {
-                statusBtn.isUserInteractionEnabled = true
-                UIView.animate(withDuration: 0.5, delay: 0, options: [.repeat, .autoreverse, .allowUserInteraction], animations: {
-                    self.statusBtn.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-                }, completion: nil)
-            }
+           setupAnimations()
         } else {
             statusBtn.setImage(nil, for: .normal)
+        }
+    }
+    
+    @objc private func setupAnimations() {
+        layer.removeAllAnimations()
+        if requestIsMine {
+            statusBtn.isUserInteractionEnabled = false
+            UIView.animate(withDuration: 1.0, delay: 0, options: [.repeat, .autoreverse, .allowUserInteraction], animations: {
+                self.statusBtn.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+            }, completion: nil)
+        } else {
+            statusBtn.isUserInteractionEnabled = true
+            UIView.animate(withDuration: 0.5, delay: 0, options: [.repeat, .autoreverse, .allowUserInteraction], animations: {
+                self.statusBtn.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            }, completion: nil)
         }
     }
     
@@ -59,5 +64,22 @@ class ContactCell: UITableViewCell {
             gif.animate(withGIFNamed: "ripple")
             self.contentView.addSubview(gif)
         }
+    }
+}
+
+extension CALayer {
+    func pause() {
+        let pausedTime: CFTimeInterval = self.convertTime(CACurrentMediaTime(), from: nil)
+        self.speed = 0.0
+        self.timeOffset = pausedTime
+    }
+    
+    func resume() {
+        let pausedTime: CFTimeInterval = self.timeOffset
+        self.speed = 1.0
+        self.timeOffset = 0.0
+        self.beginTime = 0.0
+        let timeSincePause: CFTimeInterval = self.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        self.beginTime = timeSincePause
     }
 }

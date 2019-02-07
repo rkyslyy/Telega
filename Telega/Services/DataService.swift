@@ -7,6 +7,12 @@
 //
 
 import Foundation
+import UIKit
+
+enum Animation {
+    case rotate
+    case scale
+}
 
 class DataService {
     
@@ -17,6 +23,14 @@ class DataService {
             return UserDefaults.standard.string(forKey: "userToken")
         } set {
             UserDefaults.standard.set(newValue, forKey: "userToken")
+        }
+    }
+    
+    var id : String? {
+        get {
+            return UserDefaults.standard.string(forKey: "userID")
+        } set {
+            UserDefaults.standard.set(newValue, forKey: "userID")
         }
     }
     
@@ -70,5 +84,8 @@ class DataService {
         username = nil
         userAvatar = nil
         contacts = nil
+        TelegaAPI.instanse.disconnect()
     }
+    
+    var animatables = [(view: UIView, animation: Animation)]()
 }

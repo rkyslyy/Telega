@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "24C6E71A112376B07BD31D5F1B564320"
+               BlueprintIdentifier = "574D9CB7D37CB91969E3384B0FDAD721"
                BlueprintName = "SwiftyRSA"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "SwiftyRSA.framework">

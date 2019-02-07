@@ -25,14 +25,20 @@ class ContactsVC: UIViewController {
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(contactsUpdated), name: CONTACTS_LOADED, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(contactsUpdated(notification:)), name: CONTACTS_LOADED, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     @objc private func hideKeyboard() {
         view.endEditing(true)
     }
     
+    @objc private func didBecomeActive() {
+        contactsTable.reloadData()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
+        DataService.instance.animatables.removeAll()
         contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
     }
     
@@ -42,8 +48,8 @@ class ContactsVC: UIViewController {
         }
     }
     
-    @objc private func contactsUpdated() {
-        contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
+    @objc private func contactsUpdated(notification: Notification) {
+            contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
     }
 }
 

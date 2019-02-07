@@ -10,9 +10,39 @@ import Foundation
 import BCryptSwift
 import Alamofire
 import SwiftyRSA
+import SocketIO
 
 class TelegaAPI {
     static let instanse = TelegaAPI()
+    
+    let manager = SocketManager(socketURL: URL(string: BASE_URL)!)
+    
+    func establishConnection() {
+        manager.defaultSocket.connect()
+        manager.defaultSocket.on("introduce") { (responses, _) in
+            let greeting = responses[0] as! String
+            print(greeting)
+        }
+        manager.defaultSocket.on("update contacts") { (responses, _) in
+            print("GOT EMIT ")
+            self.updateInfoAboutSelf {
+                
+            }
+            
+        }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
+            self.manager.defaultSocket.emit("introduce", DataService.instance.username!, DataService.instance.id!)
+        }
+    }
+    
+    
+    func emitHello() {
+        manager.defaultSocket.emit("hello")
+    }
+    
+    func disconnect() {
+        manager.defaultSocket.disconnect()
+    }
     
     func acceptFriendRequestFrom(id: String, completion: @escaping () -> ()) {
         DispatchQueue.global().async {
@@ -109,6 +139,7 @@ class TelegaAPI {
                         return print(error)
                     }
                     let user = data["user"] as! [String : Any]
+                    DataService.instance.id = (user["id"] as! String)
                     DataService.instance.email = (user["email"] as! String)
                     DataService.instance.username = (user["username"] as! String)
                     DataService.instance.userAvatar = (user["avatar"] as! String)
@@ -191,6 +222,7 @@ class TelegaAPI {
         DataService.instance.token = (data["token"] as! String)
         print(DataService.instance.token!)
         updateInfoAboutSelf {
+            TelegaAPI.instanse.establishConnection()
             completion(true, "Logged in as \(data["username"] as! String)")
         }
     }

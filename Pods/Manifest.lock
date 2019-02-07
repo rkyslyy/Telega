@@ -2,6 +2,9 @@ PODS:
   - Alamofire (4.8.0)
   - BCryptSwift (1.1)
   - Gifu (3.2.0)
+  - Socket.IO-Client-Swift (13.4.0):
+    - Starscream (~> 3.0.2)
+  - Starscream (3.0.6)
   - SwiftyRSA (1.5.0):
     - SwiftyRSA/ObjC (= 1.5.0)
   - SwiftyRSA/ObjC (1.5.0)
@@ -10,6 +13,7 @@ DEPENDENCIES:
   - Alamofire
   - BCryptSwift
   - Gifu
+  - Socket.IO-Client-Swift
   - SwiftyRSA
 
 SPEC REPOS:
@@ -17,14 +21,18 @@ SPEC REPOS:
     - Alamofire
     - BCryptSwift
     - Gifu
+    - Socket.IO-Client-Swift
+    - Starscream
     - SwiftyRSA
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
   BCryptSwift: f69992ea5685f6714260842c2770688043b89ab2
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
+  Socket.IO-Client-Swift: 2b2720f14c92ff1237ced09bc2f2da2022624fee
+  Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SwiftyRSA: 6e528fb1b1a87d5111c48081083b141d6d65f1cf
 
-PODFILE CHECKSUM: d560bb2c6f68b60943e4a62d5024c03dca4c3ba4
+PODFILE CHECKSUM: 1800173215a9e3fe6ba764b3d9348e104ad3327a
 
 COCOAPODS: 1.5.3

@@ -9,6 +9,7 @@ target 'Telega' do
   pod 'SwiftyRSA'
   pod 'Gifu'
   pod 'BCryptSwift'
+  pod 'Socket.IO-Client-Swift'
   # Pods for Telega
 
 end
