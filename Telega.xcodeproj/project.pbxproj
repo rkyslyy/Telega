@@ -17,6 +17,7 @@
 		BF087FE321FF47F500CFA8BB /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FE221FF47F500CFA8BB /* RoundedView.swift */; };
 		BF087FE521FF49D400CFA8BB /* CustomPlaceholderTF.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FE421FF49D400CFA8BB /* CustomPlaceholderTF.swift */; };
 		BF087FE721FF50A100CFA8BB /* AuthVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FE621FF50A100CFA8BB /* AuthVC.swift */; };
+		BF3EADD8220CD19800D0B718 /* DialogueVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EADD7220CD19800D0B718 /* DialogueVC.swift */; };
 		BF73C0EE2209A10E00353FF1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73C0ED2209A10E00353FF1 /* User.swift */; };
 		BF73C0F02209DA0F00353FF1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73C0EF2209DA0F00353FF1 /* ContactCell.swift */; };
 		BF7571B32207101B008768D1 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7571B22207101B008768D1 /* DataService.swift */; };
@@ -48,6 +49,7 @@
 		BF087FE221FF47F500CFA8BB /* RoundedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
 		BF087FE421FF49D400CFA8BB /* CustomPlaceholderTF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPlaceholderTF.swift; sourceTree = "<group>"; };
 		BF087FE621FF50A100CFA8BB /* AuthVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVC.swift; sourceTree = "<group>"; };
+		BF3EADD7220CD19800D0B718 /* DialogueVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogueVC.swift; sourceTree = "<group>"; };
 		BF73C0ED2209A10E00353FF1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		BF73C0EF2209DA0F00353FF1 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		BF7571B22207101B008768D1 /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				BF087FE621FF50A100CFA8BB /* AuthVC.swift */,
 				BFF46F2D2203796700469496 /* DarkNavigationVC.swift */,
 				BFF46F2F220381A300469496 /* AddNewContactVC.swift */,
+				BF3EADD7220CD19800D0B718 /* DialogueVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 				BF087FE321FF47F500CFA8BB /* RoundedView.swift in Sources */,
 				BF087FCF21FF453400CFA8BB /* SettingsVC.swift in Sources */,
 				BFF46F2E2203796700469496 /* DarkNavigationVC.swift in Sources */,
+				BF3EADD8220CD19800D0B718 /* DialogueVC.swift in Sources */,
 				BFB5811321FF6BA50051C0D5 /* TelegaAPI.swift in Sources */,
 				BF087FE721FF50A100CFA8BB /* AuthVC.swift in Sources */,
 				BF7FE4912203846900455A60 /* CircleImageView.swift in Sources */,

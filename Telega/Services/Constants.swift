@@ -9,7 +9,7 @@
 import Foundation
 
 // URLs
-let BASE_URL = "http://localhost:3000/"
+let BASE_URL = "https://telega-rkyslyy.herokuapp.com/"
 let USERS_URL = BASE_URL + "users/"
 let USERS_SEARCH_URL = USERS_URL + "search?"
 let ME_URL = USERS_URL + "me/"
@@ -26,3 +26,6 @@ let HEADER = [
 
 // Notifications
 let CONTACTS_LOADED = Notification.Name("contacts_loaded")
+
+
+//https://telega-rkyslyy.herokuapp.com/

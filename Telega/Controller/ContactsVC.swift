@@ -76,6 +76,21 @@ class ContactsVC: UIViewController {
 }
 
 extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let contact = DataService.instance.contacts![indexPath.row]
+        if contact.confirmed {
+            performSegue(withIdentifier: "toDialogue", sender: contact)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let dest = segue.destination as? DialogueVC {
+            let contact = sender as! User
+            dest.dialogueTitle = contact.username
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return DataService.instance.contacts?.count ?? 0
     }

@@ -20,6 +20,9 @@ class TelegaAPI {
     func establishConnection() {
         manager = SocketManager(socketURL: URL(string: BASE_URL)!)
         manager.defaultSocket.on("introduce") { (responses, _) in
+            if DataService.instance.token == nil {
+                return  
+            }
             self.manager.defaultSocket.emit("introduce", DataService.instance.username!, DataService.instance.id!)
         }
         manager.defaultSocket.on("update contacts") { (responses, _) in
