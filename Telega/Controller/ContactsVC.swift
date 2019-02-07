@@ -44,12 +44,34 @@ class ContactsVC: UIViewController {
     
     @objc private func reloadContactsFromAPI() {
         TelegaAPI.instanse.updateInfoAboutSelf {
+            self.contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
             self.contactsTable.refreshControl?.endRefreshing()
         }
     }
     
     @objc private func contactsUpdated(notification: Notification) {
+        if let userinfo = notification.userInfo {
+            if let id = userinfo["id"] as? String {
+                var index = 0
+                var found = false
+                for cell in contactsTable.visibleCells as! [ContactCell] {
+                    if cell.contactID == id {
+                        found = true
+                        break
+                    }
+                    index += 1
+                }
+                if found && userinfo["delete"] != nil {
+                    contactsTable.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
+                } else if found && userinfo["delete"] == nil {
+                    contactsTable.reloadRows(at: [IndexPath(row: index, section: 0)], with: .fade)
+                }
+            } else {
+                contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
+            }
+        } else {
             contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
+        }
     }
 }
 

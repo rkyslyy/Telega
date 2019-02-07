@@ -15,29 +15,28 @@ import SocketIO
 class TelegaAPI {
     static let instanse = TelegaAPI()
     
-    let manager = SocketManager(socketURL: URL(string: BASE_URL)!)
+    var manager: SocketManager!
     
     func establishConnection() {
-        manager.defaultSocket.connect()
+        manager = SocketManager(socketURL: URL(string: BASE_URL)!)
         manager.defaultSocket.on("introduce") { (responses, _) in
-            let greeting = responses[0] as! String
-            print(greeting)
-        }
-        manager.defaultSocket.on("update contacts") { (responses, _) in
-            print("GOT EMIT ")
-            self.updateInfoAboutSelf {
-                
-            }
-            
-        }
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
             self.manager.defaultSocket.emit("introduce", DataService.instance.username!, DataService.instance.id!)
         }
-    }
-    
-    
-    func emitHello() {
-        manager.defaultSocket.emit("hello")
+        manager.defaultSocket.on("update contacts") { (responses, _) in
+            self.updateInfoAboutSelf {
+                var body = [String:String]()
+                if responses.count > 0 {
+                    if let id = responses[0] as? String {
+                        body["id"] = id
+                        if responses.count > 1 {
+                            body["delete"] = ""
+                        }
+                    }
+                }
+                NotificationCenter.default.post(name: CONTACTS_LOADED, object: nil, userInfo: body)
+            }
+        }
+        manager.defaultSocket.connect()
     }
     
     func disconnect() {
@@ -156,7 +155,6 @@ class TelegaAPI {
                         return User(id: _id, email: email, username: username, avatar: avatar, confirmed: confirmed, requestIsMine: requestIsMine)
                     })
                     DataService.instance.contacts = contacts
-                    NotificationCenter.default.post(name: CONTACTS_LOADED, object: nil)
                     completion()
                 })
             }
@@ -215,12 +213,13 @@ class TelegaAPI {
     
     private func dealWithAuthResponse(response: DataResponse<Any>,
                                       completion: @escaping (_ result: Bool, _ message: String) -> ()) {
+        
         guard let data = response.value as? [String : Any] else { completion(false, "Something went wrong"); return }
         if let error = data["error"] {
             return completion(false, error as! String)
         }
         DataService.instance.token = (data["token"] as! String)
-        print(DataService.instance.token!)
+//        print(DataService.instance.token!)
         updateInfoAboutSelf {
             TelegaAPI.instanse.establishConnection()
             completion(true, "Logged in as \(data["username"] as! String)")

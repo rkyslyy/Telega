@@ -77,6 +77,7 @@ class DataService {
     }
     
     func logout() {
+        TelegaAPI.instanse.disconnect()
         token = nil
         email = nil
         privatePem = nil
@@ -84,7 +85,7 @@ class DataService {
         username = nil
         userAvatar = nil
         contacts = nil
-        TelegaAPI.instanse.disconnect()
+        id = nil
     }
     
     var animatables = [(view: UIView, animation: Animation)]()
