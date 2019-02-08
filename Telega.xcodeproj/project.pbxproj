@@ -17,6 +17,11 @@
 		BF087FE321FF47F500CFA8BB /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FE221FF47F500CFA8BB /* RoundedView.swift */; };
 		BF087FE521FF49D400CFA8BB /* CustomPlaceholderTF.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FE421FF49D400CFA8BB /* CustomPlaceholderTF.swift */; };
 		BF087FE721FF50A100CFA8BB /* AuthVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF087FE621FF50A100CFA8BB /* AuthVC.swift */; };
+		BF282516220D9C3700FE42CA /* RNCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF282515220D9C3700FE42CA /* RNCryptor.swift */; };
+		BF28251B220DAB9E00FE42CA /* MessageInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF28251A220DAB9E00FE42CA /* MessageInputView.swift */; };
+		BF28251D220DC65600FE42CA /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF28251C220DC65600FE42CA /* MessageCell.swift */; };
+		BF28251F220DC85E00FE42CA /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF28251E220DC85E00FE42CA /* Message.swift */; };
+		BF282521220E2A0600FE42CA /* MessageLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF282520220E2A0600FE42CA /* MessageLabel.swift */; };
 		BF3EADD8220CD19800D0B718 /* DialogueVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EADD7220CD19800D0B718 /* DialogueVC.swift */; };
 		BF73C0EE2209A10E00353FF1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73C0ED2209A10E00353FF1 /* User.swift */; };
 		BF73C0F02209DA0F00353FF1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73C0EF2209DA0F00353FF1 /* ContactCell.swift */; };
@@ -49,6 +54,13 @@
 		BF087FE221FF47F500CFA8BB /* RoundedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
 		BF087FE421FF49D400CFA8BB /* CustomPlaceholderTF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPlaceholderTF.swift; sourceTree = "<group>"; };
 		BF087FE621FF50A100CFA8BB /* AuthVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVC.swift; sourceTree = "<group>"; };
+		BF282515220D9C3700FE42CA /* RNCryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNCryptor.swift; sourceTree = "<group>"; };
+		BF282517220D9C5300FE42CA /* RNCryptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNCryptor.h; sourceTree = "<group>"; };
+		BF282519220D9D5800FE42CA /* Telega-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Telega-Bridging-Header.h"; sourceTree = "<group>"; };
+		BF28251A220DAB9E00FE42CA /* MessageInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageInputView.swift; sourceTree = "<group>"; };
+		BF28251C220DC65600FE42CA /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		BF28251E220DC85E00FE42CA /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		BF282520220E2A0600FE42CA /* MessageLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLabel.swift; sourceTree = "<group>"; };
 		BF3EADD7220CD19800D0B718 /* DialogueVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogueVC.swift; sourceTree = "<group>"; };
 		BF73C0ED2209A10E00353FF1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		BF73C0EF2209DA0F00353FF1 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
@@ -119,6 +131,8 @@
 				BF9E31EF22020B1100187310 /* XIBs */,
 				BF9E31F62202135A00187310 /* black.gif */,
 				BF9E32002202213500187310 /* ripple.gif */,
+				BF282515220D9C3700FE42CA /* RNCryptor.swift */,
+				BF282517220D9C5300FE42CA /* RNCryptor.h */,
 				BF087FE121FF47E300CFA8BB /* Services */,
 				BF087FE021FF47DF00CFA8BB /* Model */,
 				BF087FDF21FF47D700CFA8BB /* View */,
@@ -128,6 +142,7 @@
 				BF087FD321FF453500CFA8BB /* Assets.xcassets */,
 				BF087FD521FF453500CFA8BB /* LaunchScreen.storyboard */,
 				BF087FD821FF453500CFA8BB /* Info.plist */,
+				BF282519220D9D5800FE42CA /* Telega-Bridging-Header.h */,
 			);
 			path = Telega;
 			sourceTree = "<group>";
@@ -154,6 +169,9 @@
 				BFF46F2B2203603100469496 /* PasswordRules.swift */,
 				BF7FE4902203846900455A60 /* CircleImageView.swift */,
 				BF73C0EF2209DA0F00353FF1 /* ContactCell.swift */,
+				BF28251A220DAB9E00FE42CA /* MessageInputView.swift */,
+				BF28251C220DC65600FE42CA /* MessageCell.swift */,
+				BF282520220E2A0600FE42CA /* MessageLabel.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -162,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				BF73C0ED2209A10E00353FF1 /* User.swift */,
+				BF28251E220DC85E00FE42CA /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -320,22 +339,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFF46F30220381A300469496 /* AddNewContactVC.swift in Sources */,
+				BF28251D220DC65600FE42CA /* MessageCell.swift in Sources */,
 				BF7571B32207101B008768D1 /* DataService.swift in Sources */,
 				BF087FE321FF47F500CFA8BB /* RoundedView.swift in Sources */,
 				BF087FCF21FF453400CFA8BB /* SettingsVC.swift in Sources */,
 				BFF46F2E2203796700469496 /* DarkNavigationVC.swift in Sources */,
+				BF28251F220DC85E00FE42CA /* Message.swift in Sources */,
 				BF3EADD8220CD19800D0B718 /* DialogueVC.swift in Sources */,
 				BFB5811321FF6BA50051C0D5 /* TelegaAPI.swift in Sources */,
 				BF087FE721FF50A100CFA8BB /* AuthVC.swift in Sources */,
+				BF282521220E2A0600FE42CA /* MessageLabel.swift in Sources */,
 				BF7FE4912203846900455A60 /* CircleImageView.swift in Sources */,
 				BF73C0F02209DA0F00353FF1 /* ContactCell.swift in Sources */,
 				BF73C0EE2209A10E00353FF1 /* User.swift in Sources */,
 				BF9E31F522020C4500187310 /* AuthLoading.swift in Sources */,
 				BF087FE521FF49D400CFA8BB /* CustomPlaceholderTF.swift in Sources */,
 				BF087FCB21FF453400CFA8BB /* AppDelegate.swift in Sources */,
+				BF28251B220DAB9E00FE42CA /* MessageInputView.swift in Sources */,
 				BF087FCD21FF453400CFA8BB /* ContactsVC.swift in Sources */,
 				BFF46F2C2203603100469496 /* PasswordRules.swift in Sources */,
 				BF9E31EA2201EEA400187310 /* Constants.swift in Sources */,
+				BF282516220D9C3700FE42CA /* RNCryptor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,6 +515,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rkyslyy.Telega;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Telega/Telega-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -510,6 +535,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rkyslyy.Telega;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Telega/Telega-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

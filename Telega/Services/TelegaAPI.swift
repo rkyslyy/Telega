@@ -15,7 +15,26 @@ import SocketIO
 class TelegaAPI {
     static let instanse = TelegaAPI()
     
-    var manager: SocketManager!
+    var manager = SocketManager(socketURL: URL(string: BASE_URL)!)
+    
+    func send(message: String,
+              toUserWithID id: String,
+              andStoreCopyForMe messageForMe: String,
+              completion: @escaping () -> ()) {
+        let header = [
+            "x-auth-token": DataService.instance.token!
+        ]
+        let body = [
+            "messageForMe": messageForMe,
+            "messageForThem": message,
+            "theirID": id
+        ]
+        Alamofire.request(MESSAGES_URL, method: .post, parameters: body, encoding: JSONEncoding.default, headers: header).responseJSON { (response) in
+//            guard let data = response.value as? [String : Any] else { print("bad value"); return }
+            completion()
+            print(response)
+        }
+    }
     
     func establishConnection() {
         manager = SocketManager(socketURL: URL(string: BASE_URL)!)
@@ -37,6 +56,15 @@ class TelegaAPI {
                     }
                 }
                 NotificationCenter.default.post(name: CONTACTS_LOADED, object: nil, userInfo: body)
+            }
+        }
+        manager.defaultSocket.on("update messages") { (responses, _) in
+            print("GOT EMIT BOIIII")
+            let dudeID = responses[0] as! String
+            print(DataService.instance.userMessages[dudeID]?.count ?? "EMPTY")
+            self.updateInfoAboutSelf {
+                print(DataService.instance.userMessages[dudeID]?.count ?? "EMPTY")
+                NotificationCenter.default.post(name: MESSAGES_UPDATED, object: nil, userInfo: ["companionID":dudeID])
             }
         }
         manager.defaultSocket.connect()
@@ -95,7 +123,7 @@ class TelegaAPI {
             Alamofire.request(USERS_SEARCH_URL + "email=" + email, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: HEADER).responseJSON(completionHandler: { (response) in
                 guard let data = response.value as? [String : Any] else { print(response); return }
                 if data["error"] == nil {
-                    completion(User(id: data["_id"] as! String, email: data["email"] as! String, username: data["username"] as! String, avatar: data["avatar"] as! String, confirmed: false, requestIsMine: true))
+                    completion(User(id: data["_id"] as! String, email: data["email"] as! String, username: data["username"] as! String, avatar: data["avatar"] as! String, publicPem: data["publicPem"] as! String, confirmed: false, requestIsMine: true))
                 } else {
                     completion(nil)
                 }
@@ -145,8 +173,22 @@ class TelegaAPI {
                     DataService.instance.email = (user["email"] as! String)
                     DataService.instance.username = (user["username"] as! String)
                     DataService.instance.userAvatar = (user["avatar"] as! String)
-                    DataService.instance.privatePem = (user["privatePem"] as! String)
                     DataService.instance.publicPem = (user["publicPem"] as! String)
+                    DataService.instance.userMessages.removeAll()
+                    let messages = user["messages"] as! [[String:Any]]
+                    for message in messages {
+                        let storeID = message["storeID"] as! String
+                        if storeID == DataService.instance.id {
+                            continue
+                        }
+                        let text = message["message"] as! String
+                        let mine = message["mine"] as! Bool
+                        let messageToSave = Message(text: text, mine: mine)
+                        if DataService.instance.userMessages[storeID] == nil {
+                            DataService.instance.userMessages[storeID] = [Message]()
+                        }
+                        DataService.instance.userMessages[storeID]?.append(messageToSave)
+                    }
                     let contactsData = user["contacts"] as! [[String : Any]]
                     let contacts = contactsData.map({ (contact) -> User in
                         let _id = contact["_id"] as! String
@@ -155,7 +197,8 @@ class TelegaAPI {
                         let avatar = contact["avatar"] as! String
                         let confirmed = contact["confirmed"] as! Bool
                         let requestIsMine = contact["requestIsMine"] as! Bool
-                        return User(id: _id, email: email, username: username, avatar: avatar, confirmed: confirmed, requestIsMine: requestIsMine)
+                        let publicPem = contact["publicPem"] as! String
+                        return User(id: _id, email: email, username: username, avatar: avatar, publicPem: publicPem, confirmed: confirmed, requestIsMine: requestIsMine)
                     })
                     DataService.instance.contacts = contacts
                     completion()
@@ -173,7 +216,7 @@ class TelegaAPI {
                 "password": password
             ]
             Alamofire.request(AUTH_URL, method: .post, parameters: body, encoding: JSONEncoding.default, headers: HEADER).responseJSON(completionHandler: { (response) in
-                self.dealWithAuthResponse(response: response, completion: completion)
+                self.dealWithAuthResponse(password: password, response: response, completion: completion)
             })
         }
     }
@@ -188,12 +231,15 @@ class TelegaAPI {
                 guard let url = URL(string: USERS_URL) else { return }
                 let defaultImageData = UIImage(named: "boy")?.pngData()
                 let base64 = defaultImageData?.base64EncodedString()
+                let privatePem = try keyPair.privateKey.pemString()
+                let encryptedPrivatePem = try self.encryptMessage(message: privatePem, encryptionKey: password)
+                print(encryptedPrivatePem)
                 let body = [
                     "email": email,
                     "password": password,
                     "username": username,
                     "avatar": base64!,
-                    "privatePem": try keyPair.privateKey.pemString(),
+                    "privatePem": encryptedPrivatePem,
                     "publicPem": try keyPair.publicKey.pemString()
                     ] as [String : Any]
                 Alamofire.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: HEADER).responseJSON { (response) in
@@ -205,6 +251,21 @@ class TelegaAPI {
         }
     }
     
+    func encryptMessage(message: String, encryptionKey: String) throws -> String {
+        let messageData = message.data(using: .utf8)!
+        let cipherData = RNCryptor.encrypt(data: messageData, withPassword: encryptionKey)
+        return cipherData.base64EncodedString()
+    }
+    
+    func decryptMessage(encryptedMessage: String, encryptionKey: String) throws -> String {
+        
+        let encryptedData = Data.init(base64Encoded: encryptedMessage)!
+        let decryptedData = try RNCryptor.decrypt(data: encryptedData, withPassword: encryptionKey)
+        let decryptedString = String(data: decryptedData, encoding: .utf8)!
+        
+        return decryptedString
+    }
+    
     private func dealWithRegResponse(response: DataResponse<Any>,
                                      completion: @escaping (_ result: Bool, _ message: String) -> ()) {
         guard let data = response.value as? [String : Any] else { completion(false, "Something went wrong"); return }
@@ -214,7 +275,7 @@ class TelegaAPI {
         completion(true, data["message"] as! String)
     }
     
-    private func dealWithAuthResponse(response: DataResponse<Any>,
+    private func dealWithAuthResponse(password: String, response: DataResponse<Any>,
                                       completion: @escaping (_ result: Bool, _ message: String) -> ()) {
         
         guard let data = response.value as? [String : Any] else { completion(false, "Something went wrong"); return }
@@ -222,7 +283,11 @@ class TelegaAPI {
             return completion(false, error as! String)
         }
         DataService.instance.token = (data["token"] as! String)
-//        print(DataService.instance.token!)
+        do {
+            DataService.instance.privatePem = try self.decryptMessage(encryptedMessage: (data["privatePem"] as! String), encryptionKey: password)
+            print(DataService.instance.privatePem!)
+        } catch { completion(false, "Could not get private key") }
+        
         updateInfoAboutSelf {
             TelegaAPI.instanse.establishConnection()
             completion(true, "Logged in as \(data["username"] as! String)")

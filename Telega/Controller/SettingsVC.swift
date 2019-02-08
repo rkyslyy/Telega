@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVKit
 import Gifu
 
 class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -16,6 +17,7 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     @IBOutlet weak var avatarView: CircleImageView!
     @IBOutlet weak var emailLbl: UILabel!
     @IBOutlet weak var usernameTxtFld: UITextField!
+    @IBOutlet weak var logoutBtn: UIButton!
     
     // Constants
     let pickerController = UIImagePickerController()
@@ -56,10 +58,49 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     }
     
     @IBAction func changeAvatarPressed(_ sender: Any) {
-        
-        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-            present(pickerController, animated: true, completion: nil)
+
+        UIView.animate(withDuration: 0.2) {
+            self.logoutBtn.alpha = 0
         }
+        
+        let alert = UIAlertController(title: "Choose source", message: nil, preferredStyle: .actionSheet)
+        let pickFromLibrary = UIAlertAction(title: "Take from photo library", style: .default) { (_) in
+            UIView.animate(withDuration: 0.2) {
+                self.logoutBtn.alpha = 1
+            }
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                
+                self.present(self.pickerController, animated: true, completion: nil)
+            }
+        }
+        let takePhoto = UIAlertAction(title: "Take photo with camera", style: .default) { (_) in
+            UIView.animate(withDuration: 0.2) {
+                self.logoutBtn.alpha = 1
+            }
+            AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
+                if response {
+                    DispatchQueue.main.async {
+                        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                            self.pickerController.sourceType = .camera
+                            self.present(self.pickerController, animated: true, completion: nil)
+                        } else {
+                            let alert = UIAlertController(title: "Sorry", message: "Camera is not available on this device", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                            
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                    }
+                }
+            }
+        }
+        alert.addAction(pickFromLibrary)
+        alert.addAction(takePhoto)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
+            UIView.animate(withDuration: 0.2) {
+                self.logoutBtn.alpha = 1
+            }
+        }))
+        present(alert, animated: true, completion: nil)
     }
     
     @IBAction func savePressed(_ sender: Any) {

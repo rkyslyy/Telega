@@ -14,6 +14,7 @@ struct User {
     let email: String
     let username: String
     let avatar: String
+    let publicPem: String
     let confirmed: Bool
     let requestIsMine: Bool
 }

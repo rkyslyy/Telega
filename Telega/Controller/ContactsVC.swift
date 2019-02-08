@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyRSA
 
 class ContactsVC: UIViewController {
 
@@ -87,7 +88,12 @@ extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? DialogueVC {
             let contact = sender as! User
-            dest.dialogueTitle = contact.username
+            dest.companion = contact
+            do {
+                dest.companionPublicKey = try PublicKey(pemEncoded: contact.publicPem)
+            } catch {
+                
+            }
         }
     }
     

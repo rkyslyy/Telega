@@ -95,7 +95,7 @@ class AuthVC: UIViewController {
     @IBAction func doneBtnPressed(_ sender: Any) {
         view.endEditing(true)
         guard let credentials = getCredentials() else { return }
-        let email = credentials.email
+        let email = credentials.email.lowercased()
         let password = credentials.password
         let username = credentials.username
         let creating = creatingAccnt

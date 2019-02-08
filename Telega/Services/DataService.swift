@@ -76,6 +76,8 @@ class DataService {
         }
     }
     
+    var userMessages = [String:[Message]]()
+    
     func logout() {
         TelegaAPI.instanse.disconnect()
         token = nil
