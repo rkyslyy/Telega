@@ -22,6 +22,7 @@
 		BF28251D220DC65600FE42CA /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF28251C220DC65600FE42CA /* MessageCell.swift */; };
 		BF28251F220DC85E00FE42CA /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF28251E220DC85E00FE42CA /* Message.swift */; };
 		BF282521220E2A0600FE42CA /* MessageLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF282520220E2A0600FE42CA /* MessageLabel.swift */; };
+		BF2B30AD220EE109001E9C47 /* light.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BF2B30AC220EE109001E9C47 /* light.mp3 */; };
 		BF3EADD8220CD19800D0B718 /* DialogueVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EADD7220CD19800D0B718 /* DialogueVC.swift */; };
 		BF73C0EE2209A10E00353FF1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73C0ED2209A10E00353FF1 /* User.swift */; };
 		BF73C0F02209DA0F00353FF1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73C0EF2209DA0F00353FF1 /* ContactCell.swift */; };
@@ -61,6 +62,7 @@
 		BF28251C220DC65600FE42CA /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		BF28251E220DC85E00FE42CA /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		BF282520220E2A0600FE42CA /* MessageLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLabel.swift; sourceTree = "<group>"; };
+		BF2B30AC220EE109001E9C47 /* light.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = light.mp3; sourceTree = "<group>"; };
 		BF3EADD7220CD19800D0B718 /* DialogueVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogueVC.swift; sourceTree = "<group>"; };
 		BF73C0ED2209A10E00353FF1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		BF73C0EF2209DA0F00353FF1 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				BF9E32002202213500187310 /* ripple.gif */,
 				BF282515220D9C3700FE42CA /* RNCryptor.swift */,
 				BF282517220D9C5300FE42CA /* RNCryptor.h */,
+				BF2B30AC220EE109001E9C47 /* light.mp3 */,
 				BF087FE121FF47E300CFA8BB /* Services */,
 				BF087FE021FF47DF00CFA8BB /* Model */,
 				BF087FDF21FF47D700CFA8BB /* View */,
@@ -266,6 +269,7 @@
 			files = (
 				BF087FD721FF453500CFA8BB /* LaunchScreen.storyboard in Resources */,
 				BF087FD421FF453500CFA8BB /* Assets.xcassets in Resources */,
+				BF2B30AD220EE109001E9C47 /* light.mp3 in Resources */,
 				BF9E31F322020BA500187310 /* AuthLoadingXIB.xib in Resources */,
 				BF9E31F72202135A00187310 /* black.gif in Resources */,
 				BF9E32012202213500187310 /* ripple.gif in Resources */,

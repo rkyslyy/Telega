@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyRSA
+import AVFoundation
 
 class DialogueVC: UIViewController {
     
@@ -21,6 +22,7 @@ class DialogueVC: UIViewController {
     var companion: User!
     var companionPublicKey: PublicKey?
     var oldCount: Int!
+    var messageSound: AVAudioPlayer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,25 +39,7 @@ class DialogueVC: UIViewController {
         view.addGestureRecognizer(tap)
         
         view.bindToKeyboard()
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    
-//    @objc func keyboardWillShow(notification: NSNotification) {
-//        print("GOT NOTIF")
-//        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-//            if self.view.frame.origin.y == 0 {
-//                self.view.frame.origin.y -= keyboardSize.height
-//            }
-//        }
-//    }
-//
-//    @objc func keyboardWillHide(notification: NSNotification) {
-//        if self.view.frame.origin.y != 0 {
-//            self.view.frame.origin.y = 0
-//        }
-//    }
     
     @objc func hideKeyboard(tap: UITapGestureRecognizer) {
         let tapLocation = tap.location(in: sendBtn)
@@ -67,25 +51,27 @@ class DialogueVC: UIViewController {
     
     @objc private func messagesUpdated(notification: Notification) {
         if let idToUpdate = notification.userInfo?["companionID"] as? String {
-            print("DONDO")
             if idToUpdate == companion.id {
-//                print("OLD COUNT: \(oldCount) | NEW COUNT: \(DataService.instance.userMessages[companion.id]!.count)")
-                let diff = DataService.instance.userMessages[companion.id]!.count - oldCount
-//                print(diff)
-                var indexPaths = [IndexPath]()
-                for n in 0..<diff {
-                    indexPaths.append(IndexPath(row: n, section: 0))
-                }
-                print("old count set to", oldCount)
+                playSound()
                 messagesTable.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
                 oldCount = DataService.instance.userMessages[companion.id]!.count
             }
         }
     }
     
+    private func playSound() {
+        guard let path = Bundle.main.path(forResource: "light", ofType:"mp3") else { print("COULD NOT GET RESOURCE"); return }
+        print("WE GOT PATH")
+        let url = URL(fileURLWithPath: path)
+        do {
+            self.messageSound = try AVAudioPlayer(contentsOf: url)
+            messageSound?.play()
+        } catch { print("COULD NOT GET FILE") }
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         if companionPublicKey == nil {
-            let alert = UIAlertController(title: "Erro", message: "We got a problem with this contact's public key", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Error", message: "We got a problem with this contact's public key", preferredStyle: .alert)
             let sad = UIAlertAction(title: "That's sad", style: .default) { (_) in
                 self.navigationController?.popViewController(animated: true)
             }
@@ -126,25 +112,10 @@ class DialogueVC: UIViewController {
 
 extension DialogueVC: UITextViewDelegate {
     
-//    func textViewDidBeginEditing(_ textView: UITextView) {
-//        UIView.animate(withDuration: 0.4) {
-//            self.view.frame.size.height -= 260
-//            self.view.layoutIfNeeded()
-//        }
-//    }
-//
-//    func textViewDidEndEditing(_ textView: UITextView) {
-//        UIView.animate(withDuration: 0.1) {
-//            self.view.frame.size.height += 260
-//            self.view.layoutIfNeeded()
-//        }
-//    }
-    
     func textViewDidChange(_ textView: UITextView) {
         let fixedWidth = textView.frame.size.width
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         messageViewHeightConstraint.constant = newSize.height + 20
-        print(messageViewHeightConstraint.constant)
     }
 }
 
@@ -168,8 +139,6 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
                 cell.infoView.clipsToBounds = true
                 cell.infoView.layer.cornerRadius = 10
                 cell.infoView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-                
-                
                 if messages.reversed()[indexPath.row].mine {
                     cell.lanchor.isActive = false
                     cell.ranchor.isActive = true

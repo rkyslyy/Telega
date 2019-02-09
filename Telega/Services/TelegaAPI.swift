@@ -59,11 +59,8 @@ class TelegaAPI {
             }
         }
         manager.defaultSocket.on("update messages") { (responses, _) in
-            print("GOT EMIT BOIIII")
             let dudeID = responses[0] as! String
-            print(DataService.instance.userMessages[dudeID]?.count ?? "EMPTY")
             self.updateInfoAboutSelf {
-                print(DataService.instance.userMessages[dudeID]?.count ?? "EMPTY")
                 NotificationCenter.default.post(name: MESSAGES_UPDATED, object: nil, userInfo: ["companionID":dudeID])
             }
         }
