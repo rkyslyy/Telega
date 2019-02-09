@@ -14,6 +14,7 @@ class MessageCell: UITableViewCell {
     @IBOutlet weak var leftCon: NSLayoutConstraint!
     @IBOutlet weak var rightCon: NSLayoutConstraint!
     @IBOutlet weak var messageText: UILabel!
+    @IBOutlet weak var infoView: UIView!
     
     // Variables
     var lanchor: NSLayoutConstraint!

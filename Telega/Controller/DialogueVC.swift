@@ -165,6 +165,11 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
                 cell.messageText.text = try decrypted.string(encoding: .utf8)
                 cell.lanchor = cell.leftCon
                 cell.ranchor = cell.rightCon
+                cell.infoView.clipsToBounds = true
+                cell.infoView.layer.cornerRadius = 10
+                cell.infoView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+                
+                
                 if messages.reversed()[indexPath.row].mine {
                     cell.lanchor.isActive = false
                     cell.ranchor.isActive = true
@@ -208,5 +213,12 @@ extension UIView {
                                 animations: {
                                     self.frame.size.height -= deltaY
         }, completion: nil)
+    }
+    
+    func roundCorners(corners: UIRectCorner, radius: CGFloat) {
+        let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        layer.mask = mask
     }
 }
