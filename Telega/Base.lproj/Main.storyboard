@@ -125,7 +125,7 @@
             </objects>
             <point key="canvasLocation" x="1688.8" y="-320.68965517241384"/>
         </scene>
-        <!--Title-->
+        <!--Dialogue-->
         <scene sceneID="chr-b4-5iy">
             <objects>
                 <viewController id="WUf-Zd-dEW" customClass="DialogueVC" customModule="Telega" customModuleProvider="target" sceneMemberID="viewController">
@@ -145,7 +145,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="137"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message text" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsd-dy-POP" customClass="MessageLabel" customModule="Telega" customModuleProvider="target">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message text" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsd-dy-POP" customClass="MessageLabel" customModule="Telega" customModuleProvider="target">
                                                     <rect key="frame" x="15" y="9" width="345" height="119"/>
                                                     <color key="backgroundColor" red="0.16078431369999999" green="0.16862745100000001" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
@@ -172,7 +172,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AiM-te-bjf">
                                 <rect key="frame" x="0.0" y="560" width="375" height="58"/>
                                 <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="Message here" translatesAutoresizingMaskIntoConstraints="NO" id="2WG-MC-Y4C" customClass="MessageInputView" customModule="Telega" customModuleProvider="target">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2WG-MC-Y4C" customClass="MessageInputView" customModule="Telega" customModuleProvider="target">
                                         <rect key="frame" x="25" y="10" width="280" height="38"/>
                                         <color key="backgroundColor" red="0.082338817420000002" green="0.082361035050000003" blue="0.082337401810000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -215,7 +215,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cff-Be-tFv"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="DUX-qU-LMx"/>
+                    <navigationItem key="navigationItem" title="Dialogue" id="DUX-qU-LMx"/>
                     <connections>
                         <outlet property="messageInputView" destination="2WG-MC-Y4C" id="SJF-NM-dIy"/>
                         <outlet property="messageViewHeightConstraint" destination="Dgz-5c-CpB" id="PIC-lq-NsO"/>

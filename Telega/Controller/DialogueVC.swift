@@ -32,13 +32,36 @@ class DialogueVC: UIViewController {
         navigationItem.title = companion.username
         messageInputView.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(messagesUpdated(notification:)), name: MESSAGES_UPDATED, object: nil)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard(tap:)))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
+        
+        view.bindToKeyboard()
+        
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    @objc func hideKeyboard() {
-        print("HRRERERERERE")
+//    @objc func keyboardWillShow(notification: NSNotification) {
+//        print("GOT NOTIF")
+//        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+//            if self.view.frame.origin.y == 0 {
+//                self.view.frame.origin.y -= keyboardSize.height
+//            }
+//        }
+//    }
+//
+//    @objc func keyboardWillHide(notification: NSNotification) {
+//        if self.view.frame.origin.y != 0 {
+//            self.view.frame.origin.y = 0
+//        }
+//    }
+    
+    @objc func hideKeyboard(tap: UITapGestureRecognizer) {
+        let tapLocation = tap.location(in: sendBtn)
+        if sendBtn.layer.contains(tapLocation) {
+            return
+        }
         view.endEditing(true)
     }
     
@@ -78,7 +101,7 @@ class DialogueVC: UIViewController {
             return
         }
         do {
-            let clear = try ClearMessage(string: messageInputView.text!, using: .utf8)
+            let clear = try ClearMessage(string: messageInputView.text!.trimmingCharacters(in: .whitespacesAndNewlines), using: .utf8)
             let encryptedForCompanion = try clear.encrypted(with: self.companionPublicKey!, padding: .PKCS1)
             let myPublicKey = try PublicKey(pemEncoded: DataService.instance.publicPem!)
             let encryptedForMe = try clear.encrypted(with: myPublicKey, padding: .PKCS1)
@@ -90,6 +113,7 @@ class DialogueVC: UIViewController {
                 DataService.instance.userMessages[self.companion.id]!.append(newMessage)
                 self.messagesTable.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
                 self.messageInputView.text = ""
+                self.messageViewHeightConstraint.constant = 58.0
                 self.sendBtn.isEnabled = true
             }
         } catch {
@@ -102,22 +126,25 @@ class DialogueVC: UIViewController {
 
 extension DialogueVC: UITextViewDelegate {
     
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        UIView.animate(withDuration: 0.2) {
-            self.view.frame.size.height -= 260
-        }
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        UIView.animate(withDuration: 0.2) {
-            self.view.frame.size.height += 260
-        }
-    }
+//    func textViewDidBeginEditing(_ textView: UITextView) {
+//        UIView.animate(withDuration: 0.4) {
+//            self.view.frame.size.height -= 260
+//            self.view.layoutIfNeeded()
+//        }
+//    }
+//
+//    func textViewDidEndEditing(_ textView: UITextView) {
+//        UIView.animate(withDuration: 0.1) {
+//            self.view.frame.size.height += 260
+//            self.view.layoutIfNeeded()
+//        }
+//    }
     
     func textViewDidChange(_ textView: UITextView) {
         let fixedWidth = textView.frame.size.width
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         messageViewHeightConstraint.constant = newSize.height + 20
+        print(messageViewHeightConstraint.constant)
     }
 }
 
@@ -139,7 +166,6 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
                 cell.lanchor = cell.leftCon
                 cell.ranchor = cell.rightCon
                 if messages.reversed()[indexPath.row].mine {
-                    cell.messageText.textAlignment = .right
                     cell.lanchor.isActive = false
                     cell.ranchor.isActive = true
                     if cell.messageText.text?.count ?? 0 >= 35 {
@@ -162,3 +188,25 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+extension UIView {
+    
+    func bindToKeyboard() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)),
+                                               name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
+    
+    @objc func keyboardWillChangeFrame(_ notification: NSNotification) {
+        let duration = notification.userInfo![UIResponder.keyboardAnimationDurationUserInfoKey] as! Double
+        let curve = notification.userInfo![UIResponder.keyboardAnimationCurveUserInfoKey] as! UInt
+        let beginningFrame = notification.userInfo![UIResponder.keyboardFrameBeginUserInfoKey] as! CGRect
+        let endingFrame = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
+        let deltaY = beginningFrame.origin.y - endingFrame.origin.y
+        
+        UIView.animateKeyframes(withDuration: duration,
+                                delay: 0.0,
+                                options: UIView.KeyframeAnimationOptions(rawValue: curve),
+                                animations: {
+                                    self.frame.size.height -= deltaY
+        }, completion: nil)
+    }
+}
