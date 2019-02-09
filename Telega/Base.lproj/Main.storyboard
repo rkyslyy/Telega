@@ -133,7 +133,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dKI-8o-H8C">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dKI-8o-H8C">
                                 <rect key="frame" x="0.0" y="64" width="375" height="492"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -146,28 +146,38 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message text" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsd-dy-POP" customClass="MessageLabel" customModule="Telega" customModuleProvider="target">
-                                                    <rect key="frame" x="15" y="9" width="345" height="108"/>
+                                                    <rect key="frame" x="15" y="9" width="345" height="103"/>
                                                     <color key="backgroundColor" red="0.16078431369999999" green="0.16862745100000001" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Zc-nJ-iug">
-                                                    <rect key="frame" x="15" y="108" width="345" height="20"/>
+                                                    <rect key="frame" x="15" y="103" width="345" height="25"/>
                                                     <color key="backgroundColor" red="0.16078431369999999" green="0.16862745100000001" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="20" id="qWp-Zn-rsU"/>
+                                                        <constraint firstAttribute="height" constant="25" id="qWp-Zn-rsU"/>
                                                     </constraints>
                                                 </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9kx-uV-0fW">
+                                                    <rect key="frame" x="327" y="101" width="25" height="24"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="9"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="jsd-dy-POP" secondAttribute="bottom" constant="20" id="IVm-eo-vSx"/>
+                                                <constraint firstItem="9kx-uV-0fW" firstAttribute="leading" relation="lessThanOrEqual" secondItem="0cr-C8-c3l" secondAttribute="leading" constant="327" id="He7-f6-9tH"/>
+                                                <constraint firstAttribute="bottom" secondItem="jsd-dy-POP" secondAttribute="bottom" constant="25" id="IVm-eo-vSx"/>
                                                 <constraint firstAttribute="trailing" secondItem="jsd-dy-POP" secondAttribute="trailing" constant="15" id="LqF-J9-Okv"/>
                                                 <constraint firstItem="jsd-dy-POP" firstAttribute="top" secondItem="0cr-C8-c3l" secondAttribute="top" constant="9" id="R3v-j2-ueI"/>
-                                                <constraint firstItem="5Zc-nJ-iug" firstAttribute="centerX" secondItem="jsd-dy-POP" secondAttribute="centerX" id="TZn-Ru-cPm"/>
+                                                <constraint firstItem="9kx-uV-0fW" firstAttribute="top" secondItem="jsd-dy-POP" secondAttribute="bottom" constant="-11" id="aKa-MQ-sPH"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="9kx-uV-0fW" secondAttribute="bottom" constant="1" id="dKM-vA-mln"/>
                                                 <constraint firstItem="5Zc-nJ-iug" firstAttribute="width" secondItem="jsd-dy-POP" secondAttribute="width" id="ioZ-3D-Vo8"/>
                                                 <constraint firstAttribute="bottom" secondItem="5Zc-nJ-iug" secondAttribute="bottom" constant="9" id="jlz-cK-WDu"/>
                                                 <constraint firstItem="jsd-dy-POP" firstAttribute="leading" secondItem="0cr-C8-c3l" secondAttribute="leading" constant="15" id="jqm-hg-NaB"/>
+                                                <constraint firstItem="jsd-dy-POP" firstAttribute="trailingMargin" secondItem="9kx-uV-0fW" secondAttribute="trailing" id="mI1-bD-5AK"/>
+                                                <constraint firstItem="5Zc-nJ-iug" firstAttribute="leading" secondItem="jsd-dy-POP" secondAttribute="leading" id="n8s-Td-OpU"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -176,6 +186,7 @@
                                             <outlet property="leftCon" destination="jqm-hg-NaB" id="NxG-cF-hNA"/>
                                             <outlet property="messageText" destination="jsd-dy-POP" id="fDx-Lf-7fb"/>
                                             <outlet property="rightCon" destination="LqF-J9-Okv" id="XFa-VG-Dpw"/>
+                                            <outlet property="timeLbl" destination="9kx-uV-0fW" id="MPl-ZE-jXD"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -202,7 +213,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.16078431369999999" green="0.16862745100000001" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.25050279498100281" green="0.26210108399391174" blue="0.29946470260620117" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="LQ3-BQ-XgH" secondAttribute="bottom" constant="12" id="6Vy-L7-enO"/>
                                     <constraint firstAttribute="height" constant="58" id="Dgz-5c-CpB"/>
@@ -228,6 +239,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Dialogue" id="DUX-qU-LMx"/>
                     <connections>
+                        <outlet property="messageContentView" destination="AiM-te-bjf" id="mzp-XM-51S"/>
                         <outlet property="messageInputView" destination="2WG-MC-Y4C" id="SJF-NM-dIy"/>
                         <outlet property="messageViewHeightConstraint" destination="Dgz-5c-CpB" id="PIC-lq-NsO"/>
                         <outlet property="messagesTable" destination="dKI-8o-H8C" id="ZDt-k1-n6d"/>

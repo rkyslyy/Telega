@@ -43,21 +43,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-//        for tuple in DataService.instance.animatables {
-//            tuple.view.layer.removeAllAnimations()
-//            switch tuple.animation {
-//            case .rotate: do {
-//                UIView.animate(withDuration: 1.0, delay: 0, options: [.repeat, .autoreverse, .allowUserInteraction], animations: {
-//                    tuple.view.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
-//                }, completion: nil)
-//                }
-//            case .scale: do {
-//                UIView.animate(withDuration: 0.5, delay: 0, options: [.repeat, .autoreverse, .allowUserInteraction], animations: {
-//                    tuple.view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-//                }, completion: nil)
-//                }
-//            }
-//        }
+        if DataService.instance.token != nil {
+            TelegaAPI.instanse.updateInfoAboutSelf {  }
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

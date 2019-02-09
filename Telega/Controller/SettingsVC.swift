@@ -69,7 +69,7 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
                 self.logoutBtn.alpha = 1
             }
             if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-                
+                self.pickerController.sourceType = .photoLibrary
                 self.present(self.pickerController, animated: true, completion: nil)
             }
         }

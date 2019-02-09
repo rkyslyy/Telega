@@ -20,7 +20,7 @@ class TelegaAPI {
     func send(message: String,
               toUserWithID id: String,
               andStoreCopyForMe messageForMe: String,
-              completion: @escaping () -> ()) {
+              completion: @escaping (String) -> ()) {
         let header = [
             "x-auth-token": DataService.instance.token!
         ]
@@ -30,9 +30,10 @@ class TelegaAPI {
             "theirID": id
         ]
         Alamofire.request(MESSAGES_URL, method: .post, parameters: body, encoding: JSONEncoding.default, headers: header).responseJSON { (response) in
-//            guard let data = response.value as? [String : Any] else { print("bad value"); return }
-            completion()
+            guard let data = response.value as? [String : Any] else { print("bad value"); completion(":("); return }
+            let time = data["time"] as! String
             print(response)
+            completion(time)
         }
     }
     
@@ -178,9 +179,19 @@ class TelegaAPI {
                         if storeID == DataService.instance.id {
                             continue
                         }
-                        let text = message["message"] as! String
+                        var text = message["message"] as! String
                         let mine = message["mine"] as! Bool
-                        let messageToSave = Message(text: text, mine: mine)
+                        let timeStr = message["time"] as! String
+                        let dateFormatter = ISO8601DateFormatter()
+                        dateFormatter.timeZone = TimeZone(abbreviation: "EET")
+                        let time = dateFormatter.date(from:timeStr.components(separatedBy: ".")[0] + "-0200")!
+                        do {
+                            let encrypted = try EncryptedMessage(base64Encoded: text)
+                            let privateKey = try PrivateKey(pemEncoded: DataService.instance.privatePem!)
+                            let decrypted = try encrypted.decrypted(with: privateKey, padding: .PKCS1)
+                            text = try decrypted.string(encoding: .utf8)
+                        } catch { text = "Bad decryption" }
+                        let messageToSave = Message(text: text, time: time, mine: mine)
                         if DataService.instance.userMessages[storeID] == nil {
                             DataService.instance.userMessages[storeID] = [Message]()
                         }

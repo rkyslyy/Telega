@@ -9,11 +9,13 @@
 import UIKit
 import SwiftyRSA
 import AVFoundation
+import Gifu
 
 class DialogueVC: UIViewController {
     
     // Outlets
     @IBOutlet weak var messagesTable: UITableView!
+    @IBOutlet weak var messageContentView: UIView!
     @IBOutlet weak var messageInputView: MessageInputView!
     @IBOutlet weak var messageViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var sendBtn: UIButton!
@@ -52,7 +54,7 @@ class DialogueVC: UIViewController {
     @objc private func messagesUpdated(notification: Notification) {
         if let idToUpdate = notification.userInfo?["companionID"] as? String {
             if idToUpdate == companion.id {
-                playSound()
+//                playSound()
                 messagesTable.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
                 oldCount = DataService.instance.userMessages[companion.id]!.count
             }
@@ -83,6 +85,10 @@ class DialogueVC: UIViewController {
     
     @IBAction func sendBtnPressed() {
         sendBtn.isEnabled = false
+        sendBtn.isHidden = true
+        let gif = GIFImageView(frame: sendBtn.frame)
+        gif.animate(withGIFNamed: "ripple")
+        messageContentView.addSubview(gif)
         if messageInputView.text == nil || messageInputView.text == "" {
             return
         }
@@ -91,8 +97,11 @@ class DialogueVC: UIViewController {
             let encryptedForCompanion = try clear.encrypted(with: self.companionPublicKey!, padding: .PKCS1)
             let myPublicKey = try PublicKey(pemEncoded: DataService.instance.publicPem!)
             let encryptedForMe = try clear.encrypted(with: myPublicKey, padding: .PKCS1)
-            TelegaAPI.instanse.send(message: encryptedForCompanion.base64String, toUserWithID: companion.id, andStoreCopyForMe: encryptedForMe.base64String) {
-                let newMessage = Message(text: encryptedForMe.base64String, mine: true)
+            TelegaAPI.instanse.send(message: encryptedForCompanion.base64String, toUserWithID: companion.id, andStoreCopyForMe: encryptedForMe.base64String) {time in
+                let dateFormatter = ISO8601DateFormatter()
+                dateFormatter.timeZone = TimeZone(abbreviation: "EET")
+                let time = dateFormatter.date(from:time.components(separatedBy: ".")[0] + "-0200")!
+                let newMessage = Message(text:self.messageInputView.text, time: time, mine: true)
                 if DataService.instance.userMessages[self.companion.id] == nil {
                     DataService.instance.userMessages[self.companion.id] = [Message]()
                 }
@@ -101,10 +110,14 @@ class DialogueVC: UIViewController {
                 self.messageInputView.text = ""
                 self.messageViewHeightConstraint.constant = 58.0
                 self.sendBtn.isEnabled = true
+                self.sendBtn.isHidden = false
+                gif.removeFromSuperview()
             }
         } catch {
             print("COULD NOT SEND MESSAGE")
-            sendBtn.isEnabled = true
+            self.sendBtn.isEnabled = true
+            self.sendBtn.isHidden = false
+            gif.removeFromSuperview()
         }
     }
     
@@ -129,35 +142,47 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell") as! MessageCell
         cell.transform = CGAffineTransform(rotationAngle: (-.pi))
         if let messages = DataService.instance.userMessages[companion.id] {
-            do {
-                let encrypted = try EncryptedMessage(base64Encoded: messages.reversed()[indexPath.row].text)
-                let privateKey = try PrivateKey(pemEncoded: DataService.instance.privatePem!)
-                let decrypted = try encrypted.decrypted(with: privateKey, padding: .PKCS1)
-                cell.messageText.text = try decrypted.string(encoding: .utf8)
-                cell.lanchor = cell.leftCon
-                cell.ranchor = cell.rightCon
-                cell.infoView.clipsToBounds = true
-                cell.infoView.layer.cornerRadius = 10
-                cell.infoView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-                if messages.reversed()[indexPath.row].mine {
-                    cell.lanchor.isActive = false
-                    cell.ranchor.isActive = true
-                    if cell.messageText.text?.count ?? 0 >= 35 {
-                        cell.lanchor.isActive = true
-                    }
-                } else {
-                    cell.lanchor.isActive = true
-                    cell.ranchor.isActive = false
-                    if cell.messageText.text?.count ?? 0 >= 35 {
-                        cell.ranchor.isActive = true
-                    }
+            let message = messages.reversed()[indexPath.row]
+            var text = message.text
+            if text.count <= 5 {
+                for _ in 0..<10 - text.count {
+                    text += " "
                 }
-            } catch {
-                return cell
+            }
+            cell.messageText.text = text
+            cell.lanchor = cell.leftCon
+            cell.ranchor = cell.rightCon
+            cell.infoView.clipsToBounds = true
+            cell.infoView.layer.cornerRadius = 10
+            cell.infoView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+            let timi = message.time.description.components(separatedBy: " ")[1]
+            let hours = timi.components(separatedBy: ":")[0]
+            let minutes = timi.components(separatedBy: ":")[1]
+            cell.timeLbl.text = hours + ":" + minutes
+            if messages.reversed()[indexPath.row].mine {
+                cell.lanchor.isActive = false
+                cell.ranchor.isActive = true
+                if cell.messageText.text?.count ?? 0 >= 35 {
+                    cell.lanchor.isActive = true
+                }
+                cell.mine = true
+            } else {
+                cell.lanchor.isActive = true
+                cell.ranchor.isActive = false
+                if cell.messageText.text?.count ?? 0 >= 35 {
+                    cell.ranchor.isActive = true
+                }
+                cell.mine = false
             }
             return cell
         } else {
             return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell") as? MessageCell {
+            cell.tail?.removeFromSuperview()
         }
     }
 }
@@ -190,4 +215,19 @@ extension UIView {
         mask.path = path.cgPath
         layer.mask = mask
     }
+}
+
+extension Date {
+    
+    func isToday() -> Bool {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy:MM:dd"
+        let result = formatter.string(from: date)
+        let todayStr = result.components(separatedBy: " ")[0]
+        let target = formatter.string(from: self)
+        let targetStr = target.components(separatedBy: " ")[0]
+        return todayStr == targetStr
+    }
+    
 }
