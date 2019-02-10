@@ -197,6 +197,7 @@ class TelegaAPI {
                         }
                         DataService.instance.userMessages[storeID]?.append(messageToSave)
                     }
+                    self.buildMessages(messages: messages)
                     let contactsData = user["contacts"] as! [[String : Any]]
                     let contacts = contactsData.map({ (contact) -> User in
                         let _id = contact["_id"] as! String
@@ -213,6 +214,50 @@ class TelegaAPI {
                 })
             }
         }
+    }
+    
+    func buildMessages(messages: [[String:Any]]) {
+        var structuredMessagesDict = [String:[String:[Message]]]()
+        for message in messages {
+            if (message["storeID"] as! String) == DataService.instance.id! {
+                continue
+            }
+            let storeID = (message["storeID"] as! String)
+            if structuredMessagesDict[storeID] == nil {
+                structuredMessagesDict[storeID] = [String:[Message]]()
+            }
+        }
+        for message in messages {
+            if structuredMessagesDict[message["storeID"] as! String] == nil {
+                continue
+            }
+            let storeID = (message["storeID"] as! String)
+            let time = (message["time"] as! String).components(separatedBy: "T")[0]
+            if structuredMessagesDict[storeID]![time] == nil {
+                structuredMessagesDict[storeID]![time] = [Message]()
+            }
+        }
+        for message in messages {
+            if structuredMessagesDict[message["storeID"] as! String] == nil {
+                continue
+            }
+            let storeID = (message["storeID"] as! String)
+            let timeStr = (message["time"] as! String)
+            let mine = message["mine"] as! Bool
+            var text = message["message"] as! String
+            do {
+                let encrypted = try EncryptedMessage(base64Encoded: text)
+                let privateKey = try PrivateKey(pemEncoded: DataService.instance.privatePem!)
+                let decrypted = try encrypted.decrypted(with: privateKey, padding: .PKCS1)
+                text = try decrypted.string(encoding: .utf8)
+            } catch { text = "Bad decryption" }
+            let dateFormatter = ISO8601DateFormatter()
+            dateFormatter.timeZone = TimeZone(abbreviation: "EET")
+            let time = dateFormatter.date(from:timeStr.components(separatedBy: ".")[0] + "-0200")!
+            let messageToSave = Message(text: text, time: time, mine: mine)
+            structuredMessagesDict[storeID]![timeStr.components(separatedBy: "T")[0]]!.append(messageToSave)
+        }
+        print(structuredMessagesDict)
     }
     
     func authorizeUserWith(email: String,

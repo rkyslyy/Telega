@@ -121,6 +121,8 @@ class DialogueVC: UIViewController {
         }
     }
     
+    
+    
 }
 
 extension DialogueVC: UITextViewDelegate {
