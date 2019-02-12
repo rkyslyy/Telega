@@ -54,9 +54,7 @@ class DialogueVC: UIViewController {
     @objc private func messagesUpdated(notification: Notification) {
         if let idToUpdate = notification.userInfo?["companionID"] as? String {
             if idToUpdate == companion.id {
-//                playSound()
                 messagesTable.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
-                oldCount = DataService.instance.userMessages[companion.id]!.count
             }
         }
     }
@@ -97,16 +95,38 @@ class DialogueVC: UIViewController {
             let encryptedForCompanion = try clear.encrypted(with: self.companionPublicKey!, padding: .PKCS1)
             let myPublicKey = try PublicKey(pemEncoded: DataService.instance.publicPem!)
             let encryptedForMe = try clear.encrypted(with: myPublicKey, padding: .PKCS1)
-            TelegaAPI.instanse.send(message: encryptedForCompanion.base64String, toUserWithID: companion.id, andStoreCopyForMe: encryptedForMe.base64String) {time in
+            TelegaAPI.instanse.send(message: encryptedForCompanion.base64String, toUserWithID: companion.id, andStoreCopyForMe: encryptedForMe.base64String) {timeStr in
                 let dateFormatter = ISO8601DateFormatter()
                 dateFormatter.timeZone = TimeZone(abbreviation: "EET")
-                let time = dateFormatter.date(from:time.components(separatedBy: ".")[0] + "-0200")!
+                let time = dateFormatter.date(from:timeStr.components(separatedBy: ".")[0] + "-0200")!
                 let newMessage = Message(text:self.messageInputView.text, time: time, mine: true)
-                if DataService.instance.userMessages[self.companion.id] == nil {
-                    DataService.instance.userMessages[self.companion.id] = [Message]()
+                var created = false
+                if DataService.instance.messages[self.companion.id] != nil {
+                    print("WE GOT MESSAGES WITH USER")
+                    for (index, tuple) in DataService.instance.messages[self.companion.id]!.enumerated() {
+                        if tuple.date == timeStr.components(separatedBy: "T")[0] {
+                            created = true
+                            print("DATE ALREADY EXISTED")
+                            DataService.instance.messages[self.companion.id]![index].messages.append(newMessage)
+                        }
+                    }
+                    if !created {
+                        print("DATE DIDN'T EXIST")
+                        DataService.instance.messages[self.companion.id]!.append((date: timeStr.components(separatedBy: "T")[0] , messages: [Message]()))
+                        self.messagesTable.insertSections(IndexSet(integer: 0), with: .top)
+                        print("SECTIONS INSERTED")
+//                        self.messagesTable.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
+//                        print("ROWS INSERTED")
+                    } else {
+                        self.messagesTable.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
+                    }
+                } else {
+                    print("NO MESSAGES WITH USER")
+                    DataService.instance.messages[self.companion.id] = [(date: String, messages: [Message])]()
+                    DataService.instance.messages[self.companion.id]!.append((date: timeStr.components(separatedBy: "T")[0], messages: [Message]()))
+                    DataService.instance.messages[self.companion.id]![0].messages.append(newMessage)
+                    self.messagesTable.reloadData()
                 }
-                DataService.instance.userMessages[self.companion.id]!.append(newMessage)
-                self.messagesTable.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
                 self.messageInputView.text = ""
                 self.messageViewHeightConstraint.constant = 58.0
                 self.sendBtn.isEnabled = true
@@ -136,14 +156,18 @@ extension DialogueVC: UITextViewDelegate {
 
 extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return DataService.instance.messages[companion.id]?.count ?? 0
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return DataService.instance.userMessages[companion.id]?.count ?? 0
+        return DataService.instance.messages[companion.id]?[section].messages.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell") as! MessageCell
         cell.transform = CGAffineTransform(rotationAngle: (-.pi))
-        if let messages = DataService.instance.userMessages[companion.id] {
+        if let messages = DataService.instance.messages[companion.id]?[indexPath.section].messages {
             let message = messages.reversed()[indexPath.row]
             var text = message.text
             if text.count <= 5 {
@@ -186,6 +210,30 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell") as? MessageCell {
             cell.tail?.removeFromSuperview()
         }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 20))
+        let attributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.darkGray,
+            NSAttributedString.Key.font: UIFont(name: "Avenir Next", size: 14)!
+        ]
+        var sectionDateStr = DataService.instance.messages[companion.id]![section].date
+        
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy:MM:dd"
+        let result = formatter.string(from: date)
+        let todayStr = result.components(separatedBy: " ")[0]
+        if sectionDateStr == todayStr.replacingOccurrences(of: ":", with: "-") {
+            sectionDateStr = "Today"
+        }
+        let text = NSMutableAttributedString(string: sectionDateStr, attributes: attributes)
+        label.attributedText = text
+        label.textAlignment = .center
+        label.textColor = .darkGray
+        label.transform = CGAffineTransform(scaleX: -1, y: -1)
+        return label
     }
 }
 

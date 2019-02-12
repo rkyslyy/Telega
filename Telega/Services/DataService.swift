@@ -78,7 +78,7 @@ class DataService {
     
     var userMessages = [String:[Message]]()
     
-    var messages = [String:[String:[Message]]]()
+    var messages = [String:[(date: String, messages: [Message])]]()
     
     func logout() {
         TelegaAPI.instanse.disconnect()

@@ -174,30 +174,7 @@ class TelegaAPI {
                     DataService.instance.publicPem = (user["publicPem"] as! String)
                     DataService.instance.userMessages.removeAll()
                     let messages = user["messages"] as! [[String:Any]]
-                    for message in messages {
-                        let storeID = message["storeID"] as! String
-                        if storeID == DataService.instance.id {
-                            continue
-                        }
-                        var text = message["message"] as! String
-                        let mine = message["mine"] as! Bool
-                        let timeStr = message["time"] as! String
-                        let dateFormatter = ISO8601DateFormatter()
-                        dateFormatter.timeZone = TimeZone(abbreviation: "EET")
-                        let time = dateFormatter.date(from:timeStr.components(separatedBy: ".")[0] + "-0200")!
-                        do {
-                            let encrypted = try EncryptedMessage(base64Encoded: text)
-                            let privateKey = try PrivateKey(pemEncoded: DataService.instance.privatePem!)
-                            let decrypted = try encrypted.decrypted(with: privateKey, padding: .PKCS1)
-                            text = try decrypted.string(encoding: .utf8)
-                        } catch { text = "Bad decryption" }
-                        let messageToSave = Message(text: text, time: time, mine: mine)
-                        if DataService.instance.userMessages[storeID] == nil {
-                            DataService.instance.userMessages[storeID] = [Message]()
-                        }
-                        DataService.instance.userMessages[storeID]?.append(messageToSave)
-                    }
-                    self.buildMessages(messages: messages)
+                    MessagesParser.buildMessages(messages: messages)
                     let contactsData = user["contacts"] as! [[String : Any]]
                     let contacts = contactsData.map({ (contact) -> User in
                         let _id = contact["_id"] as! String
@@ -216,49 +193,7 @@ class TelegaAPI {
         }
     }
     
-    func buildMessages(messages: [[String:Any]]) {
-        var structuredMessagesDict = [String:[String:[Message]]]()
-        for message in messages {
-            if (message["storeID"] as! String) == DataService.instance.id! {
-                continue
-            }
-            let storeID = (message["storeID"] as! String)
-            if structuredMessagesDict[storeID] == nil {
-                structuredMessagesDict[storeID] = [String:[Message]]()
-            }
-        }
-        for message in messages {
-            if structuredMessagesDict[message["storeID"] as! String] == nil {
-                continue
-            }
-            let storeID = (message["storeID"] as! String)
-            let time = (message["time"] as! String).components(separatedBy: "T")[0]
-            if structuredMessagesDict[storeID]![time] == nil {
-                structuredMessagesDict[storeID]![time] = [Message]()
-            }
-        }
-        for message in messages {
-            if structuredMessagesDict[message["storeID"] as! String] == nil {
-                continue
-            }
-            let storeID = (message["storeID"] as! String)
-            let timeStr = (message["time"] as! String)
-            let mine = message["mine"] as! Bool
-            var text = message["message"] as! String
-            do {
-                let encrypted = try EncryptedMessage(base64Encoded: text)
-                let privateKey = try PrivateKey(pemEncoded: DataService.instance.privatePem!)
-                let decrypted = try encrypted.decrypted(with: privateKey, padding: .PKCS1)
-                text = try decrypted.string(encoding: .utf8)
-            } catch { text = "Bad decryption" }
-            let dateFormatter = ISO8601DateFormatter()
-            dateFormatter.timeZone = TimeZone(abbreviation: "EET")
-            let time = dateFormatter.date(from:timeStr.components(separatedBy: ".")[0] + "-0200")!
-            let messageToSave = Message(text: text, time: time, mine: mine)
-            structuredMessagesDict[storeID]![timeStr.components(separatedBy: "T")[0]]!.append(messageToSave)
-        }
-        print(structuredMessagesDict)
-    }
+    
     
     func authorizeUserWith(email: String,
                            password: String,
@@ -346,4 +281,65 @@ class TelegaAPI {
             completion(true, "Logged in as \(data["username"] as! String)")
         }
     }
+}
+
+private class MessagesParser {
+    
+    class func buildMessages(messages: [[String:Any]]) {
+        var structuredMessagesDict = [String:[(date: String, messages: [Message])]]()
+        for message in messages {
+            if (message["storeID"] as! String) == DataService.instance.id! {
+                continue
+            }
+            let storeID = (message["storeID"] as! String)
+            if structuredMessagesDict[storeID] == nil {
+                structuredMessagesDict[storeID] = [(date: String, messages: [Message])]()
+            }
+        }
+        for message in messages {
+            let storeID = message["storeID"] as! String
+            if structuredMessagesDict[storeID] == nil {
+                continue
+            }
+            let date = (message["time"] as! String).components(separatedBy: "T")[0]
+            if !does(date: date, existIn: structuredMessagesDict[storeID]!) {
+                structuredMessagesDict[storeID]!.append((date: date, messages: [Message]()))
+            }
+        }
+        for message in messages {
+            let storeID = message["storeID"] as! String
+            if structuredMessagesDict[storeID] == nil {
+                continue
+            }
+            let date = (message["time"] as! String).components(separatedBy: "T")[0]
+            for (index, tuple) in structuredMessagesDict[storeID]!.enumerated() {
+                if tuple.date == date {
+                    var text = message["message"] as! String
+                    do {
+                        let encrypted = try EncryptedMessage(base64Encoded: text)
+                        let privateKey = try PrivateKey(pemEncoded: DataService.instance.privatePem!)
+                        let decrypted = try encrypted.decrypted(with: privateKey, padding: .PKCS1)
+                        text = try decrypted.string(encoding: .utf8)
+                    } catch { text = "Bad decryption" }
+                    
+                    let dateFormatter = ISO8601DateFormatter()
+                    dateFormatter.timeZone = TimeZone(abbreviation: "EET")
+                    let time = dateFormatter.date(from:(message["time"] as! String).components(separatedBy: ".")[0] + "-0200")!
+                    let messageToSave = Message(text: text, time: time, mine: message["mine"] as! Bool)
+                    structuredMessagesDict[storeID]![index].messages.append(messageToSave)
+                }
+            }
+        }
+        DataService.instance.messages = structuredMessagesDict
+    }
+    
+    private class func does(date: String, existIn tuples: [(date: String, messages: [Message])]) -> Bool {
+        for tuple in tuples {
+            if tuple.date == date {
+                return true
+            }
+        }
+        return false
+    }
+    
 }
