@@ -11,6 +11,21 @@ import SwiftyRSA
 import AVFoundation
 import Gifu
 
+let months = [
+    0: "Jan",
+    1: "Feb",
+    2: "Mar",
+    3: "Apr",
+    4: "May",
+    5: "Jun",
+    6: "Jul",
+    7: "Aug",
+    8: "Sep",
+    9: "Oct",
+    10: "Nov",
+    11: "Dec"
+]
+
 class DialogueVC: UIViewController {
     
     // Outlets
@@ -106,17 +121,15 @@ class DialogueVC: UIViewController {
                     for (index, tuple) in DataService.instance.messages[self.companion.id]!.enumerated() {
                         if tuple.date == timeStr.components(separatedBy: "T")[0] {
                             created = true
-                            print("DATE ALREADY EXISTED")
                             DataService.instance.messages[self.companion.id]![index].messages.append(newMessage)
+                            print("DATE ALREADY EXISTED")
                         }
                     }
                     if !created {
                         print("DATE DIDN'T EXIST")
                         DataService.instance.messages[self.companion.id]!.append((date: timeStr.components(separatedBy: "T")[0] , messages: [Message]()))
-                        self.messagesTable.insertSections(IndexSet(integer: 0), with: .top)
                         print("SECTIONS INSERTED")
-//                        self.messagesTable.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
-//                        print("ROWS INSERTED")
+                        self.messagesTable.reloadData()
                     } else {
                         self.messagesTable.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
                     }
@@ -161,13 +174,13 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return DataService.instance.messages[companion.id]?[section].messages.count ?? 0
+        return DataService.instance.messages[companion.id]?.reversed()[section].messages.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell") as! MessageCell
         cell.transform = CGAffineTransform(rotationAngle: (-.pi))
-        if let messages = DataService.instance.messages[companion.id]?[indexPath.section].messages {
+        if let messages = DataService.instance.messages[companion.id]?.reversed()[indexPath.section].messages {
             let message = messages.reversed()[indexPath.row]
             var text = message.text
             if text.count <= 5 {
@@ -218,7 +231,7 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
             NSAttributedString.Key.foregroundColor: UIColor.darkGray,
             NSAttributedString.Key.font: UIFont(name: "Avenir Next", size: 14)!
         ]
-        var sectionDateStr = DataService.instance.messages[companion.id]![section].date
+        var sectionDateStr = DataService.instance.messages[companion.id]!.reversed()[section].date
         
         let date = Date()
         let formatter = DateFormatter()
@@ -227,6 +240,15 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
         let todayStr = result.components(separatedBy: " ")[0]
         if sectionDateStr == todayStr.replacingOccurrences(of: ":", with: "-") {
             sectionDateStr = "Today"
+        } else {
+            let year = sectionDateStr.components(separatedBy: "-")[0]
+            var monthStr = sectionDateStr.components(separatedBy: "-")[1]
+            if monthStr.first == "0" {
+                monthStr.removeFirst()
+            }
+            let month = months[Int(monthStr)! - 1]!
+            let day = sectionDateStr.components(separatedBy: "-")[2]
+            sectionDateStr = "\(day) \(month), \(year)"
         }
         let text = NSMutableAttributedString(string: sectionDateStr, attributes: attributes)
         label.attributedText = text
