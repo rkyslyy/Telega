@@ -23,6 +23,7 @@
 		BF28251F220DC85E00FE42CA /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF28251E220DC85E00FE42CA /* Message.swift */; };
 		BF282521220E2A0600FE42CA /* MessageLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF282520220E2A0600FE42CA /* MessageLabel.swift */; };
 		BF2B30AD220EE109001E9C47 /* light.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BF2B30AC220EE109001E9C47 /* light.mp3 */; };
+		BF2B30B322130CD7001E9C47 /* ChangePasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2B30B222130CD7001E9C47 /* ChangePasswordVC.swift */; };
 		BF3EADD8220CD19800D0B718 /* DialogueVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EADD7220CD19800D0B718 /* DialogueVC.swift */; };
 		BF73C0EE2209A10E00353FF1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73C0ED2209A10E00353FF1 /* User.swift */; };
 		BF73C0F02209DA0F00353FF1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73C0EF2209DA0F00353FF1 /* ContactCell.swift */; };
@@ -63,6 +64,7 @@
 		BF28251E220DC85E00FE42CA /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		BF282520220E2A0600FE42CA /* MessageLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLabel.swift; sourceTree = "<group>"; };
 		BF2B30AC220EE109001E9C47 /* light.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = light.mp3; sourceTree = "<group>"; };
+		BF2B30B222130CD7001E9C47 /* ChangePasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordVC.swift; sourceTree = "<group>"; };
 		BF3EADD7220CD19800D0B718 /* DialogueVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogueVC.swift; sourceTree = "<group>"; };
 		BF73C0ED2209A10E00353FF1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		BF73C0EF2209DA0F00353FF1 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				BFF46F2D2203796700469496 /* DarkNavigationVC.swift */,
 				BFF46F2F220381A300469496 /* AddNewContactVC.swift */,
 				BF3EADD7220CD19800D0B718 /* DialogueVC.swift */,
+				BF2B30B222130CD7001E9C47 /* ChangePasswordVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -361,6 +364,7 @@
 				BF7FE4912203846900455A60 /* CircleImageView.swift in Sources */,
 				BF73C0F02209DA0F00353FF1 /* ContactCell.swift in Sources */,
 				BF73C0EE2209A10E00353FF1 /* User.swift in Sources */,
+				BF2B30B322130CD7001E9C47 /* ChangePasswordVC.swift in Sources */,
 				BF9E31F522020C4500187310 /* AuthLoading.swift in Sources */,
 				BF087FE521FF49D400CFA8BB /* CustomPlaceholderTF.swift in Sources */,
 				BF087FCB21FF453400CFA8BB /* AppDelegate.swift in Sources */,

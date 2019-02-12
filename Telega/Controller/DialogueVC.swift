@@ -55,6 +55,9 @@ class DialogueVC: UIViewController {
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         
+        messageInputView.text = "Type something"
+        messageInputView.textColor = UIColor.darkGray
+        
         view.bindToKeyboard()
     }
     
@@ -160,6 +163,20 @@ class DialogueVC: UIViewController {
 
 extension DialogueVC: UITextViewDelegate {
     
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.darkGray {
+            textView.text = nil
+            textView.textColor = UIColor.white
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Type something"
+            textView.textColor = UIColor.darkGray
+        }
+    }
+    
     func textViewDidChange(_ textView: UITextView) {
         let fixedWidth = textView.frame.size.width
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
@@ -257,6 +274,8 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
         label.transform = CGAffineTransform(scaleX: -1, y: -1)
         return label
     }
+    
+    
 }
 
 extension UIView {

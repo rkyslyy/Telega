@@ -152,6 +152,16 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
             picker.dismiss(animated: true, completion: nil)
         }
     }
+    
+    @IBAction func changePasswordBtnPressed(_ sender: Any) {
+        performSegue(withIdentifier: "toChangePassword", sender: nil)
+    }
+    
+    func hideLogoutBtn() {
+        UIView.animate(withDuration: 0.2) {
+            self.logoutBtn.alpha = 0
+        }
+    }
 }
 
 extension UIImage {

@@ -134,7 +134,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="dKI-8o-H8C">
-                                <rect key="frame" x="0.0" y="64" width="375" height="492"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="496"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -232,7 +232,7 @@
                             <constraint firstItem="dKI-8o-H8C" firstAttribute="top" secondItem="cff-Be-tFv" secondAttribute="top" id="WfF-6K-35g"/>
                             <constraint firstItem="AiM-te-bjf" firstAttribute="bottom" secondItem="cff-Be-tFv" secondAttribute="bottom" id="beY-Ma-TVq"/>
                             <constraint firstItem="cff-Be-tFv" firstAttribute="trailing" secondItem="AiM-te-bjf" secondAttribute="trailing" id="jPl-ci-RYX"/>
-                            <constraint firstItem="AiM-te-bjf" firstAttribute="top" secondItem="dKI-8o-H8C" secondAttribute="bottom" constant="4" id="sR9-bh-7BX"/>
+                            <constraint firstItem="AiM-te-bjf" firstAttribute="top" secondItem="dKI-8o-H8C" secondAttribute="bottom" id="sR9-bh-7BX"/>
                             <constraint firstItem="AiM-te-bjf" firstAttribute="leading" secondItem="cff-Be-tFv" secondAttribute="leading" id="stu-wu-2AD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cff-Be-tFv"/>
@@ -400,12 +400,22 @@
                                     <action selector="logoutPressed:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="LJN-ua-KL3"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k4G-xv-3qM">
+                                <rect key="frame" x="121" y="494" width="133" height="34"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                <state key="normal" title="Change password"/>
+                                <connections>
+                                    <action selector="changePasswordBtnPressed:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="0P6-Pp-gFh"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.082338817420000002" green="0.082361035050000003" blue="0.082337401810000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="k4G-xv-3qM" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="2e9-1D-8WB"/>
                             <constraint firstItem="70L-N2-KVT" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" constant="30" id="6Mw-Wy-euX"/>
                             <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="O76-Xq-j2t" secondAttribute="trailing" constant="20" id="BTc-Ro-KgD"/>
                             <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="ei8-xn-5el" secondAttribute="trailing" id="LL2-CJ-7ZY"/>
+                            <constraint firstItem="ei8-xn-5el" firstAttribute="top" secondItem="k4G-xv-3qM" secondAttribute="bottom" constant="30" id="Q27-XX-oJ3"/>
                             <constraint firstItem="70L-N2-KVT" firstAttribute="top" secondItem="O1u-W8-tvY" secondAttribute="top" constant="30" id="U5s-G8-RPW"/>
                             <constraint firstItem="1Sl-mT-i2c" firstAttribute="top" secondItem="70L-N2-KVT" secondAttribute="top" id="UiD-BX-brx"/>
                             <constraint firstItem="ei8-xn-5el" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" id="YYe-et-0ow"/>
@@ -430,11 +440,109 @@
                         <outlet property="logoutBtn" destination="ei8-xn-5el" id="TLY-b3-ujs"/>
                         <outlet property="saveBtn" destination="HsB-WH-VTh" id="KYc-D2-jhB"/>
                         <outlet property="usernameTxtFld" destination="nRN-sI-PMV" id="mMd-DH-prL"/>
+                        <segue destination="Mea-C3-3JS" kind="presentation" identifier="toChangePassword" animates="NO" modalPresentationStyle="overFullScreen" id="b5u-HB-wAq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1688.8" y="359.37031484257875"/>
+        </scene>
+        <!--Change PasswordVC-->
+        <scene sceneID="d2D-RW-yDW">
+            <objects>
+                <viewController id="Mea-C3-3JS" customClass="ChangePasswordVC" customModule="Telega" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Grc-C7-ste">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lib-1U-T4f">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="6yY-IH-k6G">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GhM-vE-geL" customClass="RoundedView" customModule="Telega" customModuleProvider="target">
+                                <rect key="frame" x="60" y="233.5" width="255" height="200"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="17" translatesAutoresizingMaskIntoConstraints="NO" id="WYQ-Et-Fp9">
+                                        <rect key="frame" x="25" y="36.5" width="205" height="77"/>
+                                        <subviews>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="New password" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="a70-Pl-mF6" customClass="CustomPlaceholderTF" customModule="Telega" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="205" height="30"/>
+                                                <color key="backgroundColor" white="0.047697773020000001" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" keyboardAppearance="alert" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                            </textField>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm new password" textAlignment="natural" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="1P6-L0-66a" customClass="CustomPlaceholderTF" customModule="Telega" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="47" width="205" height="30"/>
+                                                <color key="backgroundColor" white="0.047697773020000001" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="alphabet" keyboardAppearance="alert" secureTextEntry="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="a70-Pl-mF6" firstAttribute="leading" secondItem="WYQ-Et-Fp9" secondAttribute="leading" id="MzL-Qa-U8Q"/>
+                                            <constraint firstAttribute="trailing" secondItem="a70-Pl-mF6" secondAttribute="trailing" id="UI3-Sx-odx"/>
+                                            <constraint firstItem="1P6-L0-66a" firstAttribute="leading" secondItem="WYQ-Et-Fp9" secondAttribute="leading" id="iGT-Sx-Vvo"/>
+                                            <constraint firstAttribute="trailing" secondItem="1P6-L0-66a" secondAttribute="trailing" id="iXq-9w-54W"/>
+                                        </constraints>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qlt-Ne-eRG">
+                                        <rect key="frame" x="96.5" y="133.5" width="62" height="36"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
+                                        <state key="normal" title="Change">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="changeBtnPressed:" destination="Mea-C3-3JS" eventType="touchUpInside" id="AS6-S0-Spr"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.16078431369999999" green="0.16862745100000001" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="2aY-nN-ceR"/>
+                                    <constraint firstItem="WYQ-Et-Fp9" firstAttribute="leading" secondItem="gJi-Z8-LgH" secondAttribute="leading" constant="25" id="4en-FV-LAY"/>
+                                    <constraint firstItem="Qlt-Ne-eRG" firstAttribute="top" secondItem="WYQ-Et-Fp9" secondAttribute="bottom" constant="20" id="CSr-Qp-ioO"/>
+                                    <constraint firstItem="WYQ-Et-Fp9" firstAttribute="centerY" secondItem="GhM-vE-geL" secondAttribute="centerY" constant="-25" id="G5B-XQ-JnI"/>
+                                    <constraint firstItem="gJi-Z8-LgH" firstAttribute="trailing" secondItem="WYQ-Et-Fp9" secondAttribute="trailing" constant="25" id="eSp-2G-Gov"/>
+                                    <constraint firstItem="Qlt-Ne-eRG" firstAttribute="centerX" secondItem="GhM-vE-geL" secondAttribute="centerX" id="oyp-6c-Fgm"/>
+                                </constraints>
+                                <viewLayoutGuide key="safeArea" id="gJi-Z8-LgH"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="GhM-vE-geL" firstAttribute="leading" secondItem="IwV-P3-hlY" secondAttribute="leading" constant="60" id="91t-Wa-ngc"/>
+                            <constraint firstItem="IwV-P3-hlY" firstAttribute="trailing" secondItem="Lib-1U-T4f" secondAttribute="trailing" id="W8K-H6-0Gj"/>
+                            <constraint firstItem="Lib-1U-T4f" firstAttribute="top" secondItem="IwV-P3-hlY" secondAttribute="top" id="cIR-KL-nO5"/>
+                            <constraint firstItem="Lib-1U-T4f" firstAttribute="leading" secondItem="IwV-P3-hlY" secondAttribute="leading" id="eG8-jL-gM4"/>
+                            <constraint firstItem="GhM-vE-geL" firstAttribute="centerY" secondItem="Grc-C7-ste" secondAttribute="centerY" id="eNj-Jy-y7I"/>
+                            <constraint firstItem="IwV-P3-hlY" firstAttribute="trailing" secondItem="GhM-vE-geL" secondAttribute="trailing" constant="60" id="j2U-au-ChX"/>
+                            <constraint firstItem="IwV-P3-hlY" firstAttribute="bottom" secondItem="Lib-1U-T4f" secondAttribute="bottom" id="rcP-G8-9Ru"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="IwV-P3-hlY"/>
+                    </view>
+                    <connections>
+                        <outlet property="blurredMask" destination="Lib-1U-T4f" id="Eqp-16-eU6"/>
+                        <outlet property="changeBtn" destination="Qlt-Ne-eRG" id="ehs-4E-rEh"/>
+                        <outlet property="confPassTxtFld" destination="1P6-L0-66a" id="8Y6-ys-2Uf"/>
+                        <outlet property="passTxtFld" destination="a70-Pl-mF6" id="E6f-TW-M1g"/>
+                        <outlet property="window" destination="GhM-vE-geL" id="0y1-QH-9f0"/>
+                        <outlet property="windowHeightConstraint" destination="2aY-nN-ceR" id="hxK-0F-Dgc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eSi-6k-xmz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2558" y="359"/>
         </scene>
         <!--AuthVC-->
         <scene sceneID="5XI-OG-ce7">
