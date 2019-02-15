@@ -28,6 +28,19 @@ class ContactsVC: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(contactsUpdated(notification:)), name: CONTACTS_LOADED, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(makeUserOnline(notification:)), name: CONTACT_ONLINE, object: nil)
+    }
+    
+    @objc private func makeUserOnline(notification: Notification) {
+        if let id = notification.userInfo?["id"] as? String {
+            print(id)
+            for (index, cell) in (contactsTable.visibleCells as! [ContactCell]).enumerated() {
+                print(cell.contactID)
+                if cell.contactID == id {
+                    contactsTable.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+                }
+            }
+        }
     }
     
     @objc private func hideKeyboard() {
@@ -112,7 +125,7 @@ extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
         cell.usernameLbl.text = contact.username
         cell.emailLbl.text = contact.email
         cell.contactID = DataService.instance.contacts![indexPath.row].id
-        cell.setupStatus(confirmed: contact.confirmed, requestIsMine: contact.requestIsMine)
+        cell.setupStatus(confirmed: contact.confirmed, requestIsMine: contact.requestIsMine, online: contact.online)
         return cell
     }
     

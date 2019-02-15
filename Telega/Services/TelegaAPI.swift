@@ -78,6 +78,27 @@ class TelegaAPI {
                 NotificationCenter.default.post(name: MESSAGES_UPDATED, object: nil, userInfo: ["companionID":dudeID])
             }
         }
+        manager.defaultSocket.on("online") { (responses, _) in
+            print("FRIEND ONLINE")
+            let id = responses[0] as! String
+            for (index, contact) in DataService.instance.contacts!.enumerated() {
+                if contact.id == id {
+                    DataService.instance.contacts![index].online = true
+                }
+            }
+            NotificationCenter.default.post(name: CONTACT_ONLINE, object: nil, userInfo: ["id": id])
+        }
+        manager.defaultSocket.on("offline") { (responses, _) in
+            print("FRIEND OFFLINE")
+            let id = responses[0] as! String
+            for (index, contact) in DataService.instance.contacts!.enumerated() {
+                if contact.id == id {
+                    print("CONTACT OFFLINE NOW")
+                    DataService.instance.contacts![index].online = false
+                }
+            }
+            NotificationCenter.default.post(name: CONTACT_ONLINE, object: nil, userInfo: ["id": id])
+        }
         manager.defaultSocket.connect()
     }
     
@@ -134,7 +155,7 @@ class TelegaAPI {
             Alamofire.request(USERS_SEARCH_URL + "email=" + email, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: HEADER).responseJSON(completionHandler: { (response) in
                 guard let data = response.value as? [String : Any] else { print(response); return }
                 if data["error"] == nil {
-                    completion(User(id: data["_id"] as! String, email: data["email"] as! String, username: data["username"] as! String, avatar: data["avatar"] as! String, publicPem: data["publicPem"] as! String, confirmed: false, requestIsMine: true))
+                    completion(User(id: data["_id"] as! String, email: data["email"] as! String, username: data["username"] as! String, avatar: data["avatar"] as! String, publicPem: data["publicPem"] as! String, confirmed: false, requestIsMine: true, online: false))
                 } else {
                     completion(nil)
                 }
@@ -197,7 +218,7 @@ class TelegaAPI {
                         let confirmed = contact["confirmed"] as! Bool
                         let requestIsMine = contact["requestIsMine"] as! Bool
                         let publicPem = contact["publicPem"] as! String
-                        return User(id: _id, email: email, username: username, avatar: avatar, publicPem: publicPem, confirmed: confirmed, requestIsMine: requestIsMine)
+                        return User(id: _id, email: email, username: username, avatar: avatar, publicPem: publicPem, confirmed: confirmed, requestIsMine: requestIsMine, online: false)
                     })
                     DataService.instance.contacts = contacts
                     completion()

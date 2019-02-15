@@ -16,9 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 //        DataService.instance.logout()
         if DataService.instance.token != nil {
-            TelegaAPI.instanse.establishConnection()
 //            print(DataService.instance.token!)
-            TelegaAPI.instanse.updateInfoAboutSelf { NotificationCenter.default.post(name: CONTACTS_LOADED, object: nil, userInfo: nil) }
+            TelegaAPI.instanse.updateInfoAboutSelf {
+                TelegaAPI.instanse.establishConnection();  NotificationCenter.default.post(name: CONTACTS_LOADED, object: nil, userInfo: nil) }
             let mainStoryboardIpad : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let initialViewControlleripad : UIViewController = mainStoryboardIpad.instantiateViewController(withIdentifier: "tabBar")
             self.window = UIWindow(frame: UIScreen.main.bounds)

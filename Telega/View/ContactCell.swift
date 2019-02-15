@@ -23,9 +23,10 @@ class ContactCell: UITableViewCell {
     var confirmed: Bool!
     var requestIsMine: Bool!
     var contactID: String!
+    var online: Bool!
     var gif: GIFImageView!
     
-    func setupStatus(confirmed: Bool, requestIsMine: Bool) {
+    func setupStatus(confirmed: Bool, requestIsMine: Bool, online: Bool) {
         self.confirmed = confirmed
         self.requestIsMine = requestIsMine
         let image = requestIsMine ? UIImage(named: "hourglass") : UIImage(named: "green_tick")
@@ -33,7 +34,7 @@ class ContactCell: UITableViewCell {
         if !confirmed {
            setupAnimations()
         } else {
-            statusBtn.setImage(nil, for: .normal)
+            statusBtn.setImage(online ? UIImage(named: "online")?.resizedImageWithinRect(rectSize: CGSize(width: 15, height: 15)) : nil, for: .normal)
         }
     }
     

@@ -17,4 +17,5 @@ struct User {
     let publicPem: String
     let confirmed: Bool
     let requestIsMine: Bool
+    var online: Bool
 }
