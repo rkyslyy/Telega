@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Gifu
 
 class ChangePasswordVC: UIViewController {
 
@@ -62,6 +63,39 @@ class ChangePasswordVC: UIViewController {
         let regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"
         if password.range(of: regex, options: .regularExpression, range: nil, locale: nil) == nil {
             return showPasswordRules()
+        }
+        do {
+            let encryptedPrivatePem = try self.encryptMessage(message: DataService.instance.privatePem!, encryptionKey: password)
+            hideWindowContents()
+            let ripple = GIFImageView(frame: CGRect(x: view.frame.width / 2 - 40, y: view.frame.height / 2 - 40, width: 80, height: 80))
+            ripple.alpha = 0
+            showRipple(ripple)
+            TelegaAPI.instanse.changePasswordTo(password, withPem: encryptedPrivatePem) {
+                self.view.endEditing(true)
+                self.dismissSelf()
+            }
+        } catch { return }
+    }
+    
+    func encryptMessage(message: String, encryptionKey: String) throws -> String {
+        let messageData = message.data(using: .utf8)!
+        let cipherData = RNCryptor.encrypt(data: messageData, withPassword: encryptionKey)
+        return cipherData.base64EncodedString()
+    }
+    
+    private func showRipple(_ ripple: GIFImageView) {
+        view.addSubview(ripple)
+        ripple.animate(withGIFNamed: "ripple")
+        UIView.animate(withDuration: 0.2) {
+            ripple.alpha = 1
+        }
+    }
+    
+    private func hideWindowContents() {
+        UIView.animate(withDuration: 0.2) {
+            self.passTxtFld.alpha = 0
+            self.confPassTxtFld.alpha = 0
+            self.changeBtn.alpha = 0
         }
     }
     

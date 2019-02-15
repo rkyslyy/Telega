@@ -12,6 +12,7 @@ import Foundation
 //let BASE_URL = "https://telega-rkyslyy.herokuapp.com/"
 let BASE_URL = "http://localhost:3000/"
 let USERS_URL = BASE_URL + "users/"
+let CHANGE_PASSWORD_URL = USERS_URL + "change_password/"
 let USERS_SEARCH_URL = USERS_URL + "search?"
 let ME_URL = USERS_URL + "me/"
 let ADD_CONTACT_URL = USERS_URL + "add_contact/"

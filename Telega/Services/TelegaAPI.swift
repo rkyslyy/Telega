@@ -17,6 +17,19 @@ class TelegaAPI {
     
     var manager = SocketManager(socketURL: URL(string: BASE_URL)!)
     
+    func changePasswordTo(_ password: String, withPem pem: String, completion: @escaping () -> ()) {
+        let header = [
+            "x-auth-token": DataService.instance.token!
+        ]
+        let body = [
+            "password": password,
+            "pem": pem
+        ]
+        Alamofire.request(CHANGE_PASSWORD_URL, method: .put, parameters: body, encoding: JSONEncoding.default, headers: header).responseJSON { (response) in
+            completion()
+        }
+    }
+    
     func send(message: String,
               toUserWithID id: String,
               andStoreCopyForMe messageForMe: String,

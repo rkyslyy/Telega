@@ -35,11 +35,15 @@ class DialogueVC: UIViewController {
     @IBOutlet weak var messageViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var sendBtn: UIButton!
     
+    
     // Variables
     var companion: User!
     var companionPublicKey: PublicKey?
     var oldCount: Int!
     var messageSound: AVAudioPlayer?
+    var avatarBtn: UIButton!
+    var avatarMask: UIView?
+    var avatarImgView: UIImageView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +63,63 @@ class DialogueVC: UIViewController {
         messageInputView.textColor = UIColor.darkGray
         
         view.bindToKeyboard()
+        avatarBtn = UIButton(type: .custom)
+        avatarBtn.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        avatarBtn.contentMode = .scaleAspectFit
+        avatarBtn.clipsToBounds = true
+        avatarBtn.layer.cornerRadius = 15
+        //set image for button
+        let image = UIImage(data: Data(base64Encoded: companion.avatar)!)
+        
+        if image!.size.width <= 512 {
+            avatarBtn.setImage(image!.resizedImageWithinRect(rectSize: CGSize(width: 40, height: 40)), for: .normal)
+            avatarBtn.backgroundColor = .darkGray
+            avatarBtn.layer.cornerRadius = 20
+        } else {
+            avatarBtn.setImage(image!.resizedImageWithinRect(rectSize: CGSize(width: 50, height: 50)).crop(rect: CGRect(x: 5, y: 5, width: 30, height: 30)), for: .normal)
+        }
+        avatarBtn.addTarget(self, action: #selector(showAvatar), for: .touchUpInside)
+        //add function for button
+//        button.addTarget(self, action: #selector(fbButtonPressed), for: .touchUpInside)
+        //set frame
+        
+        let barButton = UIBarButtonItem(customView: avatarBtn)
+        //assign button to navigationbar
+        self.navigationItem.rightBarButtonItem = barButton
+    }
+    
+    @objc private func showAvatar() {
+        if avatarMask != nil || avatarImgView != nil {
+            return
+        }
+        avatarMask = UIView(frame: view.frame)
+        avatarMask!.alpha = 0
+        avatarMask!.backgroundColor = UIColor(white: 0, alpha: 0.7)
+        view.addSubview(avatarMask!)
+        avatarImgView = UIImageView(frame: CGRect(x: view.frame.width - 30, y: avatarBtn.frame.origin.y + 10, width: 1, height: 1))
+        avatarImgView!.image = UIImage(data: Data(base64Encoded: companion.avatar)!)
+        avatarImgView!.contentMode = .scaleAspectFit
+        view.addSubview(avatarImgView!)
+        UIView.animate(withDuration: 0.2, animations: {
+            self.avatarMask!.alpha = 1
+            self.avatarImgView!.frame = self.view.frame
+        }) { (_) in
+            let tap = UITapGestureRecognizer(target: self, action: #selector(self.hideAvatar))
+            self.avatarMask!.addGestureRecognizer(tap)
+        }
+    }
+    
+    @objc private func hideAvatar() {
+        print("HIDING AVATAR")
+        UIView.animate(withDuration: 0.2, animations: {
+            self.avatarImgView?.frame = CGRect(x: self.view.frame.width - 30, y: self.avatarBtn.frame.origin.y + 10, width: 1, height: 1)
+            self.avatarMask?.alpha = 0
+        }) { (_) in
+            self.avatarImgView?.removeFromSuperview()
+            self.avatarMask?.removeFromSuperview()
+            self.avatarMask = nil
+            self.avatarImgView = nil
+        }
     }
     
     @objc func hideKeyboard(tap: UITapGestureRecognizer) {
@@ -72,7 +133,14 @@ class DialogueVC: UIViewController {
     @objc private func messagesUpdated(notification: Notification) {
         if let idToUpdate = notification.userInfo?["companionID"] as? String {
             if idToUpdate == companion.id {
-                messagesTable.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
+                if DataService.instance.messages[companion.id]!.last!.messages.count == 1 {
+                    oldCount = DataService.instance.messages[companion.id]?.count ?? 0
+                    messagesTable.reloadData()
+                    print(DataService.instance.messages[companion.id]!)
+                } else {
+                    messagesTable.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
+                }
+//                playSound()
             }
         }
     }
@@ -96,7 +164,7 @@ class DialogueVC: UIViewController {
             alert.addAction(sad)
             present(alert, animated: true, completion: nil)
         }
-        oldCount = DataService.instance.userMessages[companion.id]?.count ?? 0
+        oldCount = DataService.instance.messages[companion.id]?.count ?? 0
     }
     
     @IBAction func sendBtnPressed() {
@@ -131,11 +199,13 @@ class DialogueVC: UIViewController {
                     if !created {
                         print("DATE DIDN'T EXIST")
                         DataService.instance.messages[self.companion.id]!.append((date: timeStr.components(separatedBy: "T")[0] , messages: [Message]()))
-                        print("SECTIONS INSERTED")
+                        DataService.instance.messages[self.companion.id]![DataService.instance.messages[self.companion.id]!.count - 1].messages.append(newMessage)
+                        print(DataService.instance.messages[self.companion.id]!)
                         self.messagesTable.reloadData()
                     } else {
                         self.messagesTable.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
                     }
+                    self.oldCount = DataService.instance.messages[self.companion.id]!.count
                 } else {
                     print("NO MESSAGES WITH USER")
                     DataService.instance.messages[self.companion.id] = [(date: String, messages: [Message])]()
@@ -321,4 +391,59 @@ extension Date {
         return todayStr == targetStr
     }
     
+}
+
+extension UIImage{
+    
+    func resizedImage(newSize: CGSize) -> UIImage {
+        // Guard newSize is different
+        guard self.size != newSize else { return self }
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0);
+        self.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
+        let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return newImage
+    }
+    
+    func resizedImageWithinRect(rectSize: CGSize) -> UIImage {
+        let widthFactor = size.width / rectSize.width
+        let heightFactor = size.height / rectSize.height
+        
+        var resizeFactor = widthFactor
+        if size.height > size.width {
+            resizeFactor = heightFactor
+        }
+        
+        
+        let newSize = CGSize(width: size.width/resizeFactor, height: size.height/resizeFactor)
+        let resized = resizedImage(newSize: newSize)
+        return resized
+    }
+    
+    func imageWithImage (scaledToWidth: CGFloat) -> UIImage {
+        let oldWidth = self.size.width
+        let scaleFactor = scaledToWidth / oldWidth
+        
+        let newHeight = self.size.height * scaleFactor
+        let newWidth = oldWidth * scaleFactor
+        
+        UIGraphicsBeginImageContext(CGSize(width:newWidth, height:newHeight))
+        self.draw(in: CGRect(x:0, y:0, width:newWidth, height:newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
+    }
+    
+    func crop( rect: CGRect) -> UIImage {
+        var rect = rect
+        rect.origin.x*=self.scale
+        rect.origin.y*=self.scale
+        rect.size.width*=self.scale
+        rect.size.height*=self.scale
+        
+        let imageRef = self.cgImage!.cropping(to: rect)
+        let image = UIImage(cgImage: imageRef!, scale: self.scale, orientation: self.imageOrientation)
+        return image
+    }
 }

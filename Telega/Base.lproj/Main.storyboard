@@ -48,19 +48,19 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="txN-az-B2W">
-                                                    <rect key="frame" x="85" y="15" width="215" height="24"/>
+                                                    <rect key="frame" x="85" y="15" width="254" height="24"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5KC-LJ-U9Q">
-                                                    <rect key="frame" x="85" y="44" width="215" height="18"/>
+                                                    <rect key="frame" x="85" y="44" width="254" height="18"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="13"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mHu-aO-tsA">
-                                                    <rect key="frame" x="325" y="27.5" width="25" height="25"/>
+                                                    <rect key="frame" x="364" y="27.5" width="25" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="25" id="YHW-ng-AEO"/>
                                                         <constraint firstAttribute="height" constant="25" id="h2B-Ut-v11"/>
@@ -146,21 +146,21 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message text" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsd-dy-POP" customClass="MessageLabel" customModule="Telega" customModuleProvider="target">
-                                                    <rect key="frame" x="15" y="9" width="345" height="103"/>
+                                                    <rect key="frame" x="15" y="9" width="384" height="103"/>
                                                     <color key="backgroundColor" red="0.16078431369999999" green="0.16862745100000001" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Zc-nJ-iug">
-                                                    <rect key="frame" x="15" y="103" width="345" height="25"/>
+                                                    <rect key="frame" x="15" y="103" width="384" height="25"/>
                                                     <color key="backgroundColor" red="0.16078431369999999" green="0.16862745100000001" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="qWp-Zn-rsU"/>
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9kx-uV-0fW">
-                                                    <rect key="frame" x="327" y="101" width="25" height="24"/>
+                                                    <rect key="frame" x="327" y="101" width="64" height="24"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="9"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -299,7 +299,7 @@
                             <constraint firstItem="qfV-65-2vP" firstAttribute="centerX" secondItem="VXW-kS-2UA" secondAttribute="centerX" id="8Nv-qJ-NwM"/>
                             <constraint firstItem="Emu-6T-Net" firstAttribute="top" secondItem="4Fr-WE-qjk" secondAttribute="top" id="DXG-vJ-ha1"/>
                             <constraint firstItem="Ym6-z5-sgD" firstAttribute="top" secondItem="qfV-65-2vP" secondAttribute="bottom" constant="10" id="ElX-JL-z2g"/>
-                            <constraint firstItem="qfV-65-2vP" firstAttribute="top" secondItem="uGS-Dz-MEr" secondAttribute="bottom" constant="30" id="HJI-Xf-Was"/>
+                            <constraint firstItem="qfV-65-2vP" firstAttribute="top" secondItem="uGS-Dz-MEr" secondAttribute="bottom" priority="250" constant="30" id="HJI-Xf-Was"/>
                             <constraint firstItem="Emu-6T-Net" firstAttribute="trailing" secondItem="4Fr-WE-qjk" secondAttribute="trailing" id="RKG-R7-69d"/>
                             <constraint firstItem="h73-qA-Zho" firstAttribute="centerY" secondItem="VXW-kS-2UA" secondAttribute="centerY" id="T0W-qE-Eta"/>
                             <constraint firstItem="uGS-Dz-MEr" firstAttribute="centerY" secondItem="VXW-kS-2UA" secondAttribute="centerY" id="Utg-Jg-ntk"/>
@@ -474,14 +474,14 @@
                                                 <color key="backgroundColor" white="0.047697773020000001" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" keyboardAppearance="alert" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" keyboardAppearance="alert" secureTextEntry="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="password"/>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm new password" textAlignment="natural" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="1P6-L0-66a" customClass="CustomPlaceholderTF" customModule="Telega" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="47" width="205" height="30"/>
                                                 <color key="backgroundColor" white="0.047697773020000001" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="alphabet" keyboardAppearance="alert" secureTextEntry="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="alphabet" keyboardAppearance="alert" secureTextEntry="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="password"/>
                                             </textField>
                                         </subviews>
                                         <constraints>

@@ -14,7 +14,7 @@ class CircleImageView: UIImageView {
     @IBInspectable var circle: Bool = false {
         didSet {
             if circle {
-                layer.cornerRadius = frame.height / 2
+                layer.cornerRadius = frame.width / 2
             } else {
                 layer.cornerRadius = 0
             }

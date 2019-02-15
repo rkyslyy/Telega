@@ -80,6 +80,7 @@ extension AddNewContactVC: UISearchBarDelegate {
         usernameLbl.isHidden = false
         noResultsLbl.isHidden = true
         alreadyInListLbl.isHidden = !userAlreadyInList()
+        avatarView.layer.cornerRadius = avatarView.frame.width / 2
     }
     
     private func userAlreadyInList() -> Bool {
