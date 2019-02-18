@@ -24,11 +24,12 @@ class MessageCell: UITableViewCell {
     var tail: UIImageView?
     
     override func draw(_ rect: CGRect) {
-        super.draw(rect)
         resetTail()
+        super.draw(rect)
     }
     
     func resetTail() {
+        tail?.removeFromSuperview()
         if !mine {
             tail = UIImageView(frame: CGRect(x: 6, y: frame.height - 29, width: 20, height: 20))
             tail?.image = UIImage(named: "tail")

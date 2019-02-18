@@ -132,6 +132,7 @@ class DialogueVC: UIViewController {
     }
     
     @objc private func messagesUpdated(notification: Notification) {
+        TelegaAPI.instanse.emitReadMessagesFrom(id: companion.id)
         if let idToUpdate = notification.userInfo?["companionID"] as? String {
             if idToUpdate == companion.id {
                 if notification.userInfo?["newDate"] != nil {
