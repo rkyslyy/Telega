@@ -87,12 +87,13 @@ class TelegaAPI {
             let dateFormatter = ISO8601DateFormatter()
             dateFormatter.timeZone = TimeZone(abbreviation: "EET")
             let time = dateFormatter.date(from:(message["time"] as! String).components(separatedBy: ".")[0] + "-0200")!
-            let messageToSave = Message(text: text, time: time, mine: message["mine"] as! Bool)
+            let mine = message["mine"] as! Bool
+            let messageToSave = Message(text: text, time: time, mine: mine)
             let dateStr = (message["time"] as! String).components(separatedBy: "T")[0]
             if DataService.instance.messages[storeID] != nil {
                 for (index, user) in DataService.instance.contacts!.enumerated() {
                     if user.id == storeID {
-                        DataService.instance.contacts![index].unread = true
+                        DataService.instance.contacts![index].unread = !mine
                         print(DataService.instance.contacts![index].username, "is unread")
                     }
                 }
@@ -114,7 +115,7 @@ class TelegaAPI {
                 DataService.instance.messages[storeID] = [(date: String, messages: [Message])]()
                 for (index, user) in DataService.instance.contacts!.enumerated() {
                     if user.id == storeID {
-                        DataService.instance.contacts![index].unread = true
+                        DataService.instance.contacts![index].unread = !mine
                         print(DataService.instance.contacts![index].username, "is unread")
                     }
                 }

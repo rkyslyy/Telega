@@ -194,7 +194,8 @@ class DialogueVC: UIViewController {
             return
         }
         do {
-            let clear = try ClearMessage(string: messageInputView.text!.trimmingCharacters(in: .whitespacesAndNewlines), using: .utf8)
+            let trimmedText = messageInputView.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            let clear = try ClearMessage(string: trimmedText, using: .utf8)
             let encryptedForCompanion = try clear.encrypted(with: self.companionPublicKey!, padding: .PKCS1)
             let myPublicKey = try PublicKey(pemEncoded: DataService.instance.publicPem!)
             let encryptedForMe = try clear.encrypted(with: myPublicKey, padding: .PKCS1)
@@ -202,7 +203,7 @@ class DialogueVC: UIViewController {
                 let dateFormatter = ISO8601DateFormatter()
                 dateFormatter.timeZone = TimeZone(abbreviation: "EET")
                 let time = dateFormatter.date(from:timeStr.components(separatedBy: ".")[0] + "-0200")!
-                let newMessage = Message(text:self.messageInputView.text, time: time, mine: true)
+                let newMessage = Message(text:trimmedText, time: time, mine: true)
                 var created = false
                 if DataService.instance.messages[self.companion.id] != nil {
                     print("WE GOT MESSAGES WITH USER")
