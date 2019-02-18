@@ -16,6 +16,7 @@ class ContactCell: UITableViewCell {
     @IBOutlet weak var usernameLbl: UILabel!
     @IBOutlet weak var emailLbl: UILabel!
     @IBOutlet weak var statusBtn: UIButton!
+    @IBOutlet weak var unreadStatusImgView: UIImageView!
     
     // Variables
     var table: UITableView!
@@ -24,17 +25,20 @@ class ContactCell: UITableViewCell {
     var requestIsMine: Bool!
     var contactID: String!
     var online: Bool!
+    var unread: Bool!
     var gif: GIFImageView!
     
-    func setupStatus(confirmed: Bool, requestIsMine: Bool, online: Bool) {
+    func setupStatus(confirmed: Bool, requestIsMine: Bool, online: Bool, unread: Bool) {
         self.confirmed = confirmed
         self.requestIsMine = requestIsMine
         let image = requestIsMine ? UIImage(named: "hourglass") : UIImage(named: "green_tick")
         statusBtn.setImage(image, for: .normal)
         if !confirmed {
            setupAnimations()
+            unreadStatusImgView.image = nil
         } else {
             statusBtn.setImage(online ? UIImage(named: "online")?.resizedImageWithinRect(rectSize: CGSize(width: 15, height: 15)) : nil, for: .normal)
+            unreadStatusImgView.image = unread ? UIImage(named: "envelope") : nil
         }
     }
     

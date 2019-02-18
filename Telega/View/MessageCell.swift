@@ -25,6 +25,10 @@ class MessageCell: UITableViewCell {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
+        resetTail()
+    }
+    
+    func resetTail() {
         if !mine {
             tail = UIImageView(frame: CGRect(x: 6, y: frame.height - 29, width: 20, height: 20))
             tail?.image = UIImage(named: "tail")
@@ -39,7 +43,6 @@ class MessageCell: UITableViewCell {
             guard let templateImage = tail?.image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate) else { tail = nil; return }
             tail?.image = templateImage
             tail?.tintColor = #colorLiteral(red: 0.2126879096, green: 0.2239724994, blue: 0.265286684, alpha: 1)
-            addSubview(tail!)
             self.insertSubview(tail!, at: 0)
         }
     }

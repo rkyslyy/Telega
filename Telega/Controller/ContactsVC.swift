@@ -28,10 +28,21 @@ class ContactsVC: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(contactsUpdated(notification:)), name: CONTACTS_LOADED, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(makeUserOnline(notification:)), name: CONTACT_ONLINE, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUser(notification:)), name: UPDATE_CONTACT, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(messagesUpdated(notification:)), name: MESSAGES_UPDATED, object: nil)
     }
     
-    @objc private func makeUserOnline(notification: Notification) {
+    @objc private func messagesUpdated(notification: Notification) {
+        if let id = notification.userInfo?["companionID"] as? String {
+            for (index, contact) in DataService.instance.contacts!.enumerated() {
+                if contact.id == id {
+                    contactsTable.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+                }
+            }
+        }
+    }
+    
+    @objc private func updateUser(notification: Notification) {
         if let id = notification.userInfo?["id"] as? String {
             print(id)
             for (index, cell) in (contactsTable.visibleCells as! [ContactCell]).enumerated() {
@@ -53,7 +64,7 @@ class ContactsVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         DataService.instance.animatables.removeAll()
-        contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
+        contactsTable.reloadSections(IndexSet(integer: 0), with: .none)
     }
     
     @objc private func reloadContactsFromAPI() {
@@ -125,7 +136,8 @@ extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
         cell.usernameLbl.text = contact.username
         cell.emailLbl.text = contact.email
         cell.contactID = DataService.instance.contacts![indexPath.row].id
-        cell.setupStatus(confirmed: contact.confirmed, requestIsMine: contact.requestIsMine, online: contact.online)
+        print("UNREAD:", contact.unread)
+        cell.setupStatus(confirmed: contact.confirmed, requestIsMine: contact.requestIsMine, online: contact.online, unread: contact.unread)
         return cell
     }
     

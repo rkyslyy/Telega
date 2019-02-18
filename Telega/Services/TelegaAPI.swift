@@ -40,7 +40,8 @@ class TelegaAPI {
         let body = [
             "messageForMe": messageForMe,
             "messageForThem": message,
-            "theirID": id
+            "theirID": id,
+            "socketID": manager.defaultSocket.sid
         ]
         Alamofire.request(MESSAGES_URL, method: .post, parameters: body, encoding: JSONEncoding.default, headers: header).responseJSON { (response) in
             guard let data = response.value as? [String : Any] else { print("bad value"); completion(":("); return }
@@ -73,9 +74,54 @@ class TelegaAPI {
             }
         }
         manager.defaultSocket.on("update messages") { (responses, _) in
-            let dudeID = responses[0] as! String
-            self.updateInfoAboutSelf {
-                NotificationCenter.default.post(name: MESSAGES_UPDATED, object: nil, userInfo: ["companionID":dudeID])
+            let message = responses[0] as! [String:Any]
+            let storeID = message["storeID"] as! String
+            var text = message["message"] as! String
+            do {
+                let encrypted = try EncryptedMessage(base64Encoded: text)
+                let privateKey = try PrivateKey(pemEncoded: DataService.instance.privatePem!)
+                let decrypted = try encrypted.decrypted(with: privateKey, padding: .PKCS1)
+                text = try decrypted.string(encoding: .utf8)
+            } catch { text = "Bad decryption" }
+            
+            let dateFormatter = ISO8601DateFormatter()
+            dateFormatter.timeZone = TimeZone(abbreviation: "EET")
+            let time = dateFormatter.date(from:(message["time"] as! String).components(separatedBy: ".")[0] + "-0200")!
+            let messageToSave = Message(text: text, time: time, mine: message["mine"] as! Bool)
+            let dateStr = (message["time"] as! String).components(separatedBy: "T")[0]
+            if DataService.instance.messages[storeID] != nil {
+                for (index, user) in DataService.instance.contacts!.enumerated() {
+                    if user.id == storeID {
+                        DataService.instance.contacts![index].unread = true
+                        print(DataService.instance.contacts![index].username, "is unread")
+                    }
+                }
+                if MessagesParser.does(date: dateStr, existIn: DataService.instance.messages[storeID]!) {
+                    for (index, tuple) in DataService.instance.messages[storeID]!.enumerated() {
+                        if tuple.date == dateStr {
+                            DataService.instance.messages[storeID]![index].messages.append(messageToSave)
+                            NotificationCenter.default.post(name: MESSAGES_UPDATED, object: nil, userInfo: ["companionID":storeID])
+                        }
+                    }
+                } else {
+                    print("HERE BOIIIIIIII")
+                    DataService.instance.messages[storeID]!.append((date: dateStr, messages: [Message]()))
+                    DataService.instance.messages[storeID]![DataService.instance.messages[storeID]!.count - 1].messages.append(messageToSave)
+                    NotificationCenter.default.post(name: MESSAGES_UPDATED, object: nil, userInfo: ["companionID":storeID,
+                                                                                                    "newDate":true])
+                }
+            } else {
+                DataService.instance.messages[storeID] = [(date: String, messages: [Message])]()
+                for (index, user) in DataService.instance.contacts!.enumerated() {
+                    if user.id == storeID {
+                        DataService.instance.contacts![index].unread = true
+                        print(DataService.instance.contacts![index].username, "is unread")
+                    }
+                }
+                DataService.instance.messages[storeID]!.append((date: dateStr, messages: [Message]()))
+                DataService.instance.messages[storeID]![0].messages.append(messageToSave)
+                NotificationCenter.default.post(name: MESSAGES_UPDATED, object: nil, userInfo: ["companionID":storeID,
+                                                                                                "newDate":true])
             }
         }
         manager.defaultSocket.on("online") { (responses, _) in
@@ -86,7 +132,7 @@ class TelegaAPI {
                     DataService.instance.contacts![index].online = true
                 }
             }
-            NotificationCenter.default.post(name: CONTACT_ONLINE, object: nil, userInfo: ["id": id])
+            NotificationCenter.default.post(name: UPDATE_CONTACT, object: nil, userInfo: ["id": id])
         }
         manager.defaultSocket.on("offline") { (responses, _) in
             print("FRIEND OFFLINE")
@@ -97,9 +143,23 @@ class TelegaAPI {
                     DataService.instance.contacts![index].online = false
                 }
             }
-            NotificationCenter.default.post(name: CONTACT_ONLINE, object: nil, userInfo: ["id": id])
+            NotificationCenter.default.post(name: UPDATE_CONTACT, object: nil, userInfo: ["id": id])
+        }
+        manager.defaultSocket.on("messages_read") { (responses, _) in
+            print("WE GOT EMITTTT")
+            let id = responses[0] as! String
+            for (index, contact) in DataService.instance.contacts!.enumerated() {
+                if contact.id == id  {
+                    DataService.instance.contacts![index].unread = false
+                }
+            }
+            NotificationCenter.default.post(name: UPDATE_CONTACT, object: nil, userInfo: ["id": id])
         }
         manager.defaultSocket.connect()
+    }
+    
+    func emitReadMessagesFrom(id: String) {
+        manager.defaultSocket.emit("messages_read", id, DataService.instance.id!)
     }
     
     func disconnect() {
@@ -155,7 +215,7 @@ class TelegaAPI {
             Alamofire.request(USERS_SEARCH_URL + "email=" + email, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: HEADER).responseJSON(completionHandler: { (response) in
                 guard let data = response.value as? [String : Any] else { print(response); return }
                 if data["error"] == nil {
-                    completion(User(id: data["_id"] as! String, email: data["email"] as! String, username: data["username"] as! String, avatar: data["avatar"] as! String, publicPem: data["publicPem"] as! String, confirmed: false, requestIsMine: true, online: false))
+                    completion(User(id: data["_id"] as! String, email: data["email"] as! String, username: data["username"] as! String, avatar: data["avatar"] as! String, publicPem: data["publicPem"] as! String, confirmed: false, requestIsMine: true, online: false, unread: false))
                 } else {
                     completion(nil)
                 }
@@ -218,7 +278,9 @@ class TelegaAPI {
                         let confirmed = contact["confirmed"] as! Bool
                         let requestIsMine = contact["requestIsMine"] as! Bool
                         let publicPem = contact["publicPem"] as! String
-                        return User(id: _id, email: email, username: username, avatar: avatar, publicPem: publicPem, confirmed: confirmed, requestIsMine: requestIsMine, online: false)
+                        let online = contact["online"] as! Bool
+                        let unread = contact["unread"] as! Bool
+                        return User(id: _id, email: email, username: username, avatar: avatar, publicPem: publicPem, confirmed: confirmed, requestIsMine: requestIsMine, online: online, unread: unread)
                     })
                     DataService.instance.contacts = contacts
                     completion()
@@ -367,7 +429,7 @@ private class MessagesParser {
         DataService.instance.messages = structuredMessagesDict
     }
     
-    private class func does(date: String, existIn tuples: [(date: String, messages: [Message])]) -> Bool {
+    class func does(date: String, existIn tuples: [(date: String, messages: [Message])]) -> Bool {
         for tuple in tuples {
             if tuple.date == date {
                 return true

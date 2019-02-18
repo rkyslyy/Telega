@@ -44,6 +44,12 @@ class DialogueVC: UIViewController {
     var avatarBtn: UIButton!
     var avatarMask: UIView?
     var avatarImgView: UIImageView?
+    var requestPending = false
+    var backupText: String!
+    
+    @objc private func controlInput() {
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,12 +85,7 @@ class DialogueVC: UIViewController {
             avatarBtn.setImage(image!.resizedImageWithinRect(rectSize: CGSize(width: 50, height: 50)).crop(rect: CGRect(x: 5, y: 5, width: 30, height: 30)), for: .normal)
         }
         avatarBtn.addTarget(self, action: #selector(showAvatar), for: .touchUpInside)
-        //add function for button
-//        button.addTarget(self, action: #selector(fbButtonPressed), for: .touchUpInside)
-        //set frame
-        
         let barButton = UIBarButtonItem(customView: avatarBtn)
-        //assign button to navigationbar
         self.navigationItem.rightBarButtonItem = barButton
     }
     
@@ -133,14 +134,23 @@ class DialogueVC: UIViewController {
     @objc private func messagesUpdated(notification: Notification) {
         if let idToUpdate = notification.userInfo?["companionID"] as? String {
             if idToUpdate == companion.id {
-                if DataService.instance.messages[companion.id]!.last!.messages.count == 1 {
+                if notification.userInfo?["newDate"] != nil {
                     oldCount = DataService.instance.messages[companion.id]?.count ?? 0
                     messagesTable.reloadData()
                     print(DataService.instance.messages[companion.id]!)
                 } else {
+                    for cell in self.messagesTable.visibleCells as! [MessageCell] {
+                        cell.tail?.removeFromSuperview()
+                        cell.resetTail()
+                    }
                     messagesTable.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
                 }
 //                playSound()
+            }
+            for (index, contact) in DataService.instance.contacts!.enumerated() {
+                if contact.id == companion.id {
+                    DataService.instance.contacts![index].unread = false
+                }
             }
         }
     }
@@ -165,11 +175,18 @@ class DialogueVC: UIViewController {
             present(alert, animated: true, completion: nil)
         }
         oldCount = DataService.instance.messages[companion.id]?.count ?? 0
+        for (index, contact) in DataService.instance.contacts!.enumerated() {
+            if contact.id == companion.id {
+                DataService.instance.contacts![index].unread = false
+            }
+        }
+        TelegaAPI.instanse.emitReadMessagesFrom(id: companion.id)
     }
     
     @IBAction func sendBtnPressed() {
         sendBtn.isEnabled = false
         sendBtn.isHidden = true
+        requestPending = true
         let gif = GIFImageView(frame: sendBtn.frame)
         gif.animate(withGIFNamed: "ripple")
         messageContentView.addSubview(gif)
@@ -203,6 +220,10 @@ class DialogueVC: UIViewController {
                         print(DataService.instance.messages[self.companion.id]!)
                         self.messagesTable.reloadData()
                     } else {
+                        for cell in self.messagesTable.visibleCells as! [MessageCell] {
+                            cell.tail?.removeFromSuperview()
+                            cell.resetTail()
+                        }
                         self.messagesTable.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
                     }
                     self.oldCount = DataService.instance.messages[self.companion.id]!.count
@@ -213,6 +234,7 @@ class DialogueVC: UIViewController {
                     DataService.instance.messages[self.companion.id]![0].messages.append(newMessage)
                     self.messagesTable.reloadData()
                 }
+                self.requestPending = false
                 self.messageInputView.text = ""
                 self.messageViewHeightConstraint.constant = 58.0
                 self.sendBtn.isEnabled = true
@@ -223,6 +245,7 @@ class DialogueVC: UIViewController {
             print("COULD NOT SEND MESSAGE")
             self.sendBtn.isEnabled = true
             self.sendBtn.isHidden = false
+            self.requestPending = false
             gif.removeFromSuperview()
         }
     }
@@ -248,9 +271,13 @@ extension DialogueVC: UITextViewDelegate {
     }
     
     func textViewDidChange(_ textView: UITextView) {
+        if requestPending {
+            return textView.text = backupText
+        }
         let fixedWidth = textView.frame.size.width
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         messageViewHeightConstraint.constant = newSize.height + 20
+        backupText = textView.text
     }
 }
 
@@ -309,6 +336,7 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell") as? MessageCell {
             cell.tail?.removeFromSuperview()
+            cell.tail = nil
         }
     }
     

@@ -18,4 +18,5 @@ struct User {
     let confirmed: Bool
     let requestIsMine: Bool
     var online: Bool
+    var unread: Bool
 }

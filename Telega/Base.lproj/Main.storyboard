@@ -19,13 +19,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" barStyle="black" placeholder="Search for contacts" translatesAutoresizingMaskIntoConstraints="NO" id="Gsf-kz-lEJ">
-                                <rect key="frame" x="0.0" y="64" width="375" height="56"/>
+                                <rect key="frame" x="0.0" y="63" width="375" height="56"/>
                                 <color key="backgroundColor" red="0.082338817417621613" green="0.082361035048961639" blue="0.082337401807308197" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="barTintColor" red="0.14115631580352783" green="0.14118805527687073" blue="0.14115428924560547" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OZ0-00-DPn">
-                                <rect key="frame" x="0.0" y="120" width="375" height="498"/>
+                                <rect key="frame" x="0.0" y="119" width="375" height="499"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -48,19 +48,19 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="txN-az-B2W">
-                                                    <rect key="frame" x="85" y="15" width="254" height="24"/>
+                                                    <rect key="frame" x="85" y="15" width="215" height="24"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5KC-LJ-U9Q">
-                                                    <rect key="frame" x="85" y="44" width="254" height="18"/>
+                                                    <rect key="frame" x="85" y="44" width="215" height="18"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="13"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mHu-aO-tsA">
-                                                    <rect key="frame" x="364" y="27.5" width="25" height="25"/>
+                                                    <rect key="frame" x="325" y="27.5" width="25" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="25" id="YHW-ng-AEO"/>
                                                         <constraint firstAttribute="height" constant="25" id="h2B-Ut-v11"/>
@@ -70,15 +70,24 @@
                                                         <action selector="statusBtnPressed:" destination="cQN-L3-9vQ" eventType="touchUpInside" id="2wk-4B-1RL"/>
                                                     </connections>
                                                 </button>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="envelope" translatesAutoresizingMaskIntoConstraints="NO" id="2CK-Ib-9mp">
+                                                    <rect key="frame" x="295" y="30" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="48W-my-mal"/>
+                                                        <constraint firstAttribute="width" constant="20" id="X44-me-4gW"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="5KC-LJ-U9Q" firstAttribute="leading" secondItem="XXm-0m-5ye" secondAttribute="trailing" constant="20" id="36w-Tk-VZ6"/>
                                                 <constraint firstItem="mHu-aO-tsA" firstAttribute="leading" secondItem="txN-az-B2W" secondAttribute="trailing" constant="25" id="EP1-W8-GUm"/>
                                                 <constraint firstItem="mHu-aO-tsA" firstAttribute="leading" secondItem="5KC-LJ-U9Q" secondAttribute="trailing" constant="25" id="FsY-pb-UrM"/>
+                                                <constraint firstItem="2CK-Ib-9mp" firstAttribute="centerY" secondItem="mHu-aO-tsA" secondAttribute="centerY" id="MBz-ir-e3Q"/>
                                                 <constraint firstItem="txN-az-B2W" firstAttribute="top" secondItem="ema-Zd-U7H" secondAttribute="top" constant="15" id="QBW-iU-rzp"/>
                                                 <constraint firstAttribute="bottom" secondItem="XXm-0m-5ye" secondAttribute="bottom" constant="15" id="QPU-YN-dQq"/>
                                                 <constraint firstItem="5KC-LJ-U9Q" firstAttribute="top" secondItem="txN-az-B2W" secondAttribute="bottom" constant="5" id="WuX-jw-RZC"/>
                                                 <constraint firstItem="XXm-0m-5ye" firstAttribute="top" secondItem="ema-Zd-U7H" secondAttribute="top" constant="15" id="dCF-RQ-frM"/>
+                                                <constraint firstItem="mHu-aO-tsA" firstAttribute="leading" secondItem="2CK-Ib-9mp" secondAttribute="trailing" constant="10" id="hBA-3e-R5O"/>
                                                 <constraint firstItem="txN-az-B2W" firstAttribute="leading" secondItem="XXm-0m-5ye" secondAttribute="trailing" constant="20" id="jEK-L7-etV"/>
                                                 <constraint firstItem="XXm-0m-5ye" firstAttribute="leading" secondItem="ema-Zd-U7H" secondAttribute="leading" constant="15" id="nht-nB-hVF"/>
                                                 <constraint firstItem="mHu-aO-tsA" firstAttribute="centerY" secondItem="XXm-0m-5ye" secondAttribute="centerY" id="nvY-gH-DPy"/>
@@ -90,6 +99,7 @@
                                             <outlet property="avatarView" destination="XXm-0m-5ye" id="HRX-QF-hmd"/>
                                             <outlet property="emailLbl" destination="5KC-LJ-U9Q" id="InC-SR-6ly"/>
                                             <outlet property="statusBtn" destination="mHu-aO-tsA" id="ubb-jr-e3H"/>
+                                            <outlet property="unreadStatusImgView" destination="2CK-Ib-9mp" id="Td1-Oe-1XK"/>
                                             <outlet property="usernameLbl" destination="txN-az-B2W" id="ROr-nX-NlC"/>
                                         </connections>
                                     </tableViewCell>
@@ -103,7 +113,7 @@
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="bottom" secondItem="OZ0-00-DPn" secondAttribute="bottom" id="Fwk-6f-9ff"/>
                             <constraint firstItem="OZ0-00-DPn" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" id="RTK-lx-5fT"/>
                             <constraint firstItem="OZ0-00-DPn" firstAttribute="top" secondItem="Gsf-kz-lEJ" secondAttribute="bottom" id="VZt-pd-ZR0"/>
-                            <constraint firstItem="Gsf-kz-lEJ" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" id="a49-Wu-TZh"/>
+                            <constraint firstItem="Gsf-kz-lEJ" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="-1" id="a49-Wu-TZh"/>
                             <constraint firstItem="Gsf-kz-lEJ" firstAttribute="trailing" secondItem="PQr-Ze-W5v" secondAttribute="trailing" id="mnS-pj-Jl0"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
@@ -146,21 +156,21 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message text" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsd-dy-POP" customClass="MessageLabel" customModule="Telega" customModuleProvider="target">
-                                                    <rect key="frame" x="15" y="9" width="384" height="103"/>
+                                                    <rect key="frame" x="15" y="9" width="345" height="103"/>
                                                     <color key="backgroundColor" red="0.16078431369999999" green="0.16862745100000001" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Zc-nJ-iug">
-                                                    <rect key="frame" x="15" y="103" width="384" height="25"/>
+                                                    <rect key="frame" x="15" y="103" width="345" height="25"/>
                                                     <color key="backgroundColor" red="0.16078431369999999" green="0.16862745100000001" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="qWp-Zn-rsU"/>
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9kx-uV-0fW">
-                                                    <rect key="frame" x="327" y="101" width="64" height="24"/>
+                                                    <rect key="frame" x="327" y="101" width="25" height="24"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="9"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -746,6 +756,7 @@
         <image name="boy" width="409.60000610351562" height="409.60000610351562"/>
         <image name="contacts" width="23" height="23"/>
         <image name="edit" width="384" height="384"/>
+        <image name="envelope" width="384" height="384"/>
         <image name="green_tick" width="384" height="384"/>
         <image name="send" width="384" height="384"/>
         <image name="settings2" width="20" height="20"/>

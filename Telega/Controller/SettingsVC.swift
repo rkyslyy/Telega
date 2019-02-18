@@ -106,9 +106,7 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     @IBAction func savePressed(_ sender: Any) {
         saveBtn.isEnabled = false
         view.endEditing(true)
-        let base64 = pickedData!.base64EncodedString()
-        print(DataService.instance.userAvatar!.count)
-        print(base64.count)
+        let base64 = pickedData?.base64EncodedString() ?? avatarView.image!.jpeg(.medium)?.base64EncodedString()
         let darkView = UIView(frame: view.bounds)
         darkView.alpha = 0
         darkView.backgroundColor = UIColor(white: 0, alpha: 0.7)
@@ -120,7 +118,7 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         UIView.animate(withDuration: 0.2) {
             darkView.alpha = 1
         }
-        TelegaAPI.instanse.editProfileWith(username: usernameTxtFld.text!, andAvatar: base64, completion: {
+        TelegaAPI.instanse.editProfileWith(username: usernameTxtFld.text!, andAvatar: base64!, completion: {
             UIView.animate(withDuration: 0.2, animations: {
                 darkView.alpha = 0
                 ripple.alpha = 0

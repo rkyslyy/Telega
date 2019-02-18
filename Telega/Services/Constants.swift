@@ -30,4 +30,4 @@ let HEADER = [
 // Notifications
 let CONTACTS_LOADED = Notification.Name("contacts_loaded")
 let MESSAGES_UPDATED = Notification.Name("messages_updated")
-let CONTACT_ONLINE = Notification.Name("contact_online")
+let UPDATE_CONTACT = Notification.Name("contact_online")

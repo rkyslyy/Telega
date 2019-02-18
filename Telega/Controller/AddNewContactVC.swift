@@ -37,13 +37,11 @@ class AddNewContactVC: UIViewController {
     }
     
     @IBAction func savePressed(_ sender: Any) {
-        print(fetchedUser!.id)
         TelegaAPI.instanse.addContactWith(id: fetchedUser!.id) {
             DataService.instance.contacts!.append(self.fetchedUser!)
             self.navigationController?.popViewController(animated: true)
         }
     }
-    
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
