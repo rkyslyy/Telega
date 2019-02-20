@@ -9,7 +9,7 @@
 import Alamofire
 
 extension TelegaAPI {
-    class func updateInfoAboutSelf(completion: @escaping () -> ()) {
+    class func getInfoAboutSelf(completion: @escaping () -> ()) {
         if DataService.instance.token != nil {
             DispatchQueue.global().async {
                 Alamofire.request(ME_URL,
@@ -28,35 +28,38 @@ extension TelegaAPI {
                     DataService.instance.username = (user["username"] as! String)
                     DataService.instance.userAvatar = (user["avatar"] as! String)
                     DataService.instance.publicPem = (user["publicPem"] as! String)
-                    DataService.instance.userMessages.removeAll()
                     let messages = user["messages"] as! [[String:Any]]
                     MessagesParser.buildMessages(messages: messages)
                     let contactsData = user["contacts"] as! [[String : Any]]
-                    let contacts = contactsData.map({ (contact) -> User in
-                        let _id = contact["_id"] as! String
-                        let email = contact["email"] as! String
-                        let username = contact["username"] as! String
-                        let avatar = contact["avatar"] as! String
-                        let confirmed = contact["confirmed"] as! Bool
-                        let requestIsMine = contact["requestIsMine"] as! Bool
-                        let publicPem = contact["publicPem"] as! String
-                        let online = contact["online"] as! Bool
-                        let unread = contact["unread"] as! Bool
-                        return User(id: _id,
-                                    email: email,
-                                    username: username,
-                                    avatar: avatar,
-                                    publicPem: publicPem,
-                                    confirmed: confirmed,
-                                    requestIsMine: requestIsMine,
-                                    online: online,
-                                    unread: unread)
-                    })
-                    DataService.instance.contacts = contacts
+                    DataService.instance.contacts = contactsFrom(contactsData)
                     completion()
                 })
             }
         }
+    }
+    
+    class private func contactsFrom(_ contactsData: [[String:Any]]) -> [User] {
+        return contactsData.compactMap({ (contact) -> User? in
+            guard   let _id = contact["_id"] as? String,
+                    let email = contact["email"] as? String,
+                    let username = contact["username"] as? String,
+                    let avatar = contact["avatar"] as? String,
+                    let confirmed = contact["confirmed"] as? Bool,
+                    let requestIsMine = contact["requestIsMine"] as? Bool,
+                    let publicPem = contact["publicPem"] as? String,
+                    let online = contact["online"] as? Bool,
+                    let unread = contact["unread"] as? Bool
+                    else { return nil }
+            return User(id: _id,
+                        email: email,
+                        username: username,
+                        avatar: avatar,
+                        publicPem: publicPem,
+                        confirmed: confirmed,
+                        requestIsMine: requestIsMine,
+                        online: online,
+                        unread: unread)
+        })
     }
 }
 

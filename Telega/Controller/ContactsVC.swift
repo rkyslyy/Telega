@@ -61,12 +61,11 @@ class ContactsVC: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        DataService.instance.animatables.removeAll()
         contactsTable.reloadSections(IndexSet(integer: 0), with: .none)
     }
     
     @objc private func reloadContactsFromAPI() {
-        TelegaAPI.updateInfoAboutSelf {
+        TelegaAPI.getInfoAboutSelf {
             self.contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
             self.contactsTable.refreshControl?.endRefreshing()
         }

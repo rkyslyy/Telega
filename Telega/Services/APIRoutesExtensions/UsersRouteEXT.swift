@@ -22,7 +22,7 @@ extension TelegaAPI {
                               parameters: body,
                               encoding: JSONEncoding.default,
                               headers: header).responseJSON(completionHandler: { (response) in
-                self.updateInfoAboutSelf {
+                                self.getInfoAboutSelf {
                     completion()
                 }
             })

@@ -42,7 +42,7 @@ extension TelegaAPI {
                                                                encryptionKey: password)
             else { completion(false, "Could not decrypt private pem"); return }
         DataService.instance.privatePem = privatePem
-        updateInfoAboutSelf {
+        getInfoAboutSelf {
             TelegaAPI.establishConnection()
             completion(true, "Logged in as \(data["username"] as! String)")
         }

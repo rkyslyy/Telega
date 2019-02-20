@@ -28,7 +28,8 @@ extension TelegaAPI {
                           parameters: body,
                           encoding: JSONEncoding.default,
                           headers: header).responseJSON { (response) in
-                            guard let data = response.value as? [String : Any] else { print("bad value"); completion(":("); return }
+                            guard let data = response.value as? [String : Any]
+                                else { print("bad value"); completion(":("); return }
                             let time = data["time"] as! String
                             completion(time)
         }

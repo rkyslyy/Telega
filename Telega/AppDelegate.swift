@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DataService.instance.logout()
         if DataService.instance.token != nil {
 //            print(DataService.instance.token!)
-            TelegaAPI.updateInfoAboutSelf {
+            TelegaAPI.getInfoAboutSelf {
                 TelegaAPI.establishConnection();  NotificationCenter.default.post(name: CONTACTS_LOADED, object: nil, userInfo: nil) }
             let mainStoryboardIpad : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let initialViewControlleripad : UIViewController = mainStoryboardIpad.instantiateViewController(withIdentifier: "tabBar")

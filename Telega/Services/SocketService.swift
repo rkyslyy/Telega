@@ -45,7 +45,7 @@ class SocketService {
     
     private func setupUpdateContactsEvent() {
         manager.defaultSocket.on("update contacts") { (responses, _) in
-            TelegaAPI.updateInfoAboutSelf {
+            TelegaAPI.getInfoAboutSelf {
                 var body = [String:String]()
                 if responses.count > 0 {
                     if let id = responses[0] as? String {

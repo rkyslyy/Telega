@@ -6,12 +6,6 @@
 //  Copyright © 2019 Roman Kyslyy. All rights reserved.
 //
 
-import Foundation
-import BCryptSwift
-import Alamofire
-import SwiftyRSA
-import SocketIO
-
 class TelegaAPI {
     
     class func establishConnection() {

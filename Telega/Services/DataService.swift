@@ -42,8 +42,6 @@ class DataService {
         }
     }
     
-    var contacts : [User]?
-    
     var privatePem : String? {
         get {
             return UserDefaults.standard.string(forKey: "privatePem")
@@ -76,7 +74,7 @@ class DataService {
         }
     }
     
-    var userMessages = [String:[Message]]()
+    var contacts : [User]?
     
     var messages = [String:[(date: String, messages: [Message])]]()
     
@@ -91,6 +89,4 @@ class DataService {
         contacts = nil
         id = nil
     }
-    
-    var animatables = [(view: UIView, animation: Animation)]()
 }

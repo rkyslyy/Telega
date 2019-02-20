@@ -21,7 +21,8 @@ extension TelegaAPI {
                                   parameters: body,
                                   encoding: JSONEncoding.default,
                                   headers: AUTH_HEADER).responseJSON(completionHandler: { (response) in
-                    guard let data = response.value as? [String : Any] else { print("response:", response); return }
+                    guard let data = response.value as? [String : Any]
+                        else { print("response:", response); return }
                     if data["error"] == nil {
                         DataService.instance.username = username
                         DataService.instance.userAvatar = avatar
