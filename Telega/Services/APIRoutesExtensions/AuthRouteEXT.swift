@@ -23,28 +23,25 @@ extension TelegaAPI {
                               parameters: body,
                               encoding: JSONEncoding.default,
                               headers: HEADER).responseJSON(completionHandler: { (response) in
-                self.dealWithAuthResponse(password: password, response: response, completion: completion)
+                guard let data = response.value as? [String : Any]
+                    else { completion(false, "Could not get proper response"); return }
+                if let error = data["error"] {
+                    return completion(false, error as? String ?? "Something went wrong")
+                }
+                guard let token = data["token"] as? String
+                    else { return completion(false, "Could not get token") }
+                guard let encryptedPrivatePem = data["privatePem"] as? String
+                    else { return completion(false, "Could not get private pem") }
+                guard let privatePem = EncryptionService.decryptString(encryptedString: encryptedPrivatePem,
+                                                                       encryptionKey: password)
+                    else { return completion(false, "Could not decrypt private pem") }
+                DataService.instance.token = token
+                DataService.instance.privatePem = privatePem
+                getInfoAboutSelf {
+                    TelegaAPI.establishConnection()
+                    completion(true, "Logged in as \(data["username"] as! String)")
+                }
             })
-        }
-    }
-    
-    private class func dealWithAuthResponse(password: String, response: DataResponse<Any>,
-                                      completion: @escaping (_ result: Bool, _ message: String) -> ()) {
-        
-        guard let data = response.value as? [String : Any]
-            else { completion(false, "Something went wrong"); return }
-        if let error = data["error"] {
-            return completion(false, error as! String)
-        }
-        DataService.instance.token = (data["token"] as! String)
-        let encryptedPrivatePem = data["privatePem"] as! String
-        guard let privatePem = EncryptionService.decryptString(encryptedString: encryptedPrivatePem,
-                                                               encryptionKey: password)
-            else { completion(false, "Could not decrypt private pem"); return }
-        DataService.instance.privatePem = privatePem
-        getInfoAboutSelf {
-            TelegaAPI.establishConnection()
-            completion(true, "Logged in as \(data["username"] as! String)")
         }
     }
 }

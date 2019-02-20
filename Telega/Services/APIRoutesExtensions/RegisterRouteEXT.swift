@@ -33,7 +33,8 @@ extension TelegaAPI {
                               parameters: body,
                               encoding: JSONEncoding.default,
                               headers: HEADER).responseJSON { (response) in
-                                self.dealWithRegResponse(response: response, completion: completion)
+                                self.dealWithRegResponse(response: response,
+                                                         completion: completion)
             }
         }
     }

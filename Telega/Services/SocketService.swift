@@ -27,7 +27,9 @@ class SocketService {
     }
     
     func emitReadMessagesFrom(id: String) {
-        manager.defaultSocket.emit("messages_read", id, DataService.instance.id!)
+        manager.defaultSocket.emit("messages_read",
+                                   id,
+                                   DataService.instance.id!)
     }
     
     func disconnect() {
@@ -39,42 +41,49 @@ class SocketService {
             if DataService.instance.token == nil {
                 return
             }
-            self.manager.defaultSocket.emit("introduce", DataService.instance.username!, DataService.instance.id!)
+            self.manager.defaultSocket.emit("introduce",
+                                            DataService.instance.username!,
+                                            DataService.instance.id!)
         }
     }
     
     private func setupUpdateContactsEvent() {
         manager.defaultSocket.on("update contacts") { (responses, _) in
             TelegaAPI.getInfoAboutSelf {
+                if responses.isEmpty {return}
                 var body = [String:String]()
-                if responses.count > 0 {
-                    if let id = responses[0] as? String {
-                        body["id"] = id
-                        if responses.count > 1 {
-                            body["delete"] = ""
-                        }
+                if let id = responses[0] as? String {
+                    body["id"] = id
+                    if responses.count > 1 {
+                        body["delete"] = ""
                     }
                 }
-                NotificationCenter.default.post(name: CONTACTS_LOADED, object: nil, userInfo: body)
+                NotificationCenter.default.post(name: CONTACTS_LOADED,
+                                                object: nil,
+                                                userInfo: body)
             }
         }
     }
     
     private func setupOnlineEvent() {
         manager.defaultSocket.on("online") { (responses, _) in
-            let id = responses[0] as! String
+            if responses.isEmpty {return}
+            guard let id = responses[0] as? String else { return }
             for (index, contact) in DataService.instance.contacts!.enumerated() {
                 if contact.id == id {
                     DataService.instance.contacts![index].online = true
                 }
             }
-            NotificationCenter.default.post(name: UPDATE_CONTACT, object: nil, userInfo: ["id": id])
+            NotificationCenter.default.post(name: UPDATE_CONTACT,
+                                            object: nil,
+                                            userInfo: ["id": id])
         }
     }
     
     private func setupOfflineEvent() {
         manager.defaultSocket.on("offline") { (responses, _) in
-            let id = responses[0] as! String
+            if responses.isEmpty {return}
+            guard let id = responses[0] as? String else { return }
             for (index, contact) in DataService.instance.contacts!.enumerated() {
                 if contact.id == id {
                     DataService.instance.contacts![index].online = false
@@ -86,7 +95,8 @@ class SocketService {
     
     private func setupMessagesReadEvent() {
         manager.defaultSocket.on("messages_read") { (responses, _) in
-            let id = responses[0] as! String
+            if responses.isEmpty {return}
+            guard let id = responses[0] as? String else { return }
             for (index, contact) in DataService.instance.contacts!.enumerated() {
                 if contact.id == id  {
                     DataService.instance.contacts![index].unread = false

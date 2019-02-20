@@ -40,7 +40,8 @@ extension TelegaAPI {
             Alamofire.request(ADD_CONTACT_URL,
                               method: .put,
                               parameters: body,
-                              encoding: JSONEncoding.default, headers: header).responseJSON(completionHandler: { (response) in
+                              encoding: JSONEncoding.default,
+                              headers: header).responseJSON(completionHandler: { (response) in
                 completion()
             })
         }
@@ -66,14 +67,31 @@ extension TelegaAPI {
     
     class func getUserFor(email: String, completion: @escaping (User?) -> ()) {
         DispatchQueue.global().async {
-            Alamofire.request(USERS_SEARCH_URL + "email=" + email, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: HEADER).responseJSON(completionHandler: { (response) in
+            Alamofire.request(USERS_SEARCH_URL + "email=" + email,
+                              method: .get,
+                              parameters: nil,
+                              encoding: JSONEncoding.default,
+                              headers: HEADER).responseJSON(completionHandler: { (response) in
                 guard let data = response.value as? [String : Any]
                     else { print(response); return }
                 if data["error"] == nil {
-                    completion(User(id: data["_id"] as! String, email: data["email"] as! String, username: data["username"] as! String, avatar: data["avatar"] as! String, publicPem: data["publicPem"] as! String, confirmed: false, requestIsMine: true, online: false, unread: false))
-                } else {
-                    completion(nil)
+                    guard let id = data["_id"] as? String,
+                          let email = data["email"] as? String,
+                          let username = data["username"] as? String,
+                          let avatar = data["avatar"] as? String,
+                          let publicPem = data["publicPem"] as? String
+                        else { return completion(nil) }
+                    return completion(User(id: id,
+                                    email: email,
+                                    username: username,
+                                    avatar: avatar,
+                                    publicPem: publicPem,
+                                    confirmed: false,
+                                    requestIsMine: true,
+                                    online: false,
+                                    unread: false))
                 }
+                completion(nil)
             })
         }
     }

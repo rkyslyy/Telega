@@ -35,7 +35,9 @@ extension TelegaAPI {
         }
     }
     
-    class func changePasswordTo(_ password: String, withPem pem: String, completion: @escaping () -> ()) {
+    class func changePasswordTo(_ password: String,
+                                withPem pem: String,
+                                completion: @escaping () -> ()) {
         let body = [
             "password": password,
             "pem": pem
