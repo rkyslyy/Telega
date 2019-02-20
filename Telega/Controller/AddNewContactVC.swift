@@ -37,7 +37,7 @@ class AddNewContactVC: UIViewController {
     }
     
     @IBAction func savePressed(_ sender: Any) {
-        TelegaAPI.instanse.addContactWith(id: fetchedUser!.id) {
+        TelegaAPI.addContactWith(id: fetchedUser!.id) {
             DataService.instance.contacts!.append(self.fetchedUser!)
             self.navigationController?.popViewController(animated: true)
         }
@@ -53,7 +53,7 @@ extension AddNewContactVC: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         view.endEditing(true)
         guard let query = searchBar.text, searchBar.text! != "" else { return }
-        TelegaAPI.instanse.getUserFor(email: query.lowercased()) { (user) in
+        TelegaAPI.getUserFor(email: query.lowercased()) { (user) in
             if user != nil {
                 if user?.email == DataService.instance.email! {
                     self.showNoResults()

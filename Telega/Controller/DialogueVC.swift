@@ -111,7 +111,6 @@ class DialogueVC: UIViewController {
     }
     
     @objc private func hideAvatar() {
-        print("HIDING AVATAR")
         UIView.animate(withDuration: 0.2, animations: {
             self.avatarImgView?.frame = CGRect(x: self.view.frame.width - 30, y: self.avatarBtn.frame.origin.y + 10, width: 1, height: 1)
             self.avatarMask?.alpha = 0
@@ -132,13 +131,12 @@ class DialogueVC: UIViewController {
     }
     
     @objc private func messagesUpdated(notification: Notification) {
-        TelegaAPI.instanse.emitReadMessagesFrom(id: companion.id)
+        TelegaAPI.emitReadMessagesFrom(id: companion.id)
         if let idToUpdate = notification.userInfo?["companionID"] as? String {
             if idToUpdate == companion.id {
                 if notification.userInfo?["newDate"] != nil {
                     oldCount = DataService.instance.messages[companion.id]?.count ?? 0
                     messagesTable.reloadData()
-                    print(DataService.instance.messages[companion.id]!)
                 } else {
                     for cell in self.messagesTable.visibleCells as! [MessageCell] {
                         cell.tail?.removeFromSuperview()
@@ -158,7 +156,6 @@ class DialogueVC: UIViewController {
     
     private func playSound() {
         guard let path = Bundle.main.path(forResource: "light", ofType:"mp3") else { print("COULD NOT GET RESOURCE"); return }
-        print("WE GOT PATH")
         let url = URL(fileURLWithPath: path)
         do {
             self.messageSound = try AVAudioPlayer(contentsOf: url)
@@ -181,7 +178,7 @@ class DialogueVC: UIViewController {
                 DataService.instance.contacts![index].unread = false
             }
         }
-        TelegaAPI.instanse.emitReadMessagesFrom(id: companion.id)
+        TelegaAPI.emitReadMessagesFrom(id: companion.id)
     }
     
     @IBAction func sendBtnPressed() {
@@ -200,23 +197,20 @@ class DialogueVC: UIViewController {
             let encryptedForCompanion = try clear.encrypted(with: self.companionPublicKey!, padding: .PKCS1)
             let myPublicKey = try PublicKey(pemEncoded: DataService.instance.publicPem!)
             let encryptedForMe = try clear.encrypted(with: myPublicKey, padding: .PKCS1)
-            TelegaAPI.instanse.send(message: encryptedForCompanion.base64String, toUserWithID: companion.id, andStoreCopyForMe: encryptedForMe.base64String) {timeStr in
+            TelegaAPI.send(message: encryptedForCompanion.base64String, toUserWithID: companion.id, andStoreCopyForMe: encryptedForMe.base64String) {timeStr in
                 let dateFormatter = ISO8601DateFormatter()
                 dateFormatter.timeZone = TimeZone(abbreviation: "EET")
                 let time = dateFormatter.date(from:timeStr.components(separatedBy: ".")[0] + "-0200")!
                 let newMessage = Message(text:trimmedText, time: time, mine: true)
                 var created = false
                 if DataService.instance.messages[self.companion.id] != nil {
-                    print("WE GOT MESSAGES WITH USER")
                     for (index, tuple) in DataService.instance.messages[self.companion.id]!.enumerated() {
                         if tuple.date == timeStr.components(separatedBy: "T")[0] {
                             created = true
                             DataService.instance.messages[self.companion.id]![index].messages.append(newMessage)
-                            print("DATE ALREADY EXISTED")
                         }
                     }
                     if !created {
-                        print("DATE DIDN'T EXIST")
                         DataService.instance.messages[self.companion.id]!.append((date: timeStr.components(separatedBy: "T")[0] , messages: [Message]()))
                         DataService.instance.messages[self.companion.id]![DataService.instance.messages[self.companion.id]!.count - 1].messages.append(newMessage)
                         print(DataService.instance.messages[self.companion.id]!)
@@ -230,7 +224,6 @@ class DialogueVC: UIViewController {
                     }
                     self.oldCount = DataService.instance.messages[self.companion.id]!.count
                 } else {
-                    print("NO MESSAGES WITH USER")
                     DataService.instance.messages[self.companion.id] = [(date: String, messages: [Message])]()
                     DataService.instance.messages[self.companion.id]!.append((date: timeStr.components(separatedBy: "T")[0], messages: [Message]()))
                     DataService.instance.messages[self.companion.id]![0].messages.append(newMessage)
@@ -244,7 +237,6 @@ class DialogueVC: UIViewController {
                 gif.removeFromSuperview()
             }
         } catch {
-            print("COULD NOT SEND MESSAGE")
             self.sendBtn.isEnabled = true
             self.sendBtn.isHidden = false
             self.requestPending = false

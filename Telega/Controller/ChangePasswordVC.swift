@@ -70,7 +70,7 @@ class ChangePasswordVC: UIViewController {
             let ripple = GIFImageView(frame: CGRect(x: view.frame.width / 2 - 40, y: view.frame.height / 2 - 40, width: 80, height: 80))
             ripple.alpha = 0
             showRipple(ripple)
-            TelegaAPI.instanse.changePasswordTo(password, withPem: encryptedPrivatePem) {
+            TelegaAPI.changePasswordTo(password, withPem: encryptedPrivatePem) {
                 self.view.endEditing(true)
                 self.dismissSelf()
             }

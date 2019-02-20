@@ -81,7 +81,7 @@ class DataService {
     var messages = [String:[(date: String, messages: [Message])]]()
     
     func logout() {
-        TelegaAPI.instanse.disconnect()
+        TelegaAPI.disconnect()
         token = nil
         email = nil
         privatePem = nil

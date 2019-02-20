@@ -104,7 +104,7 @@ class AuthVC: UIViewController {
         }
         createLoadingMask()
         if creating {
-            TelegaAPI.instanse.registerUserWith(email: email,
+            TelegaAPI.registerUserWith(email: email,
                                                   password: password,
                                                   username: username) { (success, message) in
                 self.loadingMask.showResultWith(success: success, andMessage: message, completion: {
@@ -120,7 +120,7 @@ class AuthVC: UIViewController {
             }
         } else {
             loadingMask.label.text = "Logging in..."
-            TelegaAPI.instanse.authorizeUserWith(email: email,
+            TelegaAPI.authorizeUserWith(email: email,
                                                    password: password) { (success, message) in
                 self.loadingMask.showResultWith(success: success, andMessage: message, completion: {
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {

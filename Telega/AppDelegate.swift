@@ -17,8 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DataService.instance.logout()
         if DataService.instance.token != nil {
 //            print(DataService.instance.token!)
-            TelegaAPI.instanse.updateInfoAboutSelf {
-                TelegaAPI.instanse.establishConnection();  NotificationCenter.default.post(name: CONTACTS_LOADED, object: nil, userInfo: nil) }
+            TelegaAPI.updateInfoAboutSelf {
+                TelegaAPI.establishConnection();  NotificationCenter.default.post(name: CONTACTS_LOADED, object: nil, userInfo: nil) }
             let mainStoryboardIpad : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let initialViewControlleripad : UIViewController = mainStoryboardIpad.instantiateViewController(withIdentifier: "tabBar")
             self.window = UIWindow(frame: UIScreen.main.bounds)
@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        TelegaAPI.instanse.disconnect()
+        TelegaAPI.disconnect()
     }
 
 

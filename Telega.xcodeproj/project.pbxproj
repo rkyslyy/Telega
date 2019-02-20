@@ -35,6 +35,14 @@
 		BF9E31F72202135A00187310 /* black.gif in Resources */ = {isa = PBXBuildFile; fileRef = BF9E31F62202135A00187310 /* black.gif */; };
 		BF9E32012202213500187310 /* ripple.gif in Resources */ = {isa = PBXBuildFile; fileRef = BF9E32002202213500187310 /* ripple.gif */; };
 		BFB5811321FF6BA50051C0D5 /* TelegaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB5811221FF6BA50051C0D5 /* TelegaAPI.swift */; };
+		BFB82A81221C3CEF003F570E /* SocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A80221C3CEF003F570E /* SocketService.swift */; };
+		BFB82A83221D6769003F570E /* EncryptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A82221D6769003F570E /* EncryptionService.swift */; };
+		BFB82A86221D7252003F570E /* RegisterRouteEXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A85221D7252003F570E /* RegisterRouteEXT.swift */; };
+		BFB82A88221D743A003F570E /* AuthRouteEXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A87221D743A003F570E /* AuthRouteEXT.swift */; };
+		BFB82A8A221D756D003F570E /* UsersRouteEXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A89221D756D003F570E /* UsersRouteEXT.swift */; };
+		BFB82A8C221D7635003F570E /* MeRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A8B221D7635003F570E /* MeRoute.swift */; };
+		BFB82A8E221D8349003F570E /* EditProfileRouteEXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A8D221D8349003F570E /* EditProfileRouteEXT.swift */; };
+		BFB82A90221D863E003F570E /* MessagesRouteEXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A8F221D863E003F570E /* MessagesRouteEXT.swift */; };
 		BFF46F2A22035DD300469496 /* PasswordRulesXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF46F2922035DD300469496 /* PasswordRulesXIB.xib */; };
 		BFF46F2C2203603100469496 /* PasswordRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF46F2B2203603100469496 /* PasswordRules.swift */; };
 		BFF46F2E2203796700469496 /* DarkNavigationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF46F2D2203796700469496 /* DarkNavigationVC.swift */; };
@@ -76,6 +84,14 @@
 		BF9E31F62202135A00187310 /* black.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = black.gif; sourceTree = "<group>"; };
 		BF9E32002202213500187310 /* ripple.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ripple.gif; sourceTree = "<group>"; };
 		BFB5811221FF6BA50051C0D5 /* TelegaAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelegaAPI.swift; sourceTree = "<group>"; };
+		BFB82A80221C3CEF003F570E /* SocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketService.swift; sourceTree = "<group>"; };
+		BFB82A82221D6769003F570E /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
+		BFB82A85221D7252003F570E /* RegisterRouteEXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRouteEXT.swift; sourceTree = "<group>"; };
+		BFB82A87221D743A003F570E /* AuthRouteEXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouteEXT.swift; sourceTree = "<group>"; };
+		BFB82A89221D756D003F570E /* UsersRouteEXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersRouteEXT.swift; sourceTree = "<group>"; };
+		BFB82A8B221D7635003F570E /* MeRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeRoute.swift; sourceTree = "<group>"; };
+		BFB82A8D221D8349003F570E /* EditProfileRouteEXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileRouteEXT.swift; sourceTree = "<group>"; };
+		BFB82A8F221D863E003F570E /* MessagesRouteEXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesRouteEXT.swift; sourceTree = "<group>"; };
 		BFF46F2922035DD300469496 /* PasswordRulesXIB.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PasswordRulesXIB.xib; sourceTree = "<group>"; };
 		BFF46F2B2203603100469496 /* PasswordRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordRules.swift; sourceTree = "<group>"; };
 		BFF46F2D2203796700469496 /* DarkNavigationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkNavigationVC.swift; sourceTree = "<group>"; };
@@ -194,9 +210,12 @@
 		BF087FE121FF47E300CFA8BB /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				BFB82A84221D720F003F570E /* APIRoutesExtensions */,
 				BFB5811221FF6BA50051C0D5 /* TelegaAPI.swift */,
-				BF9E31E92201EEA400187310 /* Constants.swift */,
 				BF7571B22207101B008768D1 /* DataService.swift */,
+				BFB82A80221C3CEF003F570E /* SocketService.swift */,
+				BFB82A82221D6769003F570E /* EncryptionService.swift */,
+				BF9E31E92201EEA400187310 /* Constants.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -208,6 +227,19 @@
 				BFF46F2922035DD300469496 /* PasswordRulesXIB.xib */,
 			);
 			path = XIBs;
+			sourceTree = "<group>";
+		};
+		BFB82A84221D720F003F570E /* APIRoutesExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				BFB82A85221D7252003F570E /* RegisterRouteEXT.swift */,
+				BFB82A87221D743A003F570E /* AuthRouteEXT.swift */,
+				BFB82A89221D756D003F570E /* UsersRouteEXT.swift */,
+				BFB82A8B221D7635003F570E /* MeRoute.swift */,
+				BFB82A8D221D8349003F570E /* EditProfileRouteEXT.swift */,
+				BFB82A8F221D863E003F570E /* MessagesRouteEXT.swift */,
+			);
+			path = APIRoutesExtensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -358,20 +390,28 @@
 				BFF46F2E2203796700469496 /* DarkNavigationVC.swift in Sources */,
 				BF28251F220DC85E00FE42CA /* Message.swift in Sources */,
 				BF3EADD8220CD19800D0B718 /* DialogueVC.swift in Sources */,
+				BFB82A86221D7252003F570E /* RegisterRouteEXT.swift in Sources */,
+				BFB82A81221C3CEF003F570E /* SocketService.swift in Sources */,
 				BFB5811321FF6BA50051C0D5 /* TelegaAPI.swift in Sources */,
 				BF087FE721FF50A100CFA8BB /* AuthVC.swift in Sources */,
 				BF282521220E2A0600FE42CA /* MessageLabel.swift in Sources */,
 				BF7FE4912203846900455A60 /* CircleImageView.swift in Sources */,
 				BF73C0F02209DA0F00353FF1 /* ContactCell.swift in Sources */,
+				BFB82A8C221D7635003F570E /* MeRoute.swift in Sources */,
 				BF73C0EE2209A10E00353FF1 /* User.swift in Sources */,
+				BFB82A83221D6769003F570E /* EncryptionService.swift in Sources */,
 				BF2B30B322130CD7001E9C47 /* ChangePasswordVC.swift in Sources */,
 				BF9E31F522020C4500187310 /* AuthLoading.swift in Sources */,
 				BF087FE521FF49D400CFA8BB /* CustomPlaceholderTF.swift in Sources */,
+				BFB82A8A221D756D003F570E /* UsersRouteEXT.swift in Sources */,
+				BFB82A88221D743A003F570E /* AuthRouteEXT.swift in Sources */,
 				BF087FCB21FF453400CFA8BB /* AppDelegate.swift in Sources */,
 				BF28251B220DAB9E00FE42CA /* MessageInputView.swift in Sources */,
 				BF087FCD21FF453400CFA8BB /* ContactsVC.swift in Sources */,
 				BFF46F2C2203603100469496 /* PasswordRules.swift in Sources */,
+				BFB82A8E221D8349003F570E /* EditProfileRouteEXT.swift in Sources */,
 				BF9E31EA2201EEA400187310 /* Constants.swift in Sources */,
+				BFB82A90221D863E003F570E /* MessagesRouteEXT.swift in Sources */,
 				BF282516220D9C3700FE42CA /* RNCryptor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

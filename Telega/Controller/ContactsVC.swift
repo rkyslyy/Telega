@@ -44,9 +44,7 @@ class ContactsVC: UIViewController {
     
     @objc private func updateUser(notification: Notification) {
         if let id = notification.userInfo?["id"] as? String {
-            print(id)
             for (index, cell) in (contactsTable.visibleCells as! [ContactCell]).enumerated() {
-                print(cell.contactID)
                 if cell.contactID == id {
                     contactsTable.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
                 }
@@ -68,7 +66,7 @@ class ContactsVC: UIViewController {
     }
     
     @objc private func reloadContactsFromAPI() {
-        TelegaAPI.instanse.updateInfoAboutSelf {
+        TelegaAPI.updateInfoAboutSelf {
             self.contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
             self.contactsTable.refreshControl?.endRefreshing()
         }
@@ -136,14 +134,13 @@ extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
         cell.usernameLbl.text = contact.username
         cell.emailLbl.text = contact.email
         cell.contactID = DataService.instance.contacts![indexPath.row].id
-        print("UNREAD:", contact.unread)
         cell.setupStatus(confirmed: contact.confirmed, requestIsMine: contact.requestIsMine, online: contact.online, unread: contact.unread)
         return cell
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
-            TelegaAPI.instanse.deleteContactWith(id: DataService.instance.contacts![indexPath.row].id, completion: {
+            TelegaAPI.deleteContactWith(id: DataService.instance.contacts![indexPath.row].id, completion: {
             })
             DataService.instance.contacts!.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.right)

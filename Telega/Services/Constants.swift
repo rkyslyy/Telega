@@ -26,6 +26,12 @@ let MESSAGES_URL = BASE_URL + "messages/"
 let HEADER = [
     "Content-Type": "application/json"
 ]
+var AUTH_HEADER : [String:String] { // Variable, but we'll not tell anyone
+    return [
+        "Content-Type": "application/json",
+        "x-auth-token": DataService.instance.token!
+    ]
+}
 
 // Notifications
 let CONTACTS_LOADED = Notification.Name("contacts_loaded")

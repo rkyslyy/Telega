@@ -118,7 +118,7 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         UIView.animate(withDuration: 0.2) {
             darkView.alpha = 1
         }
-        TelegaAPI.instanse.editProfileWith(username: usernameTxtFld.text!, andAvatar: base64!, completion: {
+        TelegaAPI.editProfileWith(username: usernameTxtFld.text!, andAvatar: base64!, completion: {
             UIView.animate(withDuration: 0.2, animations: {
                 darkView.alpha = 0
                 ripple.alpha = 0

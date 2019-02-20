@@ -62,7 +62,7 @@ class ContactCell: UITableViewCell {
         if !confirmed && !requestIsMine {
             statusBtn.isUserInteractionEnabled = false
             statusBtn.setImage(nil, for: .normal)
-            TelegaAPI.instanse.acceptFriendRequestFrom(id: contactID) {
+            TelegaAPI.acceptFriendRequestFrom(id: contactID) {
                 self.table.reloadRows(at: [self.indexPath], with: .fade)
             }
             gif = GIFImageView(frame: statusBtn.frame)

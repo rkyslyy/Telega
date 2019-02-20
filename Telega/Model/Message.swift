@@ -9,9 +9,7 @@
 import Foundation
 
 struct Message {
-    
     let text: String
     let time: Date
     let mine: Bool
-    
 }
