@@ -10,10 +10,10 @@ import UIKit
 
 @IBDesignable
 class MessageInputView: UITextView {
-
-    override func draw(_ rect: CGRect) {
-        clipsToBounds = true
-        layer.cornerRadius = 10
-    }
-    
+	
+	override func draw(_ rect: CGRect) {
+		clipsToBounds = true
+		layer.cornerRadius = 10
+	}
+	
 }

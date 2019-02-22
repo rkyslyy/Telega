@@ -9,45 +9,49 @@
 import Alamofire
 
 extension TelegaAPI {
-    class func editProfileWith(username: String, andAvatar avatar: String, completion: @escaping () -> ()) {
-        if DataService.instance.token != nil {
-            DispatchQueue.global().async {
-                let body = [
-                    "username": username,
-                    "avatar": avatar
-                ]
-                Alamofire.request(USERS_URL,
-                                  method: .put,
-                                  parameters: body,
-                                  encoding: JSONEncoding.default,
-                                  headers: AUTH_HEADER).responseJSON(completionHandler: { (response) in
-                    guard let data = response.value as? [String : Any]
-                        else { print("response:", response); return }
-                    if data["error"] == nil {
-                        DataService.instance.username = username
-                        DataService.instance.userAvatar = avatar
-                        completion()
-                    } else {
-                        completion()
-                    }
-                })
-            }
-        }
-    }
-    
-    class func changePasswordTo(_ password: String,
-                                withPem pem: String,
-                                completion: @escaping () -> ()) {
-        let body = [
-            "password": password,
-            "pem": pem
-        ]
-        Alamofire.request(CHANGE_PASSWORD_URL,
-                          method: .put,
-                          parameters: body,
-                          encoding: JSONEncoding.default,
-                          headers: AUTH_HEADER).responseJSON { (response) in
-            completion()
-        }
-    }
+	class func editProfileWith(
+		username: String,
+		andAvatar avatar: String,
+		completion: @escaping () -> ()) {
+		if DataService.instance.token != nil {
+			DispatchQueue.global().async {
+				let body = ["username": username,
+							"avatar": avatar]
+				Alamofire.request(
+					USERS_URL,
+					method: .put,
+					parameters: body,
+					encoding: JSONEncoding.default,
+					headers: AUTH_HEADER)
+					.responseJSON { (response) in
+						guard let data = response.value as? [String : Any]
+							else { print("response:", response); return }
+						if data["error"] == nil {
+							DataService.instance.username = username
+							DataService.instance.userAvatar = avatar
+							completion()
+						} else {
+							completion()
+						}
+				}
+			}
+		}
+	}
+
+	class func changePasswordTo(
+		_ password: String,
+		withPem pem: String,
+		completion: @escaping () -> ()) {
+		let body = ["password": password,
+					"pem": pem]
+		Alamofire.request(
+			CHANGE_PASSWORD_URL,
+			method: .put,
+			parameters: body,
+			encoding: JSONEncoding.default,
+			headers: AUTH_HEADER)
+			.responseJSON { (response) in
+				completion()
+		}
+	}
 }

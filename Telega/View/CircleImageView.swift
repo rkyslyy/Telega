@@ -10,14 +10,14 @@ import UIKit
 
 @IBDesignable
 class CircleImageView: UIImageView {
-    
-    @IBInspectable var circle: Bool = false {
-        didSet {
-            if circle {
-                layer.cornerRadius = frame.width / 2
-            } else {
-                layer.cornerRadius = 0
-            }
-        }
-    }
+	
+	@IBInspectable var circle: Bool = false {
+		didSet {
+			if circle {
+				layer.cornerRadius = frame.width / 2
+			} else {
+				layer.cornerRadius = 0
+			}
+		}
+	}
 }

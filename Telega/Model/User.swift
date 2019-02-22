@@ -9,13 +9,13 @@
 import Foundation
 
 struct User {
-    let id: String
-    let email: String
-    let username: String
-    let avatar: String
-    let publicPem: String
-    let confirmed: Bool
-    let requestIsMine: Bool
-    var online: Bool
-    var unread: Bool
+	let id: String
+	let email: String
+	let username: String
+	let avatar: String
+	let publicPem: String
+	let confirmed: Bool
+	let requestIsMine: Bool
+	var online: Bool
+	var unread: Bool
 }

@@ -7,18 +7,19 @@
 //
 
 class TelegaAPI {
-    
-    class func establishConnection() {
-        SocketService.instance.establishConnection()
-    }
-    
-    class func emitReadMessagesFrom(id: String) {
-        SocketService.instance.manager.defaultSocket.emit("messages_read",
-                                                          id,
-                                                          DataService.instance.id!)
-    }
-    
-    class func disconnect() {
-        SocketService.instance.manager.defaultSocket.disconnect()
-    }
+	
+	class func establishConnection() {
+		SocketService.instance.establishConnection()
+	}
+	
+	class func emitReadMessagesFrom(id: String) {
+		SocketService.instance.manager.defaultSocket.emit(
+			"messages_read",
+			id,
+			DataService.instance.id!)
+	}
+	
+	class func disconnect() {
+		SocketService.instance.manager.defaultSocket.disconnect()
+	}
 }

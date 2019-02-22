@@ -11,14 +11,12 @@ import Alamofire
 
 class DarkNavigationVC: UINavigationController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		self.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+	}
 
-        self.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-
+	override var preferredStatusBarStyle: UIStatusBarStyle {
+		return .lightContent
+	}
 }

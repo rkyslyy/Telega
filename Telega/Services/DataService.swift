@@ -10,83 +10,83 @@ import Foundation
 import UIKit
 
 enum Animation {
-    case rotate
-    case scale
+	case rotate
+	case scale
 }
 
 class DataService {
-    
-    static let instance = DataService()
-    
-    var token : String? {
-        get {
-            return UserDefaults.standard.string(forKey: "userToken")
-        } set {
-            UserDefaults.standard.set(newValue, forKey: "userToken")
-        }
-    }
-    
-    var id : String? {
-        get {
-            return UserDefaults.standard.string(forKey: "userID")
-        } set {
-            UserDefaults.standard.set(newValue, forKey: "userID")
-        }
-    }
-    
-    var email : String? {
-        get {
-            return UserDefaults.standard.string(forKey: "email")
-        } set {
-            UserDefaults.standard.set(newValue, forKey: "email")
-        }
-    }
-    
-    var privatePem : String? {
-        get {
-            return UserDefaults.standard.string(forKey: "privatePem")
-        } set {
-            UserDefaults.standard.set(newValue, forKey: "privatePem")
-        }
-    }
-    
-    var publicPem : String? {
-        get {
-            return UserDefaults.standard.string(forKey: "publicPem")
-        } set {
-            UserDefaults.standard.set(newValue, forKey: "publicPem")
-        }
-    }
-    
-    var username : String? {
-        get {
-            return UserDefaults.standard.string(forKey: "username")
-        } set {
-            UserDefaults.standard.set(newValue, forKey: "username")
-        }
-    }
-    
-    var userAvatar : String? {
-        get {
-            return UserDefaults.standard.string(forKey: "avatar")
-        } set {
-            UserDefaults.standard.set(newValue, forKey: "avatar")
-        }
-    }
-    
-    var contacts : [User]?
-    
-    var messages = [String:[(date: String, messages: [Message])]]()
-    
-    func logout() {
-        TelegaAPI.disconnect()
-        token = nil
-        email = nil
-        privatePem = nil
-        publicPem = nil
-        username = nil
-        userAvatar = nil
-        contacts = nil
-        id = nil
-    }
+	
+	static let instance = DataService()
+	
+	var token : String? {
+		get {
+			return UserDefaults.standard.string(forKey: "userToken")
+		} set {
+			UserDefaults.standard.set(newValue, forKey: "userToken")
+		}
+	}
+	
+	var id : String? {
+		get {
+			return UserDefaults.standard.string(forKey: "userID")
+		} set {
+			UserDefaults.standard.set(newValue, forKey: "userID")
+		}
+	}
+	
+	var email : String? {
+		get {
+			return UserDefaults.standard.string(forKey: "email")
+		} set {
+			UserDefaults.standard.set(newValue, forKey: "email")
+		}
+	}
+	
+	var privatePem : String? {
+		get {
+			return UserDefaults.standard.string(forKey: "privatePem")
+		} set {
+			UserDefaults.standard.set(newValue, forKey: "privatePem")
+		}
+	}
+	
+	var publicPem : String? {
+		get {
+			return UserDefaults.standard.string(forKey: "publicPem")
+		} set {
+			UserDefaults.standard.set(newValue, forKey: "publicPem")
+		}
+	}
+	
+	var username : String? {
+		get {
+			return UserDefaults.standard.string(forKey: "username")
+		} set {
+			UserDefaults.standard.set(newValue, forKey: "username")
+		}
+	}
+	
+	var userAvatar : String? {
+		get {
+			return UserDefaults.standard.string(forKey: "avatar")
+		} set {
+			UserDefaults.standard.set(newValue, forKey: "avatar")
+		}
+	}
+	
+	var contacts : [User]?
+	
+	var messages = [String:[(date: String, messages: [Message])]]()
+	
+	func logout() {
+		TelegaAPI.disconnect()
+		token = nil
+		email = nil
+		privatePem = nil
+		publicPem = nil
+		username = nil
+		userAvatar = nil
+		contacts = nil
+		id = nil
+	}
 }

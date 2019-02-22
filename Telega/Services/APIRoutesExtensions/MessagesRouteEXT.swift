@@ -9,29 +9,28 @@
 import Alamofire
 
 extension TelegaAPI {
-    
-    class func send(message: String,
-                    toUserWithID id: String,
-                    andStoreCopyForMe messageForMe: String,
-                    completion: @escaping (String) -> ()) {
-        let header = [
-            "x-auth-token": DataService.instance.token!
-        ]
-        let body = [
-            "messageForMe": messageForMe,
-            "messageForThem": message,
-            "theirID": id,
-            "socketID": SocketService.instance.manager.defaultSocket.sid
-        ]
-        Alamofire.request(MESSAGES_URL,
-                          method: .post,
-                          parameters: body,
-                          encoding: JSONEncoding.default,
-                          headers: header).responseJSON { (response) in
-                            guard let data = response.value as? [String : Any]
-                                else { print("bad value"); completion(":("); return }
-                            let time = data["time"] as! String
-                            completion(time)
-        }
+
+  class func send(
+    message: String,
+    toUserWithID id: String,
+    andStoreCopyForMe messageForMe: String,
+    completion: @escaping (String) -> ()) {
+    let header = ["x-auth-token": DataService.instance.token!]
+    let body = ["messageForMe": messageForMe,
+                "messageForThem": message,
+                "theirID": id,
+                "socketID": SocketService.instance.manager.defaultSocket.sid]
+    Alamofire.request(
+      MESSAGES_URL,
+      method: .post,
+      parameters: body,
+      encoding: JSONEncoding.default,
+      headers: header)
+      .responseJSON { (response) in
+        guard let data = response.value as? [String : Any]
+          else { return completion(":(") }
+        let time = data["time"] as! String
+        completion(time)
     }
+  }
 }

@@ -13,13 +13,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 //        DataService.instance.logout()
         if DataService.instance.token != nil {
 //            print(DataService.instance.token!)
             TelegaAPI.getInfoAboutSelf {
-                TelegaAPI.establishConnection();  NotificationCenter.default.post(name: CONTACTS_LOADED, object: nil, userInfo: nil) }
-            let mainStoryboardIpad : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                TelegaAPI.establishConnection()
+                NotificationCenter.default.post(
+                    name: CONTACTS_LOADED,
+                    object: nil,
+                    userInfo: nil) }
+            let mainStoryboardIpad : UIStoryboard = UIStoryboard(
+                name: "Main",
+                bundle: nil)
             let initialViewControlleripad : UIViewController = mainStoryboardIpad.instantiateViewController(withIdentifier: "tabBar")
             self.window = UIWindow(frame: UIScreen.main.bounds)
             self.window?.rootViewController = initialViewControlleripad
