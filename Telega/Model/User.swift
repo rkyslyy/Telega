@@ -8,14 +8,35 @@
 
 import Foundation
 
-struct User {
+class User {
 	let id: String
 	let email: String
 	let username: String
 	let avatar: String
 	let publicPem: String
-	let confirmed: Bool
+	var confirmed: Bool
 	let requestIsMine: Bool
 	var online: Bool
 	var unread: Bool
+
+	init(
+		id: String,
+		email: String,
+		username: String,
+		avatar: String,
+		publicPem: String,
+		confirmed: Bool,
+		requestIsMine: Bool,
+		online: Bool,
+		unread: Bool) {
+		self.id = id
+		self.email = email
+		self.username = username
+		self.avatar = avatar
+		self.publicPem = publicPem
+		self.confirmed = confirmed
+		self.requestIsMine = requestIsMine
+		self.online = online
+		self.unread = unread
+	}
 }

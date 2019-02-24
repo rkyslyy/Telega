@@ -76,7 +76,6 @@ class DataService {
 	
 	var contacts : [User]?
 	
-	var messages = [String:[(date: String, messages: [Message])]]()
 	
 	func logout() {
 		TelegaAPI.disconnect()
@@ -88,5 +87,14 @@ class DataService {
 		userAvatar = nil
 		contacts = nil
 		id = nil
+	}
+}
+
+class DateMessages {
+	let date: String
+	var messages = [Message]()
+
+	init(date: String) {
+		self.date = date
 	}
 }

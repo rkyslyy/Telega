@@ -146,21 +146,16 @@ class DialogueVC: UIViewController {
 
 	@objc private func messagesUpdated(notification: Notification) {
 		TelegaAPI.emitReadMessagesFrom(id: companion.id)
-		if let idToUpdate = notification.userInfo?["companionID"] as? String {
-			if idToUpdate == companion.id {
-				if notification.userInfo?["newDate"] != nil {
-					oldCount = DataService.instance.messages[companion.id]?.count ?? 0
-					messagesTable.reloadData()
-				} else {
-					for cell in self.messagesTable.visibleCells as! [MessageCell] {
-						cell.tail?.removeFromSuperview()
-						cell.resetTail()
-					}
-					messagesTable.insertRows(
-						at: [IndexPath(row: 0, section: 0)],
-						with: .top)
+		if let result = notification.userInfo?["storing_result"] as? StoringResult,
+			 let id = notification.userInfo?["id"] as? String,
+					 id == companion.id {
+			switch result {
+			case .freshContact, .freshDate: do { self.messagesTable.reloadData() }
+			case .freshMessage: do {
+				self.messagesTable.insertRows(
+					at: [IndexPath(row: 0, section: 0)],
+					with: .top)
 				}
-				//                playSound()
 			}
 			for (index, contact) in DataService.instance.contacts!.enumerated() {
 				if contact.id == companion.id {
@@ -192,7 +187,6 @@ class DialogueVC: UIViewController {
 			alert.addAction(sad)
 			present(alert, animated: true, completion: nil)
 		}
-		oldCount = DataService.instance.messages[companion.id]?.count ?? 0
 		for (index, contact) in DataService.instance.contacts!.enumerated() {
 			if contact.id == companion.id {
 				DataService.instance.contacts![index].unread = false
@@ -233,40 +227,19 @@ class DialogueVC: UIViewController {
 					let time = dateFormatter.date(
 						from:timeStr.components(separatedBy: ".")[0] + "-0200")!
 					let newMessage = Message(text:trimmedText, time: time, mine: true)
-					var created = false
-					if DataService.instance.messages[self.companion.id] != nil {
-						for (index, tuple) in DataService.instance
-							.messages[self.companion.id]!
-							.enumerated() {
-							if tuple.date == timeStr.components(separatedBy: "T")[0] {
-								created = true
-								DataService.instance.messages[self.companion.id]![index].messages.append(newMessage)
+					MessagesStorage.storeNew(
+						message: newMessage,
+						storeID: self.companion.id,
+						timeStr: timeStr,
+						completion: { (result) in
+							switch result {
+							case .freshContact, .freshDate:
+								do { self.messagesTable.reloadData() }
+							case .freshMessage: do { self.messagesTable.insertRows(
+								at: [IndexPath(row: 0, section: 0)],
+								with: .top) }
 							}
-						}
-						if !created {
-							DataService.instance.messages[self.companion.id]!.append((date: timeStr.components(separatedBy: "T")[0] ,
-																																				messages: [Message]()))
-							DataService.instance.messages[self.companion.id]![DataService.instance.messages[self.companion.id]!.count - 1].messages.append(newMessage)
-							print(DataService.instance.messages[self.companion.id]!)
-							self.messagesTable.reloadData()
-						} else {
-							for cell in self.messagesTable.visibleCells as! [MessageCell] {
-								cell.tail?.removeFromSuperview()
-								cell.resetTail()
-							}
-							self.messagesTable.insertRows(at: [IndexPath(row: 0,
-																													 section: 0)],
-																						with: .top)
-						}
-						self.oldCount = DataService.instance.messages[self.companion.id]!.count
-					} else {
-						DataService.instance.messages[self.companion.id] = [(date: String,
-																																 messages: [Message])]()
-						DataService.instance.messages[self.companion.id]!.append((date: timeStr.components(separatedBy: "T")[0],
-																																			messages: [Message]()))
-						DataService.instance.messages[self.companion.id]![0].messages.append(newMessage)
-						self.messagesTable.reloadData()
-					}
+					})
 					self.requestPending = false
 					self.messageInputView.text = ""
 					self.messageViewHeightConstraint.constant = 58.0
@@ -281,9 +254,6 @@ class DialogueVC: UIViewController {
 			gif.removeFromSuperview()
 		}
 	}
-
-
-
 }
 
 extension DialogueVC: UITextViewDelegate {
@@ -306,8 +276,9 @@ extension DialogueVC: UITextViewDelegate {
 		if requestPending
 		{ return textView.text = backupText }
 		let fixedWidth = textView.frame.size.width
-		let newSize = textView.sizeThatFits(CGSize(width: fixedWidth,
-																							 height: CGFloat.greatestFiniteMagnitude))
+		let newSize = textView.sizeThatFits(CGSize(
+			width: fixedWidth,
+			height: CGFloat.greatestFiniteMagnitude))
 		messageViewHeightConstraint.constant = newSize.height + 20
 		backupText = textView.text
 	}
@@ -316,18 +287,26 @@ extension DialogueVC: UITextViewDelegate {
 extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
 
 	func numberOfSections(in tableView: UITableView) -> Int {
-		return DataService.instance.messages[companion.id]?.count ?? 0
+		return MessagesStorage.numberOfDatesBy(user: companion.id)
 	}
 
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return DataService.instance.messages[companion.id]?.reversed()[section].messages.count ?? 0
+		return MessagesStorage.numberOfMessagesBy(
+			dateIndex: section,
+			andContact: companion.id)
 	}
 
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell") as! MessageCell
+	func tableView(
+		_ tableView: UITableView,
+		cellForRowAt indexPath: IndexPath
+		) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(
+			withIdentifier: "messageCell") as! MessageCell
 		cell.transform = CGAffineTransform(rotationAngle: (-.pi))
-		if let messages = DataService.instance.messages[companion.id]?.reversed()[indexPath.section].messages {
-			let message = messages.reversed()[indexPath.row]
+		if let messages = MessagesStorage.messagesOfContactWith(
+			id: companion.id,
+			andOfDateIndex: indexPath.section) {
+			let message = messages[indexPath.row]
 			var text = message.text
 			if text.count <= 5 {
 				for _ in 0..<10 - text.count {
@@ -339,7 +318,8 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
 			cell.ranchor = cell.rightCon
 			cell.infoView.clipsToBounds = true
 			cell.infoView.layer.cornerRadius = 10
-			cell.infoView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+			cell.infoView.layer.maskedCorners = [.layerMaxXMaxYCorner,
+																					 .layerMinXMaxYCorner]
 			let timi = message.time.description.components(separatedBy: " ")[1]
 			let hours = timi.components(separatedBy: ":")[0]
 			let minutes = timi.components(separatedBy: ":")[1]
@@ -365,10 +345,13 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
 		}
 	}
 
-	func tableView(_ tableView: UITableView,
-								 didEndDisplaying cell: UITableViewCell,
-								 forRowAt indexPath: IndexPath) {
-		if let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell") as? MessageCell {
+	func tableView(
+		_ tableView: UITableView,
+		didEndDisplaying cell: UITableViewCell,
+		forRowAt indexPath: IndexPath
+		) {
+		if let cell = tableView.dequeueReusableCell(
+			withIdentifier: "messageCell") as? MessageCell {
 			cell.tail?.removeFromSuperview()
 			cell.tail = nil
 		}
@@ -376,17 +359,20 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
 
 	func tableView(_ tableView: UITableView,
 								 viewForFooterInSection section: Int) -> UIView? {
-		let label = UILabel(frame: CGRect(x: 0,
-																			y: 0,
-																			width: tableView.frame.width,
-																			height: 20))
-		let attributes = [
-			NSAttributedString.Key.foregroundColor: UIColor.darkGray,
-			NSAttributedString.Key.font: UIFont(name: "Avenir Next",
-																					size: 14)!
+		let label = UILabel(frame: CGRect(
+			x: 0,
+			y: 0,
+			width: tableView.frame.width,
+			height: 20))
+		let attributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray,
+											NSAttributedString.Key.font: UIFont(
+												name: "Avenir Next",
+												size: 14)!
 		]
-		var sectionDateStr = DataService.instance.messages[companion.id]!.reversed()[section].date
-
+		guard var sectionDateStr = MessagesStorage.dateStringForIndex(
+			section,
+			forID: companion.id)
+			else { return nil }
 		let date = Date()
 		let formatter = DateFormatter()
 		formatter.dateFormat = "yyyy:MM:dd"
@@ -404,8 +390,9 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
 			let day = sectionDateStr.components(separatedBy: "-")[2]
 			sectionDateStr = "\(day) \(month), \(year)"
 		}
-		let text = NSMutableAttributedString(string: sectionDateStr,
-																				 attributes: attributes)
+		let text = NSMutableAttributedString(
+			string: sectionDateStr,
+			attributes: attributes)
 		label.attributedText = text
 		label.textAlignment = .center
 		label.textColor = .darkGray
@@ -419,29 +406,37 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
 extension UIView {
 
 	func bindToKeyboard() {
-		NotificationCenter.default.addObserver(self,
-																					 selector: #selector(keyboardWillChangeFrame(_:)),
-																					 name: UIResponder.keyboardWillChangeFrameNotification,
-																					 object: nil)
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(keyboardWillChangeFrame(_:)),
+			name: UIResponder.keyboardWillChangeFrameNotification,
+			object: nil)
 	}
 
 	@objc func keyboardWillChangeFrame(_ notification: NSNotification) {
-		let duration = notification.userInfo![UIResponder.keyboardAnimationDurationUserInfoKey] as! Double
-		let curve = notification.userInfo![UIResponder.keyboardAnimationCurveUserInfoKey] as! UInt
-		let beginningFrame = notification.userInfo![UIResponder.keyboardFrameBeginUserInfoKey] as! CGRect
-		let endingFrame = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
+		let duration = notification
+			.userInfo![UIResponder.keyboardAnimationDurationUserInfoKey] as! Double
+		let curve = notification
+			.userInfo![UIResponder.keyboardAnimationCurveUserInfoKey] as! UInt
+		let beginningFrame = notification
+			.userInfo![UIResponder.keyboardFrameBeginUserInfoKey] as! CGRect
+		let endingFrame = notification
+			.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
 		let deltaY = beginningFrame.origin.y - endingFrame.origin.y
-
-		UIView.animateKeyframes(withDuration: duration,
-														delay: 0.0,
-														options: UIView.KeyframeAnimationOptions(rawValue: curve),
-														animations: {
-															self.frame.size.height -= deltaY
+		UIView.animateKeyframes(
+			withDuration: duration,
+			delay: 0.0,
+			options: UIView.KeyframeAnimationOptions(rawValue: curve),
+			animations: {
+				self.frame.size.height -= deltaY
 		}, completion: nil)
 	}
 
 	func roundCorners(corners: UIRectCorner, radius: CGFloat) {
-		let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+		let path = UIBezierPath(
+			roundedRect: bounds,
+			byRoundingCorners: corners,
+			cornerRadii: CGSize(width: radius, height: radius))
 		let mask = CAShapeLayer()
 		mask.path = path.cgPath
 		layer.mask = mask
@@ -466,15 +461,13 @@ extension Date {
 extension UIImage{
 
 	func resizedImage(newSize: CGSize) -> UIImage {
-		// Guard newSize is different
 		guard self.size != newSize else { return self }
-
-		UIGraphicsBeginImageContextWithOptions(newSize,
-																					 false, 0.0);
-		self.draw(in: CGRect(x: 0,
-												 y: 0,
-												 width: newSize.width,
-												 height: newSize.height))
+		UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0);
+		self.draw(in: CGRect(
+			x: 0,
+			y: 0,
+			width: newSize.width,
+			height: newSize.height))
 		let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
 		UIGraphicsEndImageContext()
 		return newImage
@@ -483,15 +476,13 @@ extension UIImage{
 	func resizedImageWithinRect(rectSize: CGSize) -> UIImage {
 		let widthFactor = size.width / rectSize.width
 		let heightFactor = size.height / rectSize.height
-
 		var resizeFactor = widthFactor
 		if size.height > size.width {
 			resizeFactor = heightFactor
 		}
-
-
-		let newSize = CGSize(width: size.width/resizeFactor,
-												 height: size.height/resizeFactor)
+		let newSize = CGSize(
+			width: size.width/resizeFactor,
+			height: size.height/resizeFactor)
 		let resized = resizedImage(newSize: newSize)
 		return resized
 	}
@@ -499,16 +490,10 @@ extension UIImage{
 	func imageWithImage (scaledToWidth: CGFloat) -> UIImage {
 		let oldWidth = self.size.width
 		let scaleFactor = scaledToWidth / oldWidth
-
 		let newHeight = self.size.height * scaleFactor
 		let newWidth = oldWidth * scaleFactor
-
-		UIGraphicsBeginImageContext(CGSize(width:newWidth,
-																			 height:newHeight))
-		self.draw(in: CGRect(x: 0,
-												 y: 0,
-												 width: newWidth,
-												 height: newHeight))
+		UIGraphicsBeginImageContext(CGSize(width:newWidth, height:newHeight))
+		self.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
 		let newImage = UIGraphicsGetImageFromCurrentImageContext()
 		UIGraphicsEndImageContext()
 		return newImage!
@@ -516,15 +501,16 @@ extension UIImage{
 
 	func crop( rect: CGRect) -> UIImage {
 		var rect = rect
-		rect.origin.x*=self.scale
-		rect.origin.y*=self.scale
-		rect.size.width*=self.scale
-		rect.size.height*=self.scale
+		rect.origin.x *= self.scale
+		rect.origin.y *= self.scale
+		rect.size.width *= self.scale
+		rect.size.height *= self.scale
 
 		let imageRef = self.cgImage!.cropping(to: rect)
-		let image = UIImage(cgImage: imageRef!,
-												scale: self.scale,
-												orientation: self.imageOrientation)
+		let image = UIImage(
+			cgImage: imageRef!,
+			scale: self.scale,
+			orientation: self.imageOrientation)
 		return image
 	}
 }

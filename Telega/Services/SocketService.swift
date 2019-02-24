@@ -23,6 +23,9 @@ class SocketService {
 		setupOfflineEvent()
 		setupMessagesReadEvent()
 		setupUpdateMessagesEvent()
+		setupAddContactEvent()
+		setupAcceptFriendEvent()
+		setupDeleteContactEvent()
 		manager.defaultSocket.connect()
 	}
 
@@ -49,43 +52,98 @@ class SocketService {
 		}
 	}
 
-	private func setupUpdateContactsEvent() {
-		manager.defaultSocket.on("update contacts") { (responses, _) in
+	private func setupAddContactEvent() {
+		manager.defaultSocket.on("add_contact") { (_, _) in
 			TelegaAPI.getInfoAboutSelf {
-				if responses.isEmpty {
-					return
-				}
-				var body = [String:String]()
-				if let id = responses[0] as? String {
-					body["id"] = id
-					if responses.count > 1 {
-						body["delete"] = ""
-					}
-				}
 				NotificationCenter.default.post(
-					name: CONTACTS_LOADED,
+					name: ADD_CONTACT,
 					object: nil,
-					userInfo: body)
+					userInfo: nil)
 			}
 		}
 	}
 
-	private func setupOnlineEvent() {
-		manager.defaultSocket.on("online") { (responses, _) in
+	private func setupAcceptFriendEvent() {
+		manager.defaultSocket.on("accept_friend") { (responses, _) in
 			if responses.isEmpty {
 				return
 			}
 			guard let id = responses[0] as? String else { return }
-			for (index, contact) in
-				DataService.instance.contacts!.enumerated() {
-					if contact.id == id {
-						DataService.instance.contacts![index].online = true
-					}
+			for (index, contact) in DataService.instance.contacts!.enumerated()
+				where contact.id == id {
+					print(contact.online)
+					contact.confirmed = true
+					NotificationCenter.default.post(
+						name: ACCEPT_FRIEND,
+						object: nil,
+						userInfo: ["index": index])
 			}
-			NotificationCenter.default.post(
-				name: UPDATE_CONTACT,
-				object: nil,
-				userInfo: ["id": id])
+		}
+	}
+
+	private func setupDeleteContactEvent() {
+		manager.defaultSocket.on("delete_contact") { (responses, _) in
+			if responses.isEmpty {
+				return
+			}
+			guard let id = responses[0] as? String else { return }
+			for (index, contact) in DataService.instance.contacts!.enumerated()
+				where contact.id == id {
+					DataService.instance.contacts!.remove(at: index)
+					NotificationCenter.default.post(
+						name: DELETE_CONTACT,
+						object: nil,
+						userInfo: ["index": index])
+			}
+		}
+	}
+
+	private func setupUpdateContactsEvent() {
+//		manager.defaultSocket.on("update contacts") { (responses, _) in
+//			TelegaAPI.getInfoAboutSelf {
+//				if responses.isEmpty {
+//					return
+//				}
+//				var body = [String:Any]()
+//				if let id = responses[0] as? String,
+//					DataService.instance.contacts!.count != 0 {
+//					for (index, contact) in DataService.instance.contacts!.enumerated() {
+//							body["index"] = index
+//							if responses.count > 1 {
+//								body["delete"] = ""
+//							}
+//							NotificationCenter.default.post(
+//								name: UPDATE_CONTACT,
+//								object: nil,
+//								userInfo: body)
+//					}
+//				} else {
+//					NotificationCenter.default.post(
+//						name: UPDATE_CONTACT,
+//						object: nil,
+//						userInfo: nil)
+//				}
+//			}
+//		}
+	}
+
+	private func setupOnlineEvent() {
+		manager.defaultSocket.on("online_changed") { (responses, _) in
+			if responses.count < 2 {
+				return
+			}
+			guard let id = responses[0] as? String,
+					  let online = responses[1] as? Bool
+			else { return }
+			for (index, contact) in DataService.instance.contacts!.enumerated()
+				where contact.id == id {
+					contact.online = online
+					NotificationCenter.default.post(
+						name: ONLINE_CHANGED,
+						object: nil,
+						userInfo: ["id": id,
+											 "index": index])
+			}
 		}
 	}
 
@@ -136,53 +194,21 @@ class SocketService {
 					separatedBy: ".")[0] + "-0200")!
 			let mine = message["mine"] as! Bool
 			let messageToSave = Message(text: text, time: time, mine: mine)
-			let dateStr = (message["time"] as! String).components(
-				separatedBy: "T")[0]
-			if DataService.instance.messages[storeID] != nil {
-				for (index, user) in
-					DataService.instance.contacts!.enumerated() {
-						if user.id == storeID {
-							DataService.instance.contacts![index].unread = !mine
-						}
-				}
-				if MessagesParser.does(
-					date: dateStr,
-					existIn: DataService.instance.messages[storeID]!) {
-					for (index, tuple) in
-						DataService.instance.messages[storeID]!.enumerated() {
-							if tuple.date == dateStr {
-								DataService.instance.messages[storeID]![index].messages.append(messageToSave)
-								NotificationCenter.default.post(
-									name: MESSAGES_UPDATED,
-									object: nil,
-									userInfo: ["companionID":storeID])
-							}
+			MessagesStorage.storeNew(
+				message: messageToSave,
+				storeID: storeID,
+				timeStr: (message["time"] as! String),
+				completion: { (result) in
+					for contact in DataService.instance.contacts!
+						where contact.id == storeID {
+							contact.unread = !mine
 					}
-				} else {
-					DataService.instance.messages[storeID]!.append(
-						(date: dateStr, messages: [Message]()))
-					DataService.instance.messages[storeID]![DataService.instance.messages[storeID]!.count - 1].messages.append(messageToSave)
-					NotificationCenter.default.post(name: MESSAGES_UPDATED, object: nil, userInfo: ["companionID":storeID,
-																																													"newDate":true])
-				}
-			} else {
-				DataService.instance.messages[storeID] = [(date: String, messages: [Message])]()
-				for (index, user) in
-					DataService.instance.contacts!.enumerated() {
-						if user.id == storeID {
-							DataService.instance.contacts![index].unread = !mine
-						}
-				}
-				DataService.instance.messages[storeID]!.append(
-					(date: dateStr, messages: [Message]()))
-				DataService.instance.messages[storeID]![0].messages.append(
-					messageToSave)
-				NotificationCenter.default.post(
-					name: MESSAGES_UPDATED,
-					object: nil,
-					userInfo: ["companionID":storeID,
-										 "newDate":true])
-			}
+					NotificationCenter.default.post(
+						name: MESSAGES_UPDATED,
+						object: nil,
+						userInfo: ["storing_result": result,
+											 "id": storeID])
+			})
 		}
 	}
 }

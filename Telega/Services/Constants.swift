@@ -33,3 +33,7 @@ var AUTH_HEADER : [String:String] {
 let CONTACTS_LOADED = Notification.Name("contacts_loaded")
 let MESSAGES_UPDATED = Notification.Name("messages_updated")
 let UPDATE_CONTACT = Notification.Name("contact_online")
+let ADD_CONTACT = Notification.Name("add_contact")
+let DELETE_CONTACT = Notification.Name("delete_contact")
+let ACCEPT_FRIEND = Notification.Name("accept_friend")
+let ONLINE_CHANGED = Notification.Name("online_changed")

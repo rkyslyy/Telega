@@ -25,6 +25,7 @@
 		BF2B30AD220EE109001E9C47 /* light.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BF2B30AC220EE109001E9C47 /* light.mp3 */; };
 		BF2B30B322130CD7001E9C47 /* ChangePasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2B30B222130CD7001E9C47 /* ChangePasswordVC.swift */; };
 		BF3EADD8220CD19800D0B718 /* DialogueVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EADD7220CD19800D0B718 /* DialogueVC.swift */; };
+		BF4CC966222050FB0047C737 /* MessagesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4CC965222050FB0047C737 /* MessagesStorage.swift */; };
 		BF73C0EE2209A10E00353FF1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73C0ED2209A10E00353FF1 /* User.swift */; };
 		BF73C0F02209DA0F00353FF1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73C0EF2209DA0F00353FF1 /* ContactCell.swift */; };
 		BF7571B32207101B008768D1 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7571B22207101B008768D1 /* DataService.swift */; };
@@ -40,7 +41,7 @@
 		BFB82A86221D7252003F570E /* RegisterRouteEXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A85221D7252003F570E /* RegisterRouteEXT.swift */; };
 		BFB82A88221D743A003F570E /* AuthRouteEXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A87221D743A003F570E /* AuthRouteEXT.swift */; };
 		BFB82A8A221D756D003F570E /* UsersRouteEXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A89221D756D003F570E /* UsersRouteEXT.swift */; };
-		BFB82A8C221D7635003F570E /* MeRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A8B221D7635003F570E /* MeRoute.swift */; };
+		BFB82A8C221D7635003F570E /* MeRouteEXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A8B221D7635003F570E /* MeRouteEXT.swift */; };
 		BFB82A8E221D8349003F570E /* EditProfileRouteEXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A8D221D8349003F570E /* EditProfileRouteEXT.swift */; };
 		BFB82A90221D863E003F570E /* MessagesRouteEXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A8F221D863E003F570E /* MessagesRouteEXT.swift */; };
 		BFF46F2A22035DD300469496 /* PasswordRulesXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF46F2922035DD300469496 /* PasswordRulesXIB.xib */; };
@@ -74,6 +75,7 @@
 		BF2B30AC220EE109001E9C47 /* light.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = light.mp3; sourceTree = "<group>"; };
 		BF2B30B222130CD7001E9C47 /* ChangePasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordVC.swift; sourceTree = "<group>"; };
 		BF3EADD7220CD19800D0B718 /* DialogueVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogueVC.swift; sourceTree = "<group>"; };
+		BF4CC965222050FB0047C737 /* MessagesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesStorage.swift; sourceTree = "<group>"; };
 		BF73C0ED2209A10E00353FF1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		BF73C0EF2209DA0F00353FF1 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		BF7571B22207101B008768D1 /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
@@ -89,7 +91,7 @@
 		BFB82A85221D7252003F570E /* RegisterRouteEXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRouteEXT.swift; sourceTree = "<group>"; };
 		BFB82A87221D743A003F570E /* AuthRouteEXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouteEXT.swift; sourceTree = "<group>"; };
 		BFB82A89221D756D003F570E /* UsersRouteEXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersRouteEXT.swift; sourceTree = "<group>"; };
-		BFB82A8B221D7635003F570E /* MeRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeRoute.swift; sourceTree = "<group>"; };
+		BFB82A8B221D7635003F570E /* MeRouteEXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeRouteEXT.swift; sourceTree = "<group>"; };
 		BFB82A8D221D8349003F570E /* EditProfileRouteEXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileRouteEXT.swift; sourceTree = "<group>"; };
 		BFB82A8F221D863E003F570E /* MessagesRouteEXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesRouteEXT.swift; sourceTree = "<group>"; };
 		BFF46F2922035DD300469496 /* PasswordRulesXIB.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PasswordRulesXIB.xib; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 				BF7571B22207101B008768D1 /* DataService.swift */,
 				BFB82A80221C3CEF003F570E /* SocketService.swift */,
 				BFB82A82221D6769003F570E /* EncryptionService.swift */,
+				BF4CC965222050FB0047C737 /* MessagesStorage.swift */,
 				BF9E31E92201EEA400187310 /* Constants.swift */,
 			);
 			path = Services;
@@ -235,7 +238,7 @@
 				BFB82A85221D7252003F570E /* RegisterRouteEXT.swift */,
 				BFB82A87221D743A003F570E /* AuthRouteEXT.swift */,
 				BFB82A89221D756D003F570E /* UsersRouteEXT.swift */,
-				BFB82A8B221D7635003F570E /* MeRoute.swift */,
+				BFB82A8B221D7635003F570E /* MeRouteEXT.swift */,
 				BFB82A8D221D8349003F570E /* EditProfileRouteEXT.swift */,
 				BFB82A8F221D863E003F570E /* MessagesRouteEXT.swift */,
 			);
@@ -397,7 +400,7 @@
 				BF282521220E2A0600FE42CA /* MessageLabel.swift in Sources */,
 				BF7FE4912203846900455A60 /* CircleImageView.swift in Sources */,
 				BF73C0F02209DA0F00353FF1 /* ContactCell.swift in Sources */,
-				BFB82A8C221D7635003F570E /* MeRoute.swift in Sources */,
+				BFB82A8C221D7635003F570E /* MeRouteEXT.swift in Sources */,
 				BF73C0EE2209A10E00353FF1 /* User.swift in Sources */,
 				BFB82A83221D6769003F570E /* EncryptionService.swift in Sources */,
 				BF2B30B322130CD7001E9C47 /* ChangePasswordVC.swift in Sources */,
@@ -411,6 +414,7 @@
 				BFF46F2C2203603100469496 /* PasswordRules.swift in Sources */,
 				BFB82A8E221D8349003F570E /* EditProfileRouteEXT.swift in Sources */,
 				BF9E31EA2201EEA400187310 /* Constants.swift in Sources */,
+				BF4CC966222050FB0047C737 /* MessagesStorage.swift in Sources */,
 				BFB82A90221D863E003F570E /* MessagesRouteEXT.swift in Sources */,
 				BF282516220D9C3700FE42CA /* RNCryptor.swift in Sources */,
 			);

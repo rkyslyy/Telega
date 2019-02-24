@@ -33,7 +33,7 @@ class ContactsVC: UIViewController {
 
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(contactsUpdated(notification:)),
+			selector: #selector(contactsLoaded(notification:)),
 			name: CONTACTS_LOADED,
 			object: nil)
 		NotificationCenter.default.addObserver(
@@ -51,10 +51,66 @@ class ContactsVC: UIViewController {
 			selector: #selector(messagesUpdated(notification:)),
 			name: MESSAGES_UPDATED,
 			object: nil)
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(contactAdded),
+			name: ADD_CONTACT,
+			object: nil)
+		NotificationCenter.default.addObserver(
+			self, selector: #selector(contactDeleted(notification:)),
+			name: DELETE_CONTACT,
+			object: nil)
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(friendAccepted(notification:)),
+			name: ACCEPT_FRIEND,
+			object: nil)
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(onlineChanged(notification:)),
+			name: ONLINE_CHANGED,
+			object: nil)
+	}
+
+	@objc private func onlineChanged(notification: Notification) {
+		guard let userinfo = notification.userInfo,
+				  let index = userinfo["index"] as? Int
+			else { return }
+		contactsTable.reloadRows(
+			at: [IndexPath(row: index, section: 0)],
+			with: .none)
+	}
+
+	@objc private func contactDeleted(notification: Notification) {
+		guard let userinfo = notification.userInfo,
+				  let index = userinfo["index"] as? Int
+		else { return }
+		contactsTable.deleteRows(
+			at: [IndexPath(row: index, section: 0)],
+			with: .fade)
+	}
+
+	@objc private func contactAdded() {
+		let contactsCount = DataService.instance.contacts!.count
+		if contactsCount > 1 {
+			return contactsTable.insertRows(
+				at: [IndexPath(row: contactsCount - 1, section: 0)],
+				with: .top)
+		}
+		contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
+	}
+
+	@objc private func friendAccepted(notification: Notification) {
+		guard let userinfo = notification.userInfo,
+			let index = userinfo["index"] as? Int
+			else { return }
+		contactsTable.reloadRows(
+			at: [IndexPath(row: index, section: 0)],
+			with: .fade)
 	}
 
 	@objc private func messagesUpdated(notification: Notification) {
-		if let id = notification.userInfo?["companionID"] as? String {
+		if let id = notification.userInfo?["id"] as? String {
 			for (index, contact) in DataService.instance.contacts!.enumerated()
 				where contact.id == id {
 					contactsTable.reloadRows(
@@ -65,13 +121,17 @@ class ContactsVC: UIViewController {
 	}
 
 	@objc private func updateUser(notification: Notification) {
-		if let id = notification.userInfo?["id"] as? String {
-			for (index, cell) in contactsTable.visibleCells.enumerated()
-				where (cell as! ContactCell).contactID == id {
+		if let userinfo = notification.userInfo {
+			if let index = userinfo["index"] as? Int {
+				if contactsTable.visibleCells.isEmpty {
+					contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
+				} else {
 					contactsTable.reloadRows(
-						at: [IndexPath(row: index, section: 0)],
-						with: .none)
+						at: [IndexPath(row: index, section: 0)], with: .fade)
+				}
 			}
+		} else {
+			contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
 		}
 	}
 
@@ -94,31 +154,8 @@ class ContactsVC: UIViewController {
 		}
 	}
 
-	@objc private func contactsUpdated(notification: Notification) {
-		if let userinfo = notification.userInfo {
-			if let id = userinfo["id"] as? String {
-				var index = 0
-				var found = false
-				for cell in contactsTable.visibleCells as! [ContactCell] {
-					if cell.contactID == id {
-						found = true
-						break
-					}
-					index += 1
-				}
-				if found && userinfo["delete"] != nil {
-					contactsTable.deleteRows(
-						at: [IndexPath(row: index, section: 0)],
-						with: .fade)
-				} else if found && userinfo["delete"] == nil {
-					contactsTable.reloadRows(
-						at: [IndexPath(row: index, section: 0)],
-						with: .fade)
-				}
-			} else {
-				contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
-			}
-		} else {
+	@objc private func contactsLoaded(notification: Notification) {
+		if !DataService.instance.contacts!.isEmpty {
 			contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
 		}
 	}

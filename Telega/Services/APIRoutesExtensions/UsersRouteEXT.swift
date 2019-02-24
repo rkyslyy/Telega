@@ -13,7 +13,8 @@ extension TelegaAPI {
 		id: String,
 		completion: @escaping () -> ()) {
 		DispatchQueue.global().async {
-			let body = ["friendID": id]
+			let body = ["friendID": id,
+									"socketID": SocketService.instance.manager.defaultSocket.sid]
 			Alamofire.request(
 				ACCEPT_FRIEND_REQUEST_URL,
 				method: .post,
@@ -28,7 +29,8 @@ extension TelegaAPI {
 
 	class func addContactWith(id: String, completion: @escaping () -> ()) {
 		DispatchQueue.global().async {
-			let body = ["contact": id]
+			let body = ["contact": id,
+									"socketID": SocketService.instance.manager.defaultSocket.sid]
 			Alamofire.request(
 				ADD_CONTACT_URL,
 				method: .put,
@@ -41,7 +43,8 @@ extension TelegaAPI {
 
 	class func deleteContactWith(id: String, completion: @escaping () -> ()) {
 		DispatchQueue.global().async {
-			let body = ["contact": id]
+			let body = ["contact": id,
+									"socketID": SocketService.instance.manager.defaultSocket.sid]
 			Alamofire.request(
 				DELETE_CONTACT_URL,
 				method: .put,

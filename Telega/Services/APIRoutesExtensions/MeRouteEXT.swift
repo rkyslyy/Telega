@@ -41,8 +41,7 @@ extension TelegaAPI {
 			let publicPem = user["publicPem"] as? String,
 			let contactsData = user["contacts"] as? [[String : Any]],
 			let contacts = contactsFrom(contactsData),
-			let messagesData = user["messages"] as? [[String:Any]],
-			let messages = MessagesParser.buildMessagesFrom(messagesData)
+			let messagesData = user["messages"] as? [[String:Any]]
 			else { return }
 		DataService.instance.id = id
 		DataService.instance.email = email
@@ -50,7 +49,7 @@ extension TelegaAPI {
 		DataService.instance.userAvatar = avatar
 		DataService.instance.publicPem = publicPem
 		DataService.instance.contacts = contacts
-		DataService.instance.messages = messages
+		MessagesStorage.buildMessagesFrom(messagesData)
 	}
 
 	class private func contactsFrom(_ contactsData: [[String:Any]]) -> [User]? {
@@ -79,81 +78,3 @@ extension TelegaAPI {
 		return contacts.count == contactsData.count ? contacts : nil
 	}
 }
-
-class MessagesParser {
-
-	class func buildMessagesFrom(
-		_ messages: [[String:Any]]
-		) -> [String:[(date: String, messages: [Message])]]? {
-		var messagesDict = [String:[(date: String, messages: [Message])]]()
-		for message in messages {
-			guard let storeID = message["storeID"] as? String else { return nil }
-			if storeID == DataService.instance.id! {
-				continue
-			}
-			if messagesDict[storeID] == nil {
-				messagesDict[storeID] = [(date: String,
-																	messages: [Message])]()
-			}
-		}
-		for message in messages {
-			guard let storeID = message["storeID"] as? String else {
-				return nil
-			}
-			if messagesDict[storeID] == nil {
-				continue
-			}
-			guard var date = (message["time"] as? String) else {
-				return nil
-			}
-			date = date.components(separatedBy: "T")[0]
-			if !does(date: date, existIn: messagesDict[storeID]!) {
-				messagesDict[storeID]!.append((date: date,
-																			 messages: [Message]()))
-			}
-		}
-		for message in messages {
-			guard let storeID = message["storeID"] as? String else {
-				return nil
-			}
-			if messagesDict[storeID] == nil {
-				continue
-			}
-			guard let longDate = (message["time"] as? String) else {
-				return nil
-			}
-			let date = longDate.components(separatedBy: "T")[0]
-			for (index, tuple) in messagesDict[storeID]!.enumerated() {
-				if tuple.date == date {
-					guard var text = message["message"] as? String,
-						let mine = message["mine"] as? Bool else {
-							return nil
-					}
-					text = EncryptionService.decryptedMessage(text)
-					let dateFormatter = ISO8601DateFormatter()
-					dateFormatter.timeZone = TimeZone(abbreviation: "EET")
-					let time = dateFormatter.date(
-						from:longDate.components(
-							separatedBy: ".")[0] + "-0200")!
-					let messageToSave = Message(
-						text: text,
-						time: time,
-						mine: mine)
-					messagesDict[storeID]![index].messages.append(messageToSave)
-				}
-			}
-		}
-		return messagesDict
-	}
-
-	class func does(
-		date: String,
-		existIn tuples: [(date: String, messages: [Message])]
-		) -> Bool {
-		for tuple in tuples where tuple.date == date {
-			return true
-		}
-		return false
-	}
-}
-
