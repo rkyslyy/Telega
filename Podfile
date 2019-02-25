@@ -10,6 +10,7 @@ target 'Telega' do
   pod 'Gifu'
   pod 'BCryptSwift'
   pod 'Socket.IO-Client-Swift'
+  pod 'SwiftEntryKit'
   # Pods for Telega
 
 end

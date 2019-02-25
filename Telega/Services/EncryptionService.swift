@@ -9,67 +9,68 @@
 import SwiftyRSA
 
 class EncryptionService {
-    
-    class func getStringPemsUsing(
+
+	class func getStringPemsUsing(
 		encryptionKey: String
 		) -> (publicPem: String, privatePem: String)? {
-        guard let keyPair = getStringKeyPair() else { return nil }
-        return (
+		guard let keyPair = getStringKeyPair() else { return nil }
+		return (
 			publicPem: keyPair.publicPem,
 			privatePem: encryptString(
 				string: keyPair.privatePem,
 				encryptionKey: encryptionKey))
-    }
-    
-    private class func getStringKeyPair(
+	}
+
+	private class func getStringKeyPair(
 		) -> (publicPem: String, privatePem: String)? {
-        do {
-            let keyPair = try SwiftyRSA.generateRSAKeyPair(sizeInBits: 2048)
-            let publicPem = try keyPair.publicKey.pemString()
-            let privatePem = try keyPair.privateKey.pemString()
-            return (publicPem: publicPem, privatePem: privatePem)
-        } catch {
-            return nil
-        }
-    }
-    
-    class func encryptString(string: String, encryptionKey: String) -> String {
-        let messageData = string.data(using: .utf8)!
-        let cipherData = RNCryptor.encrypt(
+		do {
+			let keyPair = try SwiftyRSA.generateRSAKeyPair(sizeInBits: 2048)
+			let publicPem = try keyPair.publicKey.pemString()
+			let privatePem = try keyPair.privateKey.pemString()
+			return (publicPem: publicPem, privatePem: privatePem)
+		} catch {
+			return nil
+		}
+	}
+
+	class func encryptString(string: String, encryptionKey: String) -> String {
+		let messageData = string.data(using: .utf8)!
+		let cipherData = RNCryptor.encrypt(
 			data: messageData,
 			withPassword: encryptionKey)
-        return cipherData.base64EncodedString()
-    }
-    
-    class func decryptString(
+		return cipherData.base64EncodedString()
+	}
+
+	class func decryptString(
 		encryptedString: String,
-		encryptionKey: String) -> String? {
-        do {
-            let encryptedData = Data.init(base64Encoded: encryptedString)!
-            let decryptedData = try RNCryptor.decrypt(
+		encryptionKey: String
+		) -> String? {
+		do {
+			let encryptedData = Data.init(base64Encoded: encryptedString)!
+			let decryptedData = try RNCryptor.decrypt(
 				data: encryptedData,
 				withPassword: encryptionKey)
-            let decryptedString = String(
+			let decryptedString = String(
 				data: decryptedData,
 				encoding: .utf8)!
-            return decryptedString
-        } catch {
-            return nil
-        }
-    }
-    
-    class func decryptedMessage(_ message: String) -> String {
-        do {
-            let encrypted = try EncryptedMessage(base64Encoded: message)
-            let privateKey = try PrivateKey(
+			return decryptedString
+		} catch {
+			return nil
+		}
+	}
+
+	class func decryptedMessage(_ message: String) -> String {
+		do {
+			let encrypted = try EncryptedMessage(base64Encoded: message)
+			let privateKey = try PrivateKey(
 				pemEncoded: DataService.instance.privatePem!)
-            let decrypted = try encrypted.decrypted(
+			let decrypted = try encrypted.decrypted(
 				with: privateKey,
 				padding: .PKCS1)
-            let decryptedMessage = try decrypted.string(encoding: .utf8)
-            return decryptedMessage
-        } catch {
+			let decryptedMessage = try decrypted.string(encoding: .utf8)
+			return decryptedMessage
+		} catch {
 			return "Bad decryption"
 		}
-    }
+	}
 }

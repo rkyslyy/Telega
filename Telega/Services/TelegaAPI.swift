@@ -11,6 +11,14 @@ class TelegaAPI {
 	class func establishConnection() {
 		SocketService.instance.establishConnection()
 	}
+
+	class func emitSettingsChanged(username: String, avatar: String) {
+		SocketService.instance.manager.defaultSocket.emit(
+			"settings_changed",
+			DataService.instance.id!,
+			username,
+			avatar)
+	}
 	
 	class func emitReadMessagesFrom(id: String) {
 		SocketService.instance.manager.defaultSocket.emit(

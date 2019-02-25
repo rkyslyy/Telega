@@ -47,6 +47,40 @@ class DialogueVC: UIViewController {
 	var requestPending = false
 	var backupText: String!
 
+	@objc private func settingsChanged(notification: Notification) {
+		guard let userinfo = notification.userInfo,
+					let id = userinfo["id"] as? String,
+					id == companion.id
+		else { return }
+		for contact in DataService.instance.contacts! where contact.id == id {
+			companion = contact
+		}
+		self.navigationItem.title = self.companion.username
+		self.avatarBtn = UIButton(type: .custom)
+		self.avatarBtn.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+		self.avatarBtn.contentMode = .scaleAspectFit
+		self.avatarBtn.clipsToBounds = true
+		self.avatarBtn.layer.cornerRadius = 15
+		let image = UIImage(data: Data(base64Encoded: self.companion.avatar)!)
+		if image!.size.width <= 512 {
+			self.avatarBtn.setImage(
+				image!.resizedImageWithinRect(rectSize: CGSize(width: 40, height: 40)),
+				for: .normal)
+			self.avatarBtn.backgroundColor = .darkGray
+			self.avatarBtn.layer.cornerRadius = 20
+		} else {
+			self.avatarBtn.setImage(
+				image!.resizedImageWithinRect(rectSize: CGSize(width: 50, height: 50))
+					.crop(rect: CGRect(x: 5, y: 5, width: 30, height: 30)),
+				for: .normal)
+		}
+		self.avatarBtn.addTarget(self,
+														 action: #selector(self.showAvatar),
+														 for: .touchUpInside)
+		let barButton = UIBarButtonItem(customView: self.avatarBtn)
+		self.navigationItem.rightBarButtonItem = barButton
+	}
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		messagesTable.delegate = self
@@ -59,6 +93,12 @@ class DialogueVC: UIViewController {
 			selector: #selector(messagesUpdated(notification:)),
 			name: MESSAGES_UPDATED,
 			object: nil)
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(settingsChanged(notification:)),
+			name: SETTINGS_CHANGED,
+			object: nil)
+
 		let tap = UITapGestureRecognizer(
 			target: self,
 			action: #selector(hideKeyboard(tap:)))
@@ -324,7 +364,7 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
 			let hours = timi.components(separatedBy: ":")[0]
 			let minutes = timi.components(separatedBy: ":")[1]
 			cell.timeLbl.text = hours + ":" + minutes
-			if messages.reversed()[indexPath.row].mine {
+			if messages[indexPath.row].mine {
 				cell.lanchor.isActive = false
 				cell.ranchor.isActive = true
 				if cell.messageText.text?.count ?? 0 >= 35 {
@@ -399,8 +439,6 @@ extension DialogueVC: UITableViewDelegate, UITableViewDataSource {
 		label.transform = CGAffineTransform(scaleX: -1, y: -1)
 		return label
 	}
-
-
 }
 
 extension UIView {

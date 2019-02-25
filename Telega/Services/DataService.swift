@@ -75,8 +75,23 @@ class DataService {
 	}
 	
 	var contacts : [User]?
+
+	func deleteContactWith(id: String) {
+		for (index, contact) in contacts!.enumerated() where contact.id == id {
+			contacts?.remove(at: index)
+		}
+	}
 	
-	
+	func contactsFilteredWith(keyword: String) -> [User] {
+		if keyword == "" {
+			return contacts ?? [User]()
+		}
+		return contacts?.filter({
+			$0.username.lowercased().contains(keyword.lowercased()) ||
+				$0.email.lowercased().contains(keyword.lowercased())
+		}) ?? [User]()
+	}
+
 	func logout() {
 		TelegaAPI.disconnect()
 		token = nil

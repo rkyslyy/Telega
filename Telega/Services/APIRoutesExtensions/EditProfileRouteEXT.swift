@@ -29,6 +29,7 @@ extension TelegaAPI {
 						if data["error"] == nil {
 							DataService.instance.username = username
 							DataService.instance.userAvatar = avatar
+							TelegaAPI.emitSettingsChanged(username: username, avatar: avatar)
 							completion()
 						} else {
 							completion()

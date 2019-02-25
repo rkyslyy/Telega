@@ -10,10 +10,9 @@ import UIKit
 import AVKit
 import Gifu
 
-class SettingsVC:
-	UIViewController,
+class SettingsVC: UIViewController,
 	UIImagePickerControllerDelegate,
-UINavigationControllerDelegate {
+	UINavigationControllerDelegate {
 
 	// Outlets
 	@IBOutlet weak var saveBtn: UIBarButtonItem!
@@ -39,6 +38,11 @@ UINavigationControllerDelegate {
 		pickerController.delegate = self
 		pickerController.allowsEditing = false
 		pickerController.sourceType = .photoLibrary
+
+		usernameTxtFld.addTarget(
+			self,
+			action: #selector(controlUsername),
+			for: .editingChanged)
 	}
 
 	@objc private func hideKeyboard() {
@@ -119,6 +123,7 @@ UINavigationControllerDelegate {
 	@IBAction func savePressed(_ sender: Any) {
 		saveBtn.isEnabled = false
 		view.endEditing(true)
+
 		let base64 = pickedData?.base64EncodedString() ??
 								 avatarView.image!.jpeg(.medium)?.base64EncodedString()
 		let darkView = UIView(frame: view.bounds)
@@ -175,6 +180,16 @@ UINavigationControllerDelegate {
 	func hideLogoutBtn() {
 		UIView.animate(withDuration: 0.2) {
 			self.logoutBtn.alpha = 0
+		}
+	}
+
+	@objc private func controlUsername() {
+		if usernameTxtFld
+			.text?
+			.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+			saveBtn.isEnabled = false
+		} else {
+			saveBtn.isEnabled = true
 		}
 	}
 }

@@ -8,12 +8,14 @@
 
 import Foundation
 import SocketIO
+import AVFoundation
 
 class SocketService {
 
 	static let instance = SocketService()
 
 	var manager = SocketManager(socketURL: URL(string: BASE_URL)!)
+	var messageSound: AVAudioPlayer?
 
 	func establishConnection() {
 		manager = SocketManager(socketURL: URL(string: BASE_URL)!)
@@ -26,6 +28,7 @@ class SocketService {
 		setupAddContactEvent()
 		setupAcceptFriendEvent()
 		setupDeleteContactEvent()
+		setupSettingsChangedEvent()
 		manager.defaultSocket.connect()
 	}
 
@@ -68,11 +71,13 @@ class SocketService {
 			if responses.isEmpty {
 				return
 			}
-			guard let id = responses[0] as? String else { return }
+			guard let id = responses[0] as? String,
+					  let online = responses[1] as? Bool
+			else { return }
 			for (index, contact) in DataService.instance.contacts!.enumerated()
 				where contact.id == id {
-					print(contact.online)
 					contact.confirmed = true
+					contact.online = online
 					NotificationCenter.default.post(
 						name: ACCEPT_FRIEND,
 						object: nil,
@@ -203,12 +208,46 @@ class SocketService {
 						where contact.id == storeID {
 							contact.unread = !mine
 					}
+//					self.playSound()
 					NotificationCenter.default.post(
 						name: MESSAGES_UPDATED,
 						object: nil,
 						userInfo: ["storing_result": result,
-											 "id": storeID])
+											 "id": storeID,
+											 "text": text])
 			})
 		}
+	}
+
+	private func setupSettingsChangedEvent() {
+		manager.defaultSocket.on("settings_changed") { (responses, _) in
+			if responses.count < 3 {
+				return
+			}
+			guard let id = responses[0] as? String,
+						let username = responses[1] as? String,
+						let avatar = responses[2] as? String
+			else { return }
+			for (index, contact) in DataService.instance.contacts!.enumerated()
+				where contact.id == id {
+					contact.username = username
+					contact.avatar = avatar
+				NotificationCenter.default.post(
+					name: SETTINGS_CHANGED,
+					object: nil,
+					userInfo: ["id": contact.id,
+										 "index": index])
+			}
+		}
+	}
+
+	private func playSound() {
+		guard let path = Bundle.main.path(forResource: "light", ofType:"mp3")
+			else { return print("COULD NOT GET RESOURCE") }
+		let url = URL(fileURLWithPath: path)
+		do {
+			messageSound = try AVAudioPlayer(contentsOf: url)
+			messageSound?.play()
+		} catch { print("COULD NOT GET FILE") }
 	}
 }

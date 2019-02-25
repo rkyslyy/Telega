@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "405E9B6698740A9799CE0D1381842D99"
+               BlueprintIdentifier = "AF2C7590ACAFBEEED8E8D94B67EADDA0"
                BuildableName = "Pods_Telega.framework"
                BlueprintName = "Pods-Telega"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "405E9B6698740A9799CE0D1381842D99"
+            BlueprintIdentifier = "AF2C7590ACAFBEEED8E8D94B67EADDA0"
             BuildableName = "Pods_Telega.framework"
             BlueprintName = "Pods-Telega"
             ReferencedContainer = "container:Pods.xcodeproj">

@@ -54,8 +54,8 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5KC-LJ-U9Q">
-                                                    <rect key="frame" x="85" y="44" width="215" height="18"/>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="13"/>
+                                                    <rect key="frame" x="85" y="44" width="215" height="16.5"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="12"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -128,6 +128,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="contactsTable" destination="OZ0-00-DPn" id="Sdj-4F-DfI"/>
+                        <outlet property="searchBar" destination="Gsf-kz-lEJ" id="qR3-jt-NlV"/>
                         <segue destination="WUf-Zd-dEW" kind="show" identifier="toDialogue" id="12F-ul-nAe"/>
                     </connections>
                 </viewController>
@@ -138,7 +139,7 @@
         <!--Dialogue-->
         <scene sceneID="chr-b4-5iy">
             <objects>
-                <viewController id="WUf-Zd-dEW" customClass="DialogueVC" customModule="Telega" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="dialogueVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="WUf-Zd-dEW" customClass="DialogueVC" customModule="Telega" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="feZ-xZ-51S">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

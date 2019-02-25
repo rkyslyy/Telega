@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Gifu
 
 class AddNewContactVC: UIViewController {
 
@@ -39,6 +40,16 @@ class AddNewContactVC: UIViewController {
 	}
 
 	@IBAction func savePressed(_ sender: Any) {
+		saveBtn.isEnabled = false
+		let ripple = GIFImageView(frame: avatarView.frame)
+		ripple.animate(withGIFNamed: "ripple")
+		ripple.alpha = 0
+		view.addSubview(ripple)
+		UIView.animate(withDuration: 0.2) {
+			self.avatarView.alpha = 0
+			ripple.alpha = 1
+			self.usernameLbl.text = "Please wait..."
+		}
 		TelegaAPI.addContactWith(id: fetchedUser!.id) {
 			DataService.instance.contacts!.append(self.fetchedUser!)
 			self.navigationController?.popViewController(animated: true)

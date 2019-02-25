@@ -11,8 +11,8 @@ import Foundation
 class User {
 	let id: String
 	let email: String
-	let username: String
-	let avatar: String
+	var username: String
+	var avatar: String
 	let publicPem: String
 	var confirmed: Bool
 	let requestIsMine: Bool
