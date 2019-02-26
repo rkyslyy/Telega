@@ -17,22 +17,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			_ application: UIApplication,
 			didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 			) -> Bool {
-        if DataService.instance.token != nil {
-            TelegaAPI.getInfoAboutSelf {
-                TelegaAPI.establishConnection()
-                NotificationCenter.default.post(
-                    name: CONTACTS_LOADED,
-                    object: nil,
-                    userInfo: nil) }
-            let mainStoryboardIpad : UIStoryboard = UIStoryboard(
-                name: "Main",
-                bundle: nil)
-            let initialViewControlleripad: UIViewController = mainStoryboardIpad
-							.instantiateViewController(withIdentifier: "tabBar")
-            self.window = UIWindow(frame: UIScreen.main.bounds)
-            self.window?.rootViewController = initialViewControlleripad
-            self.window?.makeKeyAndVisible()
-        }
+			if DataService.instance.token != nil {
+				TelegaAPI.getInfoAboutSelf {
+					TelegaAPI.establishConnection()
+					NotificationCenter.default.post(
+						name: CONTACTS_LOADED,
+						object: nil,
+						userInfo: nil) }
+				let mainStoryboardIpad : UIStoryboard = UIStoryboard(
+					name: "Main",
+					bundle: nil)
+				let initialViewControlleripad: UIViewController = mainStoryboardIpad
+					.instantiateViewController(withIdentifier: "tabBar")
+				self.window = UIWindow(frame: UIScreen.main.bounds)
+				self.window?.rootViewController = initialViewControlleripad
+				self.window?.makeKeyAndVisible()
+			}
         return true
     }
 

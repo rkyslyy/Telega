@@ -34,6 +34,7 @@ class DialogueVC: UIViewController {
 	@IBOutlet weak var messageInputView: MessageInputView!
 	@IBOutlet weak var messageViewHeightConstraint: NSLayoutConstraint!
 	@IBOutlet weak var sendBtn: UIButton!
+	@IBOutlet weak var noMessagesLbl: UILabel!
 
 
 	// Variables
@@ -185,6 +186,7 @@ class DialogueVC: UIViewController {
 	}
 
 	@objc private func messagesUpdated(notification: Notification) {
+		noMessagesLbl.isHidden = true
 		TelegaAPI.emitReadMessagesFrom(id: companion.id)
 		if let result = notification.userInfo?["storing_result"] as? StoringResult,
 			 let id = notification.userInfo?["id"] as? String,
@@ -213,6 +215,10 @@ class DialogueVC: UIViewController {
 			self.messageSound = try AVAudioPlayer(contentsOf: url)
 			messageSound?.play()
 		} catch { print("COULD NOT GET FILE") }
+	}
+
+	override func viewWillAppear(_ animated: Bool) {
+		noMessagesLbl.isHidden = MessagesStorage.messagesExistWith(id: companion.id)
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
@@ -262,6 +268,7 @@ class DialogueVC: UIViewController {
 				toUserWithID: companion.id,
 				andStoreCopyForMe: encryptedForMe.base64String,
 				completion: { timeStr in
+					self.noMessagesLbl.isHidden = true
 					let dateFormatter = ISO8601DateFormatter()
 					dateFormatter.timeZone = TimeZone(abbreviation: "EET")
 					let time = dateFormatter.date(

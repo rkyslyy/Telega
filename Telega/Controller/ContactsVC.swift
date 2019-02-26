@@ -24,16 +24,18 @@ class ContactsVC: UIViewController {
 		super.viewDidLoad()
 
 		setupObservers()
-		searchBar.delegate = self
-		navigationItem.title = "Updating..."
-		loadingRipple = GIFImageView(
-			frame: CGRect(
-				x: view.frame.width / 2 - 75,
-				y: view.frame.height / 2 - 75,
-				width: 150,
-				height: 150))
-		loadingRipple?.animate(withGIFNamed: "ripple")
-		view.addSubview(loadingRipple!)
+		if DataService.instance.contacts == nil {
+			searchBar.delegate = self
+			navigationItem.title = "Updating..."
+			loadingRipple = GIFImageView(
+				frame: CGRect(
+					x: view.frame.width / 2 - 75,
+					y: view.frame.height / 2 - 75,
+					width: 150,
+					height: 150))
+			loadingRipple?.animate(withGIFNamed: "ripple")
+			view.addSubview(loadingRipple!)
+		}
 
 		contactsTable.delegate = self
 		contactsTable.dataSource = self
