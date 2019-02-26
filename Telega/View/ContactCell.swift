@@ -51,6 +51,11 @@ class ContactCell: UITableViewCell {
 				for: .normal)
 			unreadStatusImgView.image = unread ? UIImage(named: "envelope") : nil
 		}
+		if UIApplication.shared.statusBarFrame.width > 450 {
+			avatarView.layer.cornerRadius = 65
+		} else {
+			avatarView.layer.cornerRadius = 25
+		}
 	}
 
 	@objc private func setupAnimations() {

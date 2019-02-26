@@ -40,6 +40,7 @@
 		BFA30D40222582BF000E0186 /* SwiftEntryKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA30D3F222582BF000E0186 /* SwiftEntryKit.swift */; };
 		BFA30D422225833C000E0186 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA30D412225833C000E0186 /* UIView.swift */; };
 		BFA30D4422258366000E0186 /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA30D4322258366000E0186 /* CALayer.swift */; };
+		BFA30D4622258697000E0186 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA30D4522258697000E0186 /* Date.swift */; };
 		BFB5811321FF6BA50051C0D5 /* TelegaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB5811221FF6BA50051C0D5 /* TelegaAPI.swift */; };
 		BFB82A81221C3CEF003F570E /* SocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A80221C3CEF003F570E /* SocketService.swift */; };
 		BFB82A83221D6769003F570E /* EncryptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A82221D6769003F570E /* EncryptionService.swift */; };
@@ -95,6 +96,7 @@
 		BFA30D3F222582BF000E0186 /* SwiftEntryKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftEntryKit.swift; sourceTree = "<group>"; };
 		BFA30D412225833C000E0186 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		BFA30D4322258366000E0186 /* CALayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
+		BFA30D4522258697000E0186 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		BFB5811221FF6BA50051C0D5 /* TelegaAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelegaAPI.swift; sourceTree = "<group>"; };
 		BFB82A80221C3CEF003F570E /* SocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketService.swift; sourceTree = "<group>"; };
 		BFB82A82221D6769003F570E /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				BFA30D3F222582BF000E0186 /* SwiftEntryKit.swift */,
 				BFA30D412225833C000E0186 /* UIView.swift */,
 				BFA30D4322258366000E0186 /* CALayer.swift */,
+				BFA30D4522258697000E0186 /* Date.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 				BFB82A8E221D8349003F570E /* EditProfileRouteEXT.swift in Sources */,
 				BF9E31EA2201EEA400187310 /* Constants.swift in Sources */,
 				BF4CC966222050FB0047C737 /* MessagesStorage.swift in Sources */,
+				BFA30D4622258697000E0186 /* Date.swift in Sources */,
 				BFB82A90221D863E003F570E /* MessagesRouteEXT.swift in Sources */,
 				BF282516220D9C3700FE42CA /* RNCryptor.swift in Sources */,
 			);
