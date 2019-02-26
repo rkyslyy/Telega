@@ -17,6 +17,9 @@ enum Animation {
 class DataService {
 	
 	static let instance = DataService()
+
+	// Variables
+	var contacts : [User]?
 	
 	var token : String? {
 		get {
@@ -73,8 +76,6 @@ class DataService {
 			UserDefaults.standard.set(newValue, forKey: "avatar")
 		}
 	}
-	
-	var contacts : [User]?
 
 	func deleteContactWith(id: String) {
 		for (index, contact) in contacts!.enumerated() where contact.id == id {
@@ -102,14 +103,5 @@ class DataService {
 		userAvatar = nil
 		contacts = nil
 		id = nil
-	}
-}
-
-class DateMessages {
-	let date: String
-	var messages = [Message]()
-
-	init(date: String) {
-		self.date = date
 	}
 }

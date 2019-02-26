@@ -28,16 +28,27 @@ class ContactCell: UITableViewCell {
 	var unread: Bool!
 	var gif: GIFImageView!
 
-	func setupStatus(confirmed: Bool, requestIsMine: Bool, online: Bool, unread: Bool) {
+	func setupStatus(
+		confirmed: Bool,
+		requestIsMine: Bool,
+		online: Bool,
+		unread: Bool
+		) {
 		self.confirmed = confirmed
 		self.requestIsMine = requestIsMine
-		let image = requestIsMine ? UIImage(named: "hourglass") : UIImage(named: "green_tick")
+		let image = requestIsMine ? UIImage(named: "hourglass")
+															: UIImage(named: "green_tick")
 		statusBtn.setImage(image, for: .normal)
 		if !confirmed {
 			setupAnimations()
 			unreadStatusImgView.image = nil
 		} else {
-			statusBtn.setImage(online ? UIImage(named: "online")?.resizedImageWithinRect(rectSize: CGSize(width: 15, height: 15)) : nil, for: .normal)
+			statusBtn.setImage(
+				online ? UIImage(
+					named: "online")?.resizedImageWithinRect(
+						rectSize: CGSize(width: 15, height: 15))
+							 : nil,
+				for: .normal)
 			unreadStatusImgView.image = unread ? UIImage(named: "envelope") : nil
 		}
 	}
@@ -46,20 +57,25 @@ class ContactCell: UITableViewCell {
 		layer.removeAllAnimations()
 		if requestIsMine {
 			statusBtn.isUserInteractionEnabled = false
-			UIView.animate(withDuration: 1.0,
-										 delay: 0,
-										 options: [.repeat, .autoreverse, .allowUserInteraction],
-										 animations: {
-											self.statusBtn.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
-			}, completion: nil)
+			UIView.animate(
+				withDuration: 1.0,
+				delay: 0,
+				options: [.repeat, .autoreverse, .allowUserInteraction],
+				animations: {
+					self.statusBtn.transform = CGAffineTransform(
+						rotationAngle: CGFloat(Double.pi))
+			},
+				completion: nil)
 		} else {
 			statusBtn.isUserInteractionEnabled = true
-			UIView.animate(withDuration: 0.5,
-										 delay: 0,
-										 options: [.repeat, .autoreverse, .allowUserInteraction],
-										 animations: {
-											self.statusBtn.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-			}, completion: nil)
+			UIView.animate(
+				withDuration: 0.5,
+				delay: 0,
+				options: [.repeat, .autoreverse, .allowUserInteraction],
+				animations: {
+					self.statusBtn.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+			},
+				completion: nil)
 		}
 	}
 
@@ -75,22 +91,5 @@ class ContactCell: UITableViewCell {
 			gif.animate(withGIFNamed: "ripple")
 			self.contentView.addSubview(gif)
 		}
-	}
-}
-
-extension CALayer {
-	func pause() {
-		let pausedTime: CFTimeInterval = self.convertTime(CACurrentMediaTime(), from: nil)
-		self.speed = 0.0
-		self.timeOffset = pausedTime
-	}
-
-	func resume() {
-		let pausedTime: CFTimeInterval = self.timeOffset
-		self.speed = 1.0
-		self.timeOffset = 0.0
-		self.beginTime = 0.0
-		let timeSincePause: CFTimeInterval = self.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
-		self.beginTime = timeSincePause
 	}
 }

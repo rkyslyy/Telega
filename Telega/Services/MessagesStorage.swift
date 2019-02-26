@@ -14,9 +14,24 @@ enum StoringResult {
 	case freshMessage
 }
 
+enum MessagesParsingError: Error {
+	case BadStoreID
+	case BadContents
+}
+
 class MessagesStorage {
 
+	// Variables
 	static private var messages = [String: [DateMessages]]()
+	static var numberOfMessages: Int {
+		var count = 0
+		messages.forEach { datesMessages in
+			datesMessages.value.forEach({ (dateMessages) in
+				count += dateMessages.messages.count
+			})
+		}
+		return count
+	}
 
 	class func storeNew(
 		message: Message,
@@ -139,6 +154,12 @@ class MessagesStorage {
 		}
 	}
 
+	class func getLastMessageDateOf(id: String) -> Date? {
+		guard let allDates = messages[id] else { return nil }
+		let lastDate = allDates.first!
+		return lastDate.messages.first!.time
+	}
+
 	class private func does(
 		date: String,
 		existIn tuples: [DateMessages]
@@ -148,9 +169,4 @@ class MessagesStorage {
 		}
 		return false
 	}
-}
-
-enum MessagesParsingError: Error {
-	case BadStoreID
-	case BadContents
 }

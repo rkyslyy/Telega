@@ -15,5 +15,4 @@ class MessageInputView: UITextView {
 		clipsToBounds = true
 		layer.cornerRadius = 10
 	}
-	
 }

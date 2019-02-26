@@ -20,7 +20,7 @@ extension TelegaAPI {
 					headers: AUTH_HEADER)
 					.responseJSON { (response) in
 						guard let dict = response.value as? [String : Any] else {
-							print("bad value"); return
+							return print("bad value")
 						}
 						if let error = dict["error"] {
 							return print(error)
@@ -50,20 +50,38 @@ extension TelegaAPI {
 		DataService.instance.publicPem = publicPem
 		DataService.instance.contacts = contacts
 		MessagesStorage.buildMessagesFrom(messagesData)
+		sortContacts()
+	}
+
+	class func sortContacts() {
+		DataService.instance.contacts = DataService.instance.contacts!.sorted(
+			by: { (one, two) -> Bool in
+				let lastDateOne = MessagesStorage.getLastMessageDateOf(id: one.id)
+				let lastDateTwo = MessagesStorage.getLastMessageDateOf(id: two.id)
+				if lastDateOne != nil && lastDateTwo == nil {
+					return true
+				} else if lastDateOne == nil && lastDateTwo != nil {
+					return false
+				} else if lastDateOne == nil && lastDateTwo == nil {
+					return true
+				} else {
+					return lastDateOne! >= lastDateTwo!
+				}
+		})
 	}
 
 	class private func contactsFrom(_ contactsData: [[String:Any]]) -> [User]? {
 		let contacts = contactsData.compactMap({ (contact) -> User? in
 			guard let _id = contact["_id"] as? String,
-				let email = contact["email"] as? String,
-				let username = contact["username"] as? String,
-				let avatar = contact["avatar"] as? String,
-				let confirmed = contact["confirmed"] as? Bool,
-				let requestIsMine = contact["requestIsMine"] as? Bool,
-				let publicPem = contact["publicPem"] as? String,
-				let online = contact["online"] as? Bool,
-				let unread = contact["unread"] as? Bool
-				else { return nil }
+						let email = contact["email"] as? String,
+						let username = contact["username"] as? String,
+						let avatar = contact["avatar"] as? String,
+						let confirmed = contact["confirmed"] as? Bool,
+						let requestIsMine = contact["requestIsMine"] as? Bool,
+						let publicPem = contact["publicPem"] as? String,
+						let online = contact["online"] as? Bool,
+						let unread = contact["unread"] as? Bool
+			else { return nil }
 			return User(
 				id: _id,
 				email: email,

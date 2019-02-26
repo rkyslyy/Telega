@@ -9,6 +9,7 @@
 import UIKit
 import Gifu
 import SwiftyRSA
+import SwiftEntryKit
 
 class ContactsVC: UIViewController {
 
@@ -47,8 +48,6 @@ class ContactsVC: UIViewController {
 			action: #selector(hideKeyboard))
 		tap.cancelsTouchesInView = false
 		view.addGestureRecognizer(tap)
-
-
 	}
 
 	@objc private func onlineChanged(notification: Notification) {
@@ -70,7 +69,8 @@ class ContactsVC: UIViewController {
 	}
 
 	@objc private func contactAdded() {
-		let contactsCount = DataService.instance.contactsFilteredWith(keyword: searchBar.text!).count
+		let contactsCount = DataService.instance.contactsFilteredWith(
+			keyword: searchBar.text!).count
 		if contactsCount > 1 {
 			return contactsTable.insertRows(
 				at: [IndexPath(row: contactsCount - 1, section: 0)],
@@ -89,14 +89,11 @@ class ContactsVC: UIViewController {
 	}
 
 	@objc private func messagesUpdated(notification: Notification) {
-		if let id = notification.userInfo?["id"] as? String {
-			for (index, contact) in DataService.instance.contactsFilteredWith(keyword: searchBar.text!).enumerated()
-				where contact.id == id {
-					contactsTable.reloadRows(
-						at: [IndexPath(row: index, section: 0)],
-						with: .none)
-			}
-		}
+		contactsTable.reloadData()
+	}
+
+	@objc func openDialogue() {
+		print("OPENING DIALOGUE")
 	}
 
 	@objc private func updateUser(notification: Notification) {
@@ -106,7 +103,7 @@ class ContactsVC: UIViewController {
 					contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
 				} else {
 					contactsTable.reloadRows(
-						at: [IndexPath(row: index, section: 0)], with: .fade)
+						at: [IndexPath(row: index, section: 0)], with: .none)
 				}
 			}
 		} else {
@@ -153,50 +150,63 @@ class ContactsVC: UIViewController {
 	}
 
 	private func setupObservers() {
+		setupObserverFor(event: JUST_RELOAD, selector: #selector(justReload))
+		setupObserverFor(event: ADD_CONTACT, selector: #selector(contactAdded))
+		setupObserverFor(
+			event: CONTACTS_LOADED,
+			selector: #selector(contactsLoaded(notification:)))
+		setupObserverFor(
+			event: UIApplication.didBecomeActiveNotification,
+			selector: #selector(didBecomeActive))
+		setupObserverFor(
+			event: UPDATE_CONTACT,
+			selector: #selector(updateUser(notification:)))
+		setupObserverFor(
+			event: MESSAGES_UPDATED,
+			selector: #selector(messagesUpdated(notification:)))
+		setupObserverFor(
+			event: DELETE_CONTACT,
+			selector: #selector(contactDeleted(notification:)))
+		setupObserverFor(
+			event: ACCEPT_FRIEND,
+			selector: #selector(friendAccepted(notification:)))
+		setupObserverFor(
+			event: ONLINE_CHANGED,
+			selector: #selector(onlineChanged(notification:)))
+		setupObserverFor(
+			event: SETTINGS_CHANGED,
+			selector: #selector(settingsChanged(notification:)))
+		setupObserverFor(
+			event: MESSAGES_UPDATED,
+			selector: #selector(showEntry(notification:)))
+	}
+
+	private func setupObserverFor(event: Notification.Name, selector: Selector) {
 		NotificationCenter.default.addObserver(
 			self,
-			selector: #selector(contactsLoaded(notification:)),
-			name: CONTACTS_LOADED,
+			selector: selector,
+			name: event,
 			object: nil)
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(didBecomeActive),
-			name: UIApplication.didBecomeActiveNotification,
-			object: nil)
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(updateUser(notification:)),
-			name: UPDATE_CONTACT,
-			object: nil)
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(messagesUpdated(notification:)),
-			name: MESSAGES_UPDATED,
-			object: nil)
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(contactAdded),
-			name: ADD_CONTACT,
-			object: nil)
-		NotificationCenter.default.addObserver(
-			self, selector: #selector(contactDeleted(notification:)),
-			name: DELETE_CONTACT,
-			object: nil)
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(friendAccepted(notification:)),
-			name: ACCEPT_FRIEND,
-			object: nil)
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(onlineChanged(notification:)),
-			name: ONLINE_CHANGED,
-			object: nil)
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(settingsChanged(notification:)),
-			name: SETTINGS_CHANGED,
-			object: nil)
+	}
+
+	@objc private func justReload() {
+		contactsTable.reloadData()
+	}
+
+	@objc func showEntry(notification: Notification) {
+		guard let userinfo = notification.userInfo,
+			let id = userinfo["id"] as? String,
+			let text = userinfo["text"] as? String,
+			let mine = userinfo["mine"] as? Bool,
+			!mine
+			else { return }
+		for contact in DataService.instance.contacts! where contact.id == id {
+			SwiftEntryKit.displayNew(
+				message: text,
+				from: contact.username,
+				contact: contact,
+				viewController: self)
+		}
 	}
 }
 
@@ -206,8 +216,10 @@ extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 		) {
-		let contact = DataService.instance.contactsFilteredWith(keyword: searchBar.text!)[indexPath.row]
+		let contact = DataService.instance.contactsFilteredWith(
+			keyword: searchBar.text!)[indexPath.row]
 		if contact.confirmed {
+			SwiftEntryKit.dismiss()
 			performSegue(withIdentifier: "toDialogue",
 									 sender: contact)
 		}
@@ -227,7 +239,8 @@ extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 		) -> Int {
-		return DataService.instance.contactsFilteredWith(keyword: searchBar.text!).count
+		return DataService.instance.contactsFilteredWith(
+			keyword: searchBar.text!).count
 	}
 
 	func tableView(
@@ -236,15 +249,18 @@ extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
 		) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(
 			withIdentifier: "contactCell") as! ContactCell
-		let contact = DataService.instance.contactsFilteredWith(keyword: searchBar.text!)[indexPath.row]
+		let contact = DataService.instance.contactsFilteredWith(
+			keyword: searchBar.text!)[indexPath.row]
 		let imageData = Data(base64Encoded: contact.avatar)
 		let image = UIImage(data: imageData!)
 		cell.table = tableView
 		cell.indexPath = indexPath
 		cell.avatarView.image = image
+		cell.avatarView.backgroundColor = .darkGray
 		cell.usernameLbl.text = contact.username
 		cell.emailLbl.text = contact.email
-		cell.contactID = DataService.instance.contactsFilteredWith(keyword: searchBar.text!)[indexPath.row].id
+		cell.contactID = DataService.instance.contactsFilteredWith(
+			keyword: searchBar.text!)[indexPath.row].id
 		cell.setupStatus(
 			confirmed: contact.confirmed,
 			requestIsMine: contact.requestIsMine,
@@ -261,9 +277,12 @@ extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
 			style: .normal,
 			title: "Delete") { action, index in
 				TelegaAPI.deleteContactWith(
-					id: DataService.instance.contactsFilteredWith(keyword: self.searchBar.text!)[indexPath.row].id,
+					id: DataService.instance.contactsFilteredWith(
+						keyword: self.searchBar.text!)[indexPath.row].id,
 					completion: {})
-			DataService.instance.deleteContactWith(id: DataService.instance.contactsFilteredWith(keyword: self.searchBar.text!)[indexPath.row].id)
+			DataService.instance.deleteContactWith(
+				id: DataService.instance.contactsFilteredWith(
+					keyword: self.searchBar.text!)[indexPath.row].id)
 			tableView.deleteRows(
 				at: [indexPath],
 				with: UITableView.RowAnimation.right)

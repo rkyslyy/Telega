@@ -10,6 +10,7 @@ import SwiftyRSA
 
 class EncryptionService {
 
+	// Methods
 	class func getStringPemsUsing(
 		encryptionKey: String
 		) -> (publicPem: String, privatePem: String)? {

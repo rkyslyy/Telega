@@ -130,8 +130,6 @@ class ChangePasswordVC: UIViewController {
         UIView.animate(withDuration: 0.2,
                        animations: {
             rules.contentView.alpha = 1
-        }) { (_) in
-            
-        }
+        }) { (_) in }
     }
 }

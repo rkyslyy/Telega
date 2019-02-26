@@ -14,13 +14,14 @@ class SocketService {
 
 	static let instance = SocketService()
 
+	// Variables
 	var manager = SocketManager(socketURL: URL(string: BASE_URL)!)
 	var messageSound: AVAudioPlayer?
 
+	// Methods
 	func establishConnection() {
 		manager = SocketManager(socketURL: URL(string: BASE_URL)!)
 		setupIntrocudeEvent()
-		setupUpdateContactsEvent()
 		setupOnlineEvent()
 		setupOfflineEvent()
 		setupMessagesReadEvent()
@@ -29,6 +30,7 @@ class SocketService {
 		setupAcceptFriendEvent()
 		setupDeleteContactEvent()
 		setupSettingsChangedEvent()
+		setupJustReloadEvent()
 		manager.defaultSocket.connect()
 	}
 
@@ -51,7 +53,8 @@ class SocketService {
 			self.manager.defaultSocket.emit(
 				"introduce",
 				DataService.instance.username!,
-				DataService.instance.id!)
+				DataService.instance.id!,
+				MessagesStorage.numberOfMessages)
 		}
 	}
 
@@ -103,35 +106,6 @@ class SocketService {
 		}
 	}
 
-	private func setupUpdateContactsEvent() {
-//		manager.defaultSocket.on("update contacts") { (responses, _) in
-//			TelegaAPI.getInfoAboutSelf {
-//				if responses.isEmpty {
-//					return
-//				}
-//				var body = [String:Any]()
-//				if let id = responses[0] as? String,
-//					DataService.instance.contacts!.count != 0 {
-//					for (index, contact) in DataService.instance.contacts!.enumerated() {
-//							body["index"] = index
-//							if responses.count > 1 {
-//								body["delete"] = ""
-//							}
-//							NotificationCenter.default.post(
-//								name: UPDATE_CONTACT,
-//								object: nil,
-//								userInfo: body)
-//					}
-//				} else {
-//					NotificationCenter.default.post(
-//						name: UPDATE_CONTACT,
-//						object: nil,
-//						userInfo: nil)
-//				}
-//			}
-//		}
-	}
-
 	private func setupOnlineEvent() {
 		manager.defaultSocket.on("online_changed") { (responses, _) in
 			if responses.count < 2 {
@@ -174,15 +148,13 @@ class SocketService {
 			if responses.isEmpty {return}
 			guard let id = responses[0] as? String else { return }
 			for (index, contact) in
-				DataService.instance.contacts!.enumerated() {
-					if contact.id == id  {
-						DataService.instance.contacts![index].unread = false
-					}
+				DataService.instance.contacts!.enumerated() where contact.id == id {
+					DataService.instance.contacts![index].unread = false
+					NotificationCenter.default.post(
+						name: UPDATE_CONTACT,
+						object: nil,
+						userInfo: ["index": index])
 			}
-			NotificationCenter.default.post(
-				name: UPDATE_CONTACT,
-				object: nil,
-				userInfo: ["id": id])
 		}
 	}
 
@@ -204,9 +176,11 @@ class SocketService {
 				storeID: storeID,
 				timeStr: (message["time"] as! String),
 				completion: { (result) in
-					for contact in DataService.instance.contacts!
+					for (index, contact) in DataService.instance.contacts!.enumerated()
 						where contact.id == storeID {
 							contact.unread = !mine
+							DataService.instance.contacts!.remove(at: index)
+							DataService.instance.contacts!.insert(contact, at: 0)
 					}
 //					self.playSound()
 					NotificationCenter.default.post(
@@ -214,7 +188,8 @@ class SocketService {
 						object: nil,
 						userInfo: ["storing_result": result,
 											 "id": storeID,
-											 "text": text])
+											 "text": text,
+											 "mine": mine])
 			})
 		}
 	}
@@ -238,6 +213,17 @@ class SocketService {
 					userInfo: ["id": contact.id,
 										 "index": index])
 			}
+		}
+	}
+
+	private func setupJustReloadEvent() {
+		manager.defaultSocket.on("just_reload") { (responses, _) in
+			if responses.count < 1 {
+				return
+			}
+			guard let messagesData = responses[0] as? [[String:Any]] else { return }
+			MessagesStorage.buildMessagesFrom(messagesData)
+			TelegaAPI.sortContacts()
 		}
 	}
 

@@ -56,6 +56,7 @@ class SettingsVC: UIViewController,
 			let data = Data(base64Encoded: DataService.instance.userAvatar!)
 			let image = UIImage(data: data!)
 			avatarView.image = image
+			avatarView.backgroundColor = .darkGray
 		} else {
 			avatarView.image = pickedImage
 		}
@@ -191,19 +192,5 @@ class SettingsVC: UIViewController,
 		} else {
 			saveBtn.isEnabled = true
 		}
-	}
-}
-
-extension UIImage {
-	enum JPEGQuality: CGFloat {
-		case lowest  = 0
-		case low     = 0.25
-		case medium  = 0.5
-		case high    = 0.75
-		case highest = 1
-	}
-	
-	func jpeg(_ jpegQuality: JPEGQuality) -> Data? {
-		return jpegData(compressionQuality: jpegQuality.rawValue)
 	}
 }

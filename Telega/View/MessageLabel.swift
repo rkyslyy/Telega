@@ -11,8 +11,6 @@ import UIKit
 @IBDesignable
 class MessageLabel: UILabel {
 
-
-
 	override func draw(_ rect: CGRect) {
 		clipsToBounds = true
 		layer.cornerRadius = 10

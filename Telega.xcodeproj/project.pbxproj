@@ -35,6 +35,11 @@
 		BF9E31F522020C4500187310 /* AuthLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9E31F422020C4500187310 /* AuthLoading.swift */; };
 		BF9E31F72202135A00187310 /* black.gif in Resources */ = {isa = PBXBuildFile; fileRef = BF9E31F62202135A00187310 /* black.gif */; };
 		BF9E32012202213500187310 /* ripple.gif in Resources */ = {isa = PBXBuildFile; fileRef = BF9E32002202213500187310 /* ripple.gif */; };
+		BFA30D3922257952000E0186 /* DateMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA30D3822257951000E0186 /* DateMessages.swift */; };
+		BFA30D3E22258283000E0186 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA30D3D22258283000E0186 /* UIImage.swift */; };
+		BFA30D40222582BF000E0186 /* SwiftEntryKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA30D3F222582BF000E0186 /* SwiftEntryKit.swift */; };
+		BFA30D422225833C000E0186 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA30D412225833C000E0186 /* UIView.swift */; };
+		BFA30D4422258366000E0186 /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA30D4322258366000E0186 /* CALayer.swift */; };
 		BFB5811321FF6BA50051C0D5 /* TelegaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB5811221FF6BA50051C0D5 /* TelegaAPI.swift */; };
 		BFB82A81221C3CEF003F570E /* SocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A80221C3CEF003F570E /* SocketService.swift */; };
 		BFB82A83221D6769003F570E /* EncryptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB82A82221D6769003F570E /* EncryptionService.swift */; };
@@ -85,6 +90,11 @@
 		BF9E31F422020C4500187310 /* AuthLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthLoading.swift; sourceTree = "<group>"; };
 		BF9E31F62202135A00187310 /* black.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = black.gif; sourceTree = "<group>"; };
 		BF9E32002202213500187310 /* ripple.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ripple.gif; sourceTree = "<group>"; };
+		BFA30D3822257951000E0186 /* DateMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateMessages.swift; sourceTree = "<group>"; };
+		BFA30D3D22258283000E0186 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		BFA30D3F222582BF000E0186 /* SwiftEntryKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftEntryKit.swift; sourceTree = "<group>"; };
+		BFA30D412225833C000E0186 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		BFA30D4322258366000E0186 /* CALayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
 		BFB5811221FF6BA50051C0D5 /* TelegaAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelegaAPI.swift; sourceTree = "<group>"; };
 		BFB82A80221C3CEF003F570E /* SocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketService.swift; sourceTree = "<group>"; };
 		BFB82A82221D6769003F570E /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
@@ -150,6 +160,7 @@
 		BF087FC921FF453400CFA8BB /* Telega */ = {
 			isa = PBXGroup;
 			children = (
+				BFA30D3C22258274000E0186 /* Extensions */,
 				BF9E31EF22020B1100187310 /* XIBs */,
 				BF9E31F62202135A00187310 /* black.gif */,
 				BF9E32002202213500187310 /* ripple.gif */,
@@ -205,6 +216,7 @@
 			children = (
 				BF73C0ED2209A10E00353FF1 /* User.swift */,
 				BF28251E220DC85E00FE42CA /* Message.swift */,
+				BFA30D3822257951000E0186 /* DateMessages.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -230,6 +242,17 @@
 				BFF46F2922035DD300469496 /* PasswordRulesXIB.xib */,
 			);
 			path = XIBs;
+			sourceTree = "<group>";
+		};
+		BFA30D3C22258274000E0186 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BFA30D3D22258283000E0186 /* UIImage.swift */,
+				BFA30D3F222582BF000E0186 /* SwiftEntryKit.swift */,
+				BFA30D412225833C000E0186 /* UIView.swift */,
+				BFA30D4322258366000E0186 /* CALayer.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		BFB82A84221D720F003F570E /* APIRoutesExtensions */ = {
@@ -404,13 +427,18 @@
 				BF282521220E2A0600FE42CA /* MessageLabel.swift in Sources */,
 				BF7FE4912203846900455A60 /* CircleImageView.swift in Sources */,
 				BF73C0F02209DA0F00353FF1 /* ContactCell.swift in Sources */,
+				BFA30D40222582BF000E0186 /* SwiftEntryKit.swift in Sources */,
+				BFA30D422225833C000E0186 /* UIView.swift in Sources */,
 				BFB82A8C221D7635003F570E /* MeRouteEXT.swift in Sources */,
 				BF73C0EE2209A10E00353FF1 /* User.swift in Sources */,
+				BFA30D3922257952000E0186 /* DateMessages.swift in Sources */,
+				BFA30D4422258366000E0186 /* CALayer.swift in Sources */,
 				BFB82A83221D6769003F570E /* EncryptionService.swift in Sources */,
 				BF2B30B322130CD7001E9C47 /* ChangePasswordVC.swift in Sources */,
 				BF9E31F522020C4500187310 /* AuthLoading.swift in Sources */,
 				BF087FE521FF49D400CFA8BB /* CustomPlaceholderTF.swift in Sources */,
 				BFB82A8A221D756D003F570E /* UsersRouteEXT.swift in Sources */,
+				BFA30D3E22258283000E0186 /* UIImage.swift in Sources */,
 				BFB82A88221D743A003F570E /* AuthRouteEXT.swift in Sources */,
 				BF087FCB21FF453400CFA8BB /* AppDelegate.swift in Sources */,
 				BF28251B220DAB9E00FE42CA /* MessageInputView.swift in Sources */,
