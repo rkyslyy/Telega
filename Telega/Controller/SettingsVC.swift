@@ -60,6 +60,11 @@ class SettingsVC: UIViewController,
 		} else {
 			avatarView.image = pickedImage
 		}
+		if UIApplication.shared.statusBarFrame.width > 450 {
+			avatarView.layer.cornerRadius = 150
+		} else {
+			avatarView.layer.cornerRadius = 60
+		}
 	}
 
 	override func viewWillDisappear(_ animated: Bool) {

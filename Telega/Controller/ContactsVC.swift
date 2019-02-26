@@ -25,15 +25,15 @@ class ContactsVC: UIViewController {
 
 		setupObservers()
 		searchBar.delegate = self
-//		navigationItem.title = "Updating..."
-//		loadingRipple = GIFImageView(
-//			frame: CGRect(
-//				x: view.frame.width / 2 - 75,
-//				y: view.frame.height / 2 - 75,
-//				width: 150,
-//				height: 150))
-//		loadingRipple?.animate(withGIFNamed: "ripple")
-//		view.addSubview(loadingRipple!)
+		navigationItem.title = "Updating..."
+		loadingRipple = GIFImageView(
+			frame: CGRect(
+				x: view.frame.width / 2 - 75,
+				y: view.frame.height / 2 - 75,
+				width: 150,
+				height: 150))
+		loadingRipple?.animate(withGIFNamed: "ripple")
+		view.addSubview(loadingRipple!)
 
 		contactsTable.delegate = self
 		contactsTable.dataSource = self
@@ -131,7 +131,6 @@ class ContactsVC: UIViewController {
 	}
 
 	@objc private func contactsLoaded(notification: Notification) {
-		print("CONTACTS LOADED")
 		navigationItem.title = "Contacts"
 		loadingRipple?.removeFromSuperview()
 		loadingRipple = nil
@@ -194,12 +193,17 @@ class ContactsVC: UIViewController {
 	}
 
 	@objc func showEntry(notification: Notification) {
+
 		guard let userinfo = notification.userInfo,
 			let id = userinfo["id"] as? String,
 			let text = userinfo["text"] as? String,
 			let mine = userinfo["mine"] as? Bool,
 			!mine
 			else { return }
+		if let dVC = navigationController?.visibleViewController as? DialogueVC,
+			 dVC.companion.id == id {
+			return
+		}
 		for contact in DataService.instance.contacts! where contact.id == id {
 			SwiftEntryKit.displayNew(
 				message: text,
