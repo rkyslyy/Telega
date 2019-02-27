@@ -9,10 +9,10 @@
 import Foundation
 
 class DateMessages {
-	let date: String
-	var messages = [Message]()
-
-	init(date: String) {
-		self.date = date
-	}
+  let date: String
+  var messages = [Message]()
+  
+  init(date: String) {
+    self.date = date
+  }
 }

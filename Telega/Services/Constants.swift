@@ -25,8 +25,8 @@ let MESSAGES_URL = BASE_URL + "messages/"
 // Headers
 let HEADER = ["Content-Type": "application/json"]
 var AUTH_HEADER : [String:String] {
-	return ["Content-Type": "application/json",
-					"x-auth-token": DataService.instance.token!]
+  return ["Content-Type": "application/json",
+          "x-auth-token": DataService.instance.token!]
 } // Variable, but we'll not tell anyone
 
 // Notifications

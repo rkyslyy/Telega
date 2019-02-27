@@ -10,27 +10,28 @@ import UIKit
 
 class PasswordRules: UIView {
 
-	@IBOutlet var contentView: UIView!
-
-	override init(frame: CGRect) {
-		super.init(frame: frame)
-		customInit()
-	}
-
-	private func customInit() {
-		Bundle.main.loadNibNamed("PasswordRulesXIB", owner: self, options: nil)
-		frame = contentView.frame
-		addSubview(contentView)
-	}
-
-	required init?(coder aDecoder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
-
-	@IBAction func gotItPressed() {
-		UIView.animate(
-			withDuration: 0.2,
-			animations: { self.alpha = 0 },
-			completion: { (_) in self.removeFromSuperview() })
-	}
+  // Outlets
+  @IBOutlet var contentView: UIView!
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    customInit()
+  }
+  
+  private func customInit() {
+    Bundle.main.loadNibNamed("PasswordRulesXIB", owner: self, options: nil)
+    frame = contentView.frame
+    addSubview(contentView)
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  @IBAction func gotItPressed() {
+    UIView.animate(
+      withDuration: 0.2,
+      animations: { self.alpha = 0 },
+      completion: { (_) in self.removeFromSuperview() })
+  }
 }

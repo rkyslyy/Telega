@@ -162,13 +162,9 @@
 		BF087FC921FF453400CFA8BB /* Telega */ = {
 			isa = PBXGroup;
 			children = (
+				BF81C85622272EE3009C9F1A /* Supporting files */,
 				BFA30D3C22258274000E0186 /* Extensions */,
 				BF9E31EF22020B1100187310 /* XIBs */,
-				BF9E31F62202135A00187310 /* black.gif */,
-				BF9E32002202213500187310 /* ripple.gif */,
-				BF282515220D9C3700FE42CA /* RNCryptor.swift */,
-				BF282517220D9C5300FE42CA /* RNCryptor.h */,
-				BF2B30AC220EE109001E9C47 /* light.mp3 */,
 				BF087FE121FF47E300CFA8BB /* Services */,
 				BF087FE021FF47DF00CFA8BB /* Model */,
 				BF087FDF21FF47D700CFA8BB /* View */,
@@ -235,6 +231,18 @@
 				BF9E31E92201EEA400187310 /* Constants.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		BF81C85622272EE3009C9F1A /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				BF9E31F62202135A00187310 /* black.gif */,
+				BF9E32002202213500187310 /* ripple.gif */,
+				BF282515220D9C3700FE42CA /* RNCryptor.swift */,
+				BF282517220D9C5300FE42CA /* RNCryptor.h */,
+				BF2B30AC220EE109001E9C47 /* light.mp3 */,
+			);
+			path = "Supporting files";
 			sourceTree = "<group>";
 		};
 		BF9E31EF22020B1100187310 /* XIBs */ = {
