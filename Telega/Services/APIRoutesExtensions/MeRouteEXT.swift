@@ -58,12 +58,12 @@ extension TelegaAPI {
       by: { (one, two) -> Bool in
         let lastDateOne = MessagesStorage.getLastMessageDateOf(id: one.id)
         let lastDateTwo = MessagesStorage.getLastMessageDateOf(id: two.id)
-        if lastDateOne != nil && lastDateTwo == nil {
-          return true
-        } else if lastDateOne == nil && lastDateTwo != nil {
+        if lastDateOne != nil && (lastDateTwo == nil || !two.confirmed) {
           return false
-        } else if lastDateOne == nil && lastDateTwo == nil {
+        } else if (lastDateOne == nil || !one.confirmed) && lastDateTwo != nil {
           return true
+        } else if lastDateOne == nil && lastDateTwo == nil {
+          return false
         } else {
           return lastDateOne! >= lastDateTwo!
         }

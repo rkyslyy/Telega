@@ -77,6 +77,8 @@ class ContactsVC: UIViewController {
   }
   
   @objc private func contactAdded() {
+    DataService.instance.contactsFilteredWith(
+      keyword: searchBar.text!).forEach({print($0.email)})
     let contactsCount = DataService.instance.contactsFilteredWith(
       keyword: searchBar.text!).count
     if contactsCount > 1 {

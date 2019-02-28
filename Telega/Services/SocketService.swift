@@ -182,7 +182,7 @@ class SocketService {
               DataService.instance.contacts!.remove(at: index)
               DataService.instance.contacts!.insert(contact, at: 0)
           }
-          //					self.playSound()
+          self.playSound()
           NotificationCenter.default.post(
             name: MESSAGES_UPDATED,
             object: nil,
