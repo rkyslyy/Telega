@@ -14,7 +14,8 @@ extension TelegaAPI {
     message: String,
     toUserWithID id: String,
     andStoreCopyForMe messageForMe: String,
-    completion: @escaping (String) -> ()) {
+    completion: @escaping (String) -> ()
+    ) {
     let header = ["x-auth-token": DataService.instance.token!]
     let body = ["messageForMe": messageForMe,
                 "messageForThem": message,

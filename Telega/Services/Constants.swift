@@ -9,8 +9,8 @@
 import Foundation
 
 // URLs
-let BASE_URL = "https://telega-rkyslyy.herokuapp.com/"
-//let BASE_URL = "http://localhost:3000/"
+//let BASE_URL = "https://telega-rkyslyy.herokuapp.com/"
+let BASE_URL = "http://localhost:3000/"
 let USERS_URL = BASE_URL + "users/"
 let CHANGE_PASSWORD_URL = USERS_URL + "change_password/"
 let USERS_SEARCH_URL = USERS_URL + "search?"
@@ -39,3 +39,19 @@ let ACCEPT_FRIEND = Notification.Name("accept_friend")
 let ONLINE_CHANGED = Notification.Name("online_changed")
 let SETTINGS_CHANGED = Notification.Name("settings_changed")
 let JUST_RELOAD = Notification.Name("just_reload")
+
+// Months
+let months = [
+  0: "Jan",
+  1: "Feb",
+  2: "Mar",
+  3: "Apr",
+  4: "May",
+  5: "Jun",
+  6: "Jul",
+  7: "Aug",
+  8: "Sep",
+  9: "Oct",
+  10: "Nov",
+  11: "Dec"
+]

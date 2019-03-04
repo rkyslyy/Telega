@@ -140,7 +140,8 @@ class ContactsVC: UIViewController {
     navigationItem.title = "Contacts"
     loadingRipple?.removeFromSuperview()
     loadingRipple = nil
-    if !DataService.instance.contactsFilteredWith(keyword: searchBar.text!).isEmpty {
+    if !DataService.instance.contactsFilteredWith(
+      keyword: searchBar.text!).isEmpty {
       contactsTable.reloadSections(IndexSet(integer: 0), with: .fade)
     }
   }
@@ -201,11 +202,12 @@ class ContactsVC: UIViewController {
   @objc func showEntry(notification: Notification) {
     
     guard let userinfo = notification.userInfo,
-      let id = userinfo["id"] as? String,
-      let text = userinfo["text"] as? String,
-      let mine = userinfo["mine"] as? Bool,
-      !mine
-      else { return }
+          let id = userinfo["id"] as? String,
+          let text = userinfo["text"] as? String,
+          let mine = userinfo["mine"] as? Bool,
+          !mine,
+          !(navigationController?.visibleViewController is AuthVC)
+    else { return }
     if let dVC = navigationController?.visibleViewController as? DialogueVC,
       dVC.companion.id == id {
       return
@@ -239,9 +241,6 @@ extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
     if let dest = segue.destination as? DialogueVC {
       let contact = sender as! User
       dest.companion = contact
-      do {
-        dest.companionPublicKey = try PublicKey(pemEncoded: contact.publicPem)
-      } catch {}
     }
   }
   

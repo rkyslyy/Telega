@@ -34,6 +34,15 @@ class EncryptionService {
     }
   }
 
+  class func publicKeyFrom(base64String: String) -> PublicKey? {
+    do {
+      return try PublicKey(pemEncoded: base64String)
+    } catch {
+      print("could not get public key")
+      return nil
+    }
+  }
+
   class func encryptString(string: String, encryptionKey: String) -> String {
     let messageData = string.data(using: .utf8)!
     let cipherData = RNCryptor.encrypt(
@@ -73,5 +82,25 @@ class EncryptionService {
     } catch {
       return "Bad decryption"
     }
+  }
+
+  class func encryptedMessages(
+    _ message: String,
+    withPublicKey publicKey: PublicKey
+    ) -> (encForMe: String, encForComp: String)? {
+    do {
+      let trimmedText = message.trimmingCharacters(
+        in: .whitespacesAndNewlines)
+      let clear = try ClearMessage(string: trimmedText, using: .utf8)
+      let encryptedForCompanion = try clear.encrypted(
+        with: publicKey,
+        padding: .PKCS1)
+      let encryptedForMe = try clear.encrypted(
+        with: DataService.instance.publicKey!,
+        padding: .PKCS1)
+      return (
+        encForMe: encryptedForMe.base64String,
+        encForComp: encryptedForCompanion.base64String)
+    } catch { return nil }
   }
 }

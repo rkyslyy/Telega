@@ -112,8 +112,9 @@ class SocketService {
         return
       }
       guard let id = responses[0] as? String,
-        let online = responses[1] as? Bool
-        else { return }
+            let online = responses[1] as? Bool,
+            DataService.instance.contacts != nil
+      else { return }
       for (index, contact) in DataService.instance.contacts!.enumerated()
         where contact.id == id {
           contact.online = online
@@ -182,7 +183,8 @@ class SocketService {
               DataService.instance.contacts!.remove(at: index)
               DataService.instance.contacts!.insert(contact, at: 0)
           }
-          self.playSound()
+//          self.playSound()
+          print("SENDING")
           NotificationCenter.default.post(
             name: MESSAGES_UPDATED,
             object: nil,
@@ -218,7 +220,7 @@ class SocketService {
   
   private func setupJustReloadEvent() {
     manager.defaultSocket.on("just_reload") { (responses, _) in
-      if responses.count < 1 {
+      if responses.count < 1 || DataService.instance.contacts == nil {
         return
       }
       guard let messagesData = responses[0] as? [[String:Any]] else { return }

@@ -9,6 +9,7 @@
 import Alamofire
 
 extension TelegaAPI {
+  
   class func acceptFriendRequestFrom(
     id: String,
     completion: @escaping () -> ()) {
@@ -72,15 +73,17 @@ extension TelegaAPI {
               let email = data["email"] as? String,
               let username = data["username"] as? String,
               let avatar = data["avatar"] as? String,
-              let publicPem = data["publicPem"] as? String else {
-                return completion(nil)
-            }
+              let publicPem = data["publicPem"] as? String,
+              let publicKey = EncryptionService.publicKeyFrom(
+                base64String: publicPem)
+            else { return completion(nil) }
             return completion(User(
               id: id,
               email: email,
               username: username,
               avatar: avatar,
               publicPem: publicPem,
+              publicKey: publicKey,
               confirmed: false,
               requestIsMine: true,
               online: false,

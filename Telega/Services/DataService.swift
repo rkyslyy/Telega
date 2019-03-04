@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SwiftyRSA
 
 enum Animation {
   case rotate
@@ -20,6 +21,7 @@ class DataService {
 
   // Variables
   var contacts : [User]?
+  var publicKey: PublicKey?
 
   var token : String? {
     get {

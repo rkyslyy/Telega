@@ -7,8 +7,10 @@
 //
 
 import Alamofire
+import SwiftyRSA
 
 extension TelegaAPI {
+
   class func getInfoAboutSelf(completion: @escaping () -> ()) {
     if DataService.instance.token != nil {
       DispatchQueue.global().async {
@@ -31,7 +33,7 @@ extension TelegaAPI {
       }
     }
   }
-  
+
   class private func getDataFrom(_ dict: [String: Any]) {
     guard let user = dict["user"] as? [String : Any],
       let id = user["_id"] as? String,
@@ -41,18 +43,20 @@ extension TelegaAPI {
       let publicPem = user["publicPem"] as? String,
       let contactsData = user["contacts"] as? [[String : Any]],
       let contacts = contactsFrom(contactsData),
-      let messagesData = user["messages"] as? [[String:Any]]
-      else { return }
+      let messagesData = user["messages"] as? [[String:Any]],
+      let publicKey = EncryptionService.publicKeyFrom(base64String: publicPem)
+    else { return }
     DataService.instance.id = id
     DataService.instance.email = email
     DataService.instance.username = username
     DataService.instance.userAvatar = avatar
     DataService.instance.publicPem = publicPem
+    DataService.instance.publicKey = publicKey
     DataService.instance.contacts = contacts
     MessagesStorage.buildMessagesFrom(messagesData)
     sortContacts()
   }
-  
+
   class func sortContacts() {
     DataService.instance.contacts = DataService.instance.contacts!.sorted(
       by: { (one, two) -> Bool in
@@ -79,6 +83,8 @@ extension TelegaAPI {
         let confirmed = contact["confirmed"] as? Bool,
         let requestIsMine = contact["requestIsMine"] as? Bool,
         let publicPem = contact["publicPem"] as? String,
+        let publicKey = EncryptionService.publicKeyFrom(
+          base64String: publicPem),
         let online = contact["online"] as? Bool,
         let unread = contact["unread"] as? Bool
         else { return nil }
@@ -88,6 +94,7 @@ extension TelegaAPI {
         username: username,
         avatar: avatar,
         publicPem: publicPem,
+        publicKey: publicKey,
         confirmed: confirmed,
         requestIsMine: requestIsMine,
         online: online,

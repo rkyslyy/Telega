@@ -107,52 +107,60 @@ class AuthVC: UIViewController {
     }
     createLoadingMask()
     if creating {
-      TelegaAPI.registerUserWith(
-        email: email,
-        password: password,
-        username: username) { (success, message) in
-          self.loadingMask.showResultWith(
-            success: success,
-            andMessage: message)  {
-              DispatchQueue.main.asyncAfter(
-                deadline: DispatchTime.now() + 1.5,
-                execute: {
+      registerUserWith(email: email, pass: password, username: username)
+    } else {
+      authUserWith(email: email, password: password)
+    }
+  }
+
+  private func registerUserWith(email: String, pass: String, username: String) {
+    TelegaAPI.registerUserWith(
+      email: email,
+      password: pass,
+      username: username) { (success, message) in
+        self.loadingMask.showResultWith(
+          success: success,
+          andMessage: message)  {
+            DispatchQueue.main.asyncAfter(
+              deadline: DispatchTime.now() + 1.5,
+              execute: {
+                UIView.animate(withDuration: 0.2, animations: {
+                  self.loadingMask.alpha = 0
+                  self.toggleWindowContents(hide: false)
+                }, completion: { (_) in
+                  self.loadingMask.removeFromSuperview()
+                })
+            })
+        }
+    }
+  }
+
+  private func authUserWith(email: String, password: String) {
+    loadingMask.label.text = "Logging in..."
+    TelegaAPI.authorizeUserWith(
+      email: email,
+      password: password) { (success, message) in
+        self.loadingMask.showResultWith(
+          success: success,
+          andMessage: message,
+          completion: {
+            DispatchQueue.main.asyncAfter(
+              deadline: DispatchTime.now() + 1.5,
+              execute: {
+                if success {
+                  self.performSegue(
+                    withIdentifier: "loginSuccseeded",
+                    sender: nil)
+                } else {
                   UIView.animate(withDuration: 0.2, animations: {
                     self.loadingMask.alpha = 0
                     self.toggleWindowContents(hide: false)
                   }, completion: { (_) in
                     self.loadingMask.removeFromSuperview()
                   })
-              })
-          }
-      }
-    } else {
-      loadingMask.label.text = "Logging in..."
-      TelegaAPI.authorizeUserWith(
-        email: email,
-        password: password) { (success, message) in
-          self.loadingMask.showResultWith(
-            success: success,
-            andMessage: message,
-            completion: {
-              DispatchQueue.main.asyncAfter(
-                deadline: DispatchTime.now() + 1.5,
-                execute: {
-                  if success {
-                    self.performSegue(
-                      withIdentifier: "loginSuccseeded",
-                      sender: nil)
-                  } else {
-                    UIView.animate(withDuration: 0.2, animations: {
-                      self.loadingMask.alpha = 0
-                      self.toggleWindowContents(hide: false)
-                    }, completion: { (_) in
-                      self.loadingMask.removeFromSuperview()
-                    })
-                  }
-              })
-          })
-      }
+                }
+            })
+        })
     }
   }
   
@@ -225,7 +233,6 @@ class AuthVC: UIViewController {
     self.accntCreateToggleBtn.alpha = state
     self.doneBtn.alpha = state
   }
-  
 }
 
 extension AuthVC: UITextFieldDelegate {

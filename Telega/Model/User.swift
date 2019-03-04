@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyRSA
 
 class User {
   let id: String
@@ -14,6 +15,7 @@ class User {
   var username: String
   var avatar: String
   let publicPem: String
+  let publicKey: PublicKey
   var confirmed: Bool
   let requestIsMine: Bool
   var online: Bool
@@ -25,6 +27,7 @@ class User {
     username: String,
     avatar: String,
     publicPem: String,
+    publicKey: PublicKey,
     confirmed: Bool,
     requestIsMine: Bool,
     online: Bool,
@@ -34,6 +37,7 @@ class User {
     self.username = username
     self.avatar = avatar
     self.publicPem = publicPem
+    self.publicKey = publicKey
     self.confirmed = confirmed
     self.requestIsMine = requestIsMine
     self.online = online

@@ -11,21 +11,6 @@ import SwiftyRSA
 import AVFoundation
 import Gifu
 
-let months = [
-  0: "Jan",
-  1: "Feb",
-  2: "Mar",
-  3: "Apr",
-  4: "May",
-  5: "Jun",
-  6: "Jul",
-  7: "Aug",
-  8: "Sep",
-  9: "Oct",
-  10: "Nov",
-  11: "Dec"
-]
-
 class DialogueVC: UIViewController {
   
   // Outlets
@@ -35,60 +20,33 @@ class DialogueVC: UIViewController {
   @IBOutlet weak var messageViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet weak var sendBtn: UIButton!
   @IBOutlet weak var noMessagesLbl: UILabel!
-  
-  
+
   // Variables
   var companion: User!
-  var companionPublicKey: PublicKey?
-  var oldCount: Int!
   var messageSound: AVAudioPlayer?
   var avatarBtn: UIButton!
   var avatarMask: UIView?
   var avatarImgView: UIImageView?
+  var sendLoadingGif: GIFImageView?
   var requestPending = false
   var backupText: String!
-  
-  @objc private func settingsChanged(notification: Notification) {
-    guard let userinfo = notification.userInfo,
-      let id = userinfo["id"] as? String,
-      id == companion.id
-      else { return }
-    for contact in DataService.instance.contacts! where contact.id == id {
-      companion = contact
-    }
-    self.navigationItem.title = self.companion.username
-    self.avatarBtn = UIButton(type: .custom)
-    self.avatarBtn.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-    self.avatarBtn.contentMode = .scaleAspectFit
-    self.avatarBtn.clipsToBounds = true
-    self.avatarBtn.layer.cornerRadius = 15
-    let image = UIImage(data: Data(base64Encoded: self.companion.avatar)!)
-    if image!.size.width <= 512 {
-      self.avatarBtn.setImage(
-        image!.resizedImageWithinRect(rectSize: CGSize(width: 40, height: 40)),
-        for: .normal)
-      self.avatarBtn.backgroundColor = .darkGray
-      self.avatarBtn.layer.cornerRadius = 20
-    } else {
-      self.avatarBtn.setImage(
-        image!.resizedImageWithinRect(rectSize: CGSize(width: 50, height: 50))
-          .crop(rect: CGRect(x: 5, y: 5, width: 30, height: 30)),
-        for: .normal)
-    }
-    self.avatarBtn.addTarget(self,
-                             action: #selector(self.showAvatar),
-                             for: .touchUpInside)
-    let barButton = UIBarButtonItem(customView: self.avatarBtn)
-    self.navigationItem.rightBarButtonItem = barButton
-  }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
+    let tap = UITapGestureRecognizer(
+      target: self,
+      action: #selector(hideKeyboard(tap:)))
+    tap.cancelsTouchesInView = false
+    view.addGestureRecognizer(tap)
+    view.bindToKeyboard()
+    navigationItem.title = companion.username
+    setupAvatarImgBtn()
     messagesTable.delegate = self
     messagesTable.dataSource = self
     messagesTable.transform = CGAffineTransform(rotationAngle: (-.pi))
-    navigationItem.title = companion.username
     messageInputView.delegate = self
+    messageInputView.text = "Type something"
+    messageInputView.textColor = UIColor.darkGray
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(messagesUpdated(notification:)),
@@ -99,15 +57,22 @@ class DialogueVC: UIViewController {
       selector: #selector(settingsChanged(notification:)),
       name: SETTINGS_CHANGED,
       object: nil)
-    
-    let tap = UITapGestureRecognizer(
-      target: self,
-      action: #selector(hideKeyboard(tap:)))
-    tap.cancelsTouchesInView = false
-    view.addGestureRecognizer(tap)
-    messageInputView.text = "Type something"
-    messageInputView.textColor = UIColor.darkGray
-    view.bindToKeyboard()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    noMessagesLbl.isHidden = MessagesStorage.messagesExistWith(id: companion.id)
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    for (index, contact) in DataService.instance.contacts!.enumerated() {
+      if contact.id == companion.id {
+        DataService.instance.contacts![index].unread = false
+      }
+    }
+    TelegaAPI.emitReadMessagesFrom(id: companion.id)
+  }
+
+  @objc private func setupAvatarImgBtn() {
     avatarBtn = UIButton(type: .custom)
     avatarBtn.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
     avatarBtn.contentMode = .scaleAspectFit
@@ -130,7 +95,19 @@ class DialogueVC: UIViewController {
                         action: #selector(showAvatar),
                         for: .touchUpInside)
     let barButton = UIBarButtonItem(customView: avatarBtn)
-    self.navigationItem.rightBarButtonItem = barButton
+    navigationItem.rightBarButtonItem = barButton
+  }
+  
+  @objc private func settingsChanged(notification: Notification) {
+    guard let userinfo = notification.userInfo,
+      let id = userinfo["id"] as? String,
+      id == companion.id
+    else { return }
+    for contact in DataService.instance.contacts! where contact.id == id {
+      companion = contact
+    }
+    navigationItem.title = self.companion.username
+    setupAvatarImgBtn()
   }
   
   @objc private func showAvatar() {
@@ -177,7 +154,7 @@ class DialogueVC: UIViewController {
     })
   }
   
-  @objc func hideKeyboard(tap: UITapGestureRecognizer) {
+  @objc private func hideKeyboard(tap: UITapGestureRecognizer) {
     let tapLocation = tap.location(in: sendBtn)
     if sendBtn.layer.contains(tapLocation) {
       return
@@ -207,98 +184,62 @@ class DialogueVC: UIViewController {
     }
   }
   
-  private func playSound() {
-    guard let path = Bundle.main.path(forResource: "light", ofType:"mp3")
-      else { return print("COULD NOT GET RESOURCE") }
-    let url = URL(fileURLWithPath: path)
-    do {
-      self.messageSound = try AVAudioPlayer(contentsOf: url)
-      messageSound?.play()
-    } catch { print("COULD NOT GET FILE") }
-  }
-  
-  override func viewWillAppear(_ animated: Bool) {
-    noMessagesLbl.isHidden = MessagesStorage.messagesExistWith(id: companion.id)
-  }
-  
-  override func viewDidAppear(_ animated: Bool) {
-    if companionPublicKey == nil {
-      let alert = UIAlertController(
-        title: "Error",
-        message: "We got a problem with this contact's public key",
-        preferredStyle: .alert)
-      let sad = UIAlertAction( title: "That's sad", style: .default) { (_) in
-        self.navigationController?.popViewController(animated: true)
-      }
-      alert.addAction(sad)
-      present(alert, animated: true, completion: nil)
-    }
-    for (index, contact) in DataService.instance.contacts!.enumerated() {
-      if contact.id == companion.id {
-        DataService.instance.contacts![index].unread = false
-      }
-    }
-    TelegaAPI.emitReadMessagesFrom(id: companion.id)
-  }
-  
   @IBAction func sendBtnPressed() {
-    sendBtn.isEnabled = false
-    sendBtn.isHidden = true
-    requestPending = true
-    let gif = GIFImageView(frame: sendBtn.frame)
-    gif.animate(withGIFNamed: "ripple")
-    messageContentView.addSubview(gif)
-    if messageInputView.text == nil || messageInputView.text == "" {
-      return
-    }
-    do {
-      let trimmedText = messageInputView.text!.trimmingCharacters(
-        in: .whitespacesAndNewlines)
-      let clear = try ClearMessage(string: trimmedText, using: .utf8)
-      let encryptedForCompanion = try clear.encrypted(
-        with: self.companionPublicKey!,
-        padding: .PKCS1)
-      let myPublicKey = try PublicKey(
-        pemEncoded: DataService.instance.publicPem!)
-      let encryptedForMe = try clear.encrypted(
-        with: myPublicKey,
-        padding: .PKCS1)
-      TelegaAPI.send(
-        message: encryptedForCompanion.base64String,
-        toUserWithID: companion.id,
-        andStoreCopyForMe: encryptedForMe.base64String,
-        completion: { timeStr in
-          self.noMessagesLbl.isHidden = true
-          let dateFormatter = ISO8601DateFormatter()
-          dateFormatter.timeZone = TimeZone(abbreviation: "EET")
-          let time = dateFormatter.date(
-            from:timeStr.components(separatedBy: ".")[0] + "-0200")!
-          let newMessage = Message(text:trimmedText, time: time, mine: true)
-          MessagesStorage.storeNew(
-            message: newMessage,
-            storeID: self.companion.id,
-            timeStr: timeStr,
-            completion: { (result) in
-              switch result {
-              case .freshContact, .freshDate:
-                do { self.messagesTable.reloadData() }
-              case .freshMessage: do { self.messagesTable.insertRows(
+    guard let (encryptedForMe,
+               encryptedForCompanion) = EncryptionService.encryptedMessages(
+                messageInputView.text!,
+                withPublicKey: companion.publicKey),
+          messageInputView.text != nil,
+          messageInputView.text != ""
+    else { return }
+    let trimmedText = messageInputView.text!.trimmingCharacters(
+      in: .whitespacesAndNewlines)
+    sendLoading(shown: true)
+    TelegaAPI.send(
+      message: encryptedForCompanion,
+      toUserWithID: companion.id,
+      andStoreCopyForMe: encryptedForMe,
+      completion: { timeStr in
+        self.noMessagesLbl.isHidden = true
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.timeZone = TimeZone(abbreviation: "EET")
+        let time = dateFormatter.date(
+          from:timeStr.components(separatedBy: ".")[0] + "-0200")!
+        let newMessage = Message(text:trimmedText, time: time, mine: true)
+        MessagesStorage.storeNew(
+          message: newMessage,
+          storeID: self.companion.id,
+          timeStr: timeStr,
+          completion: { (result) in
+            switch result {
+            case .freshContact, .freshDate:
+              do { self.messagesTable.reloadData() }
+            case .freshMessage: do {
+              self.messagesTable.insertRows(
                 at: [IndexPath(row: 0, section: 0)],
-                with: .top) }
+                with: .top)
               }
-          })
-          self.requestPending = false
-          self.messageInputView.text = ""
-          self.messageViewHeightConstraint.constant = 58.0
-          self.sendBtn.isEnabled = true
-          self.sendBtn.isHidden = false
-          gif.removeFromSuperview()
-      })
-    } catch {
+            }
+        })
+        self.sendLoading(shown: false)
+    })
+  }
+
+  private func sendLoading(shown: Bool) {
+    if shown {
+      sendBtn.isEnabled = false
+      sendBtn.isHidden = true
+      requestPending = true
+      sendLoadingGif = GIFImageView(frame: sendBtn.frame)
+      sendLoadingGif!.animate(withGIFNamed: "ripple")
+      messageContentView.addSubview(sendLoadingGif!)
+    } else {
+      self.requestPending = false
+      self.messageInputView.text = ""
+      self.messageViewHeightConstraint.constant = 58.0
       self.sendBtn.isEnabled = true
       self.sendBtn.isHidden = false
-      self.requestPending = false
-      gif.removeFromSuperview()
+      sendLoadingGif?.removeFromSuperview()
     }
   }
 }

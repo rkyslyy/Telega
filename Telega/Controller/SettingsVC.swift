@@ -10,9 +10,7 @@ import UIKit
 import AVKit
 import Gifu
 
-class SettingsVC: UIViewController,
-  UIImagePickerControllerDelegate,
-UINavigationControllerDelegate {
+class SettingsVC: UIViewController {
   
   // Outlets
   @IBOutlet weak var saveBtn: UIBarButtonItem!
@@ -38,7 +36,6 @@ UINavigationControllerDelegate {
     pickerController.delegate = self
     pickerController.allowsEditing = false
     pickerController.sourceType = .photoLibrary
-    
     usernameTxtFld.addTarget(
       self,
       action: #selector(controlUsername),
@@ -78,7 +75,18 @@ UINavigationControllerDelegate {
       title: "Choose source",
       message: nil,
       preferredStyle: .actionSheet)
-    let pickFromLibrary = UIAlertAction(
+    let pickFromLibrary = pickFromLibraryAction()
+    let takePhoto = pickWithCameraAction()
+    alert.addAction(pickFromLibrary)
+    alert.addAction(takePhoto)
+    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel)  { (_) in
+      UIView.animate(withDuration: 0.2) { self.logoutBtn.alpha = 1 }
+    })
+    present(alert, animated: true, completion: nil)
+  }
+
+  private func pickFromLibraryAction() -> UIAlertAction {
+    return UIAlertAction(
       title: "Take from photo library",
       style: .default) { (_) in
         UIView.animate(withDuration: 0.2) { self.logoutBtn.alpha = 1 }
@@ -90,7 +98,10 @@ UINavigationControllerDelegate {
             completion: nil)
         }
     }
-    let takePhoto = UIAlertAction(
+  }
+
+  private func pickWithCameraAction() -> UIAlertAction {
+    return UIAlertAction(
       title: "Take photo with camera",
       style: .default) { (_) in
         UIView.animate(withDuration: 0.2) { self.logoutBtn.alpha = 1 }
@@ -118,18 +129,11 @@ UINavigationControllerDelegate {
           }
         }
     }
-    alert.addAction(pickFromLibrary)
-    alert.addAction(takePhoto)
-    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel)  { (_) in
-      UIView.animate(withDuration: 0.2) { self.logoutBtn.alpha = 1 }
-    })
-    present(alert, animated: true, completion: nil)
   }
   
   @IBAction func savePressed(_ sender: Any) {
     saveBtn.isEnabled = false
     view.endEditing(true)
-    
     let base64 = pickedData?.base64EncodedString() ??
       avatarView.image!.jpeg(.medium)?.base64EncodedString()
     let darkView = UIView(frame: view.bounds)
@@ -166,19 +170,6 @@ UINavigationControllerDelegate {
     return .lightContent
   }
   
-  func imagePickerController(
-    _ picker: UIImagePickerController,
-    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]
-    ) {
-    if let pickerImage = info[.originalImage] as? UIImage {
-      let data = pickerImage.jpeg(.medium)
-      let image = UIImage(data: data!)
-      pickedImage = image!
-      pickedData = data!
-      picker.dismiss(animated: true, completion: nil)
-    }
-  }
-  
   @IBAction func changePasswordBtnPressed(_ sender: Any) {
     performSegue(withIdentifier: "toChangePassword", sender: nil)
   }
@@ -196,6 +187,23 @@ UINavigationControllerDelegate {
       saveBtn.isEnabled = false
     } else {
       saveBtn.isEnabled = true
+    }
+  }
+}
+
+extension SettingsVC:
+  UIImagePickerControllerDelegate,
+  UINavigationControllerDelegate {
+  func imagePickerController(
+    _ picker: UIImagePickerController,
+    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]
+    ) {
+    if let pickerImage = info[.originalImage] as? UIImage {
+      let data = pickerImage.jpeg(.medium)
+      let image = UIImage(data: data!)
+      pickedImage = image!
+      pickedData = data!
+      picker.dismiss(animated: true, completion: nil)
     }
   }
 }
