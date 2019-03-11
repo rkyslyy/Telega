@@ -282,19 +282,41 @@ extension ContactsVC: UITableViewDelegate, UITableViewDataSource {
     _ tableView: UITableView,
     editActionsForRowAt indexPath: IndexPath
     ) -> [UITableViewRowAction]? {
+    let deletionBlock = {
+      TelegaAPI.deleteContactWith(
+        id: DataService.instance.contactsFilteredWith(
+          keyword: self.searchBar.text!)[indexPath.row].id,
+        completion: {})
+      DataService.instance.deleteContactWith(
+        id: DataService.instance.contactsFilteredWith(
+          keyword: self.searchBar.text!)[indexPath.row].id)
+      tableView.deleteRows(
+        at: [indexPath],
+        with: UITableView.RowAnimation.right)
+    }
     let delete = UITableViewRowAction(
       style: .normal,
       title: "Delete") { action, index in
-        TelegaAPI.deleteContactWith(
-          id: DataService.instance.contactsFilteredWith(
-            keyword: self.searchBar.text!)[indexPath.row].id,
-          completion: {})
-        DataService.instance.deleteContactWith(
-          id: DataService.instance.contactsFilteredWith(
-            keyword: self.searchBar.text!)[indexPath.row].id)
-        tableView.deleteRows(
-          at: [indexPath],
-          with: UITableView.RowAnimation.right)
+        if DataService.instance.contactsFilteredWith(
+          keyword: self.searchBar.text!)[indexPath.row].confirmed {
+          let alert = UIAlertController(
+            title: "Warning",
+            message: "If you delete this contact " +
+            "your whole conversation will also be deleted",
+            preferredStyle: .alert)
+          let ok = UIAlertAction(
+            title: "Delete",
+            style: .destructive,
+            handler: { (_) in
+              deletionBlock()
+          })
+          let no = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+          alert.addAction(ok)
+          alert.addAction(no)
+          self.present(alert, animated: true, completion: nil)
+        } else {
+          deletionBlock()
+        }
     }
     delete.backgroundColor = .red
     return [delete]

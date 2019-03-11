@@ -83,6 +83,7 @@ class DataService {
     for (index, contact) in contacts!.enumerated() where contact.id == id {
       contacts?.remove(at: index)
     }
+    MessagesStorage.deleteMessagesFrom(id: id)
   }
 
   func contactsFilteredWith(keyword: String) -> [User] {

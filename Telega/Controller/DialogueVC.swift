@@ -190,7 +190,8 @@ class DialogueVC: UIViewController {
                 messageInputView.text!,
                 withPublicKey: companion.publicKey),
           messageInputView.text != nil,
-          messageInputView.text != ""
+          messageInputView.text != "",
+          messageInputView.textColor != UIColor.darkGray
     else { return }
     let trimmedText = messageInputView.text!.trimmingCharacters(
       in: .whitespacesAndNewlines)

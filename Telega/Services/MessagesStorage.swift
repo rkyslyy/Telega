@@ -36,6 +36,10 @@ class MessagesStorage {
   class func messagesExistWith(id: String) -> Bool {
     return messages[id] != nil
   }
+
+  class func deleteMessagesFrom(id: String) {
+    messages[id] = nil
+  }
   
   class func storeNew(
     message: Message,
